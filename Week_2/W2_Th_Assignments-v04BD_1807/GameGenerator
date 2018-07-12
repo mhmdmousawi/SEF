@@ -1,0 +1,35 @@
+#!/usr/bin/php
+<?php 
+
+class GameGenerator
+{	
+	private $NumbersFromArray1;
+	private $NumbersFromArray2;
+	private $array4Num = array(25,50,75,100);
+
+	function __construct(){
+		//array_push($array4D, 10)
+		
+	}
+	function printing(){
+		//return $this->NumbersFromArray1." --- ".$this->NumbersFromArray2;
+		return $this->array4Num[1];
+	}
+	function getHowManyNumbersFromArray1(){
+		return $this->NumbersFromArray1 = rand(1,4);
+	}
+	function getHowManyNumbersFromArray2(){
+		return $this->NumbersFromArray2 = (4-($this->NumbersFromArray1));
+	}
+	// function pickFromFirstArray(){
+
+	// }
+}
+
+$objectX = new GameGenerator(9);
+$objectX->getHowManyNumbersFromArray1();
+$objectX->getHowManyNumbersFromArray2();
+echo $objectX->printing();
+
+
+?>
