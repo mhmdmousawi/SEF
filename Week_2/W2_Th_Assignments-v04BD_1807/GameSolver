@@ -1,0 +1,74 @@
+#!/usr/bin/php
+<?php 
+
+require_once "GameGenerator";
+
+class GameSolverTree
+{	
+	public $game;
+	private $arrayToSolve;
+	private $target;
+	private $solutions = array();
+	private $additionSolution=0;
+
+	function __construct()
+	{
+		$game = new GameGenerator();
+		$this->arrayToSolve = $game->getRandomNumbers();
+		$this->target = $game->getTarget();
+
+		echo $this->loop();
+	}
+
+	function loop()
+	{
+		$array = $this->arrayToSolve;
+		//$array = array(1,2,3,4);
+
+		//for ($i= 0; $i<3; $i++){
+		//	if($i = 0 ){
+				$numbersUsed = 1 ;
+				$additionSolution = $this->additionSolution;
+				$additionSolution = $array[0];
+				$array[0]= -$array[0];
+				$solution =  $this->calculate( $additionSolution, $array,$numbersUsed,"addition");
+				if(($remaining =  $solution % $this->target )== 0){
+					return "EXACT solution: ".$solution.PHP_EOL;
+
+				}else{
+					return "NOT EXACT solution: ".$solution.PHP_EOL. "Remailing: ".$remaining.PHP_EOL;
+				}
+
+		//	}
+		//}
+	}
+
+	function calculate($calculationSolution,$array,$numbersUsed,$operation)
+	{
+		for ($i= 1; $i<sizeof($this->arrayToSolve); $i++){//4 is size of array
+
+			if($array[$i]<0){
+				continue;
+			}
+
+			if($i == sizeof($this->arrayToSolve)-1){ //last index
+				if($operation == "addition"){
+					$calculationSolution += $array[$i];
+				}	
+			}
+			if($operation == "addition"){
+				$calculationSolution += $array[$i];
+			}
+
+			$array[$i]= -$array[$i];
+			return $this->calculate($calculationSolution,$array,$numbersUsed+1,"addition");
+
+		}
+		return $calculationSolution;
+	}
+
+
+}
+$objectX = new GameSolverTree();
+
+?>

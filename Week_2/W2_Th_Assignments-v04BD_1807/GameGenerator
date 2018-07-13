@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php 
 
 class GameGenerator
@@ -63,7 +62,6 @@ class GameGenerator
 
 }
 
-$objectX = new GameGenerator();
-
-
+//$objectX = new GameGenerator();
 ?>
+
