@@ -7,7 +7,7 @@ class GameGenerator
 	private $arrayToGet = array();
 	private $pickFromArray1;
 	private $pickFromArray2;
-	private $target;
+	protected $target;
 
 	function __construct()
 	{

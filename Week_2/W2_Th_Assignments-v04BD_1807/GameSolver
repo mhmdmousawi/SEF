@@ -1,9 +1,9 @@
-#!/usr/bin/php
+
 <?php 
 
 require_once "GameGenerator";
 
-class GameSolverTree
+class GameSolver
 {	
 	public $game;
 	private $arrayToSolve;
@@ -31,7 +31,23 @@ class GameSolverTree
 		$array = $this->arrayToSolve;
 		array_push($this->allSolutions, $array[0]);
 		$this->loop($array,$array[0],1,0,$this->allSolutions);
-		print_r($this->allSolutions);
+
+		array_push($this->allSolutions, $this->target);
+		asort($this->allSolutions);
+
+		foreach ($this->allSolutions as $index => $value) {
+			if($value == $this->target ){
+				echo "Exact Solution ".$value.PHP_EOL;
+				break;
+
+				// echo "Not Exact ".$value." with (+".$value %$this->target.")";
+				// break;
+			// }else{
+			// 	echo "Not Exact ".$value." with (+".$value %$this->target.")";
+			// 	break;
+			}
+		}
+		//print_r($this->allSolutions);
 	}
 
 
@@ -173,6 +189,6 @@ class GameSolverTree
 		return $calculationSolution;
 	}
 }
-$objectX = new GameSolverTree();
+$objectX = new GameSolver();
 
 ?>
