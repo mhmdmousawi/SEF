@@ -8,13 +8,13 @@
 	{
 		private $DB_Name;
 
-		function __construct($operation, $DB_Name)
+		function __construct($action, $DB_Name)
 		{
 			$this->setDB_Name($DB_Name);
 
-			if($operation == "CREATE"){
+			if($action == "CREATE"){
 				$this->createDB($this->getDB_Name());
-			}else if($operation == "DELETE"){
+			}else if($action == "DELETE"){
 				$this->deleteDB($this->getDB_Name());
 			}else{
 				echo "OPPS.. Typo..".PHP_EOL;
