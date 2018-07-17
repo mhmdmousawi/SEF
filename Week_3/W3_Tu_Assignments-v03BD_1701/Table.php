@@ -1,6 +1,7 @@
 <?php 
 /*
 * Notes: add update table and all other functions
+* need to: check on the DB and Table name at the beginning then act cool
 *
 */
 	class Table
@@ -9,7 +10,7 @@
 		private $TBL_Name;
 		private $TBL_Columns;
 
-		function __construct($action, $DB_Name, $TBL_Name, $TBL_Columns="")
+		function __construct($query_type, $action, $DB_Name, $TBL_Name, $TBL_Columns="")
 		{
 			$this->setDB_Name($DB_Name);
 			$this->setTBL_Name($TBL_Name);
@@ -21,27 +22,47 @@
 				return;
 			}
 
-			if($action == "CREATE"){
-				$this->createTBL(
-					$this->getDB_Name(),
-					$this->getTBL_Name(),
-					$this->getTBL_Columns()
-				);
-			}else if($action == "UPDATE"){
-				$this->updateTBL();
-			}else if($action == "DROP"){
-				$this->dropTBL(
-					$this->getDB_Name(),
-					$this->getTBL_Name()
-				);
-			}else if($action == "ADD"){
-				$this->addToTBL(
-					$this->getDB_Name(),
-					$this->getTBL_Name(),
-					$this->getTBL_Columns()
-				);
+			if($query_type == "DLL"){
+				if($action == "CREATE"){
+					$this->createTBL(
+						$this->getDB_Name(),
+						$this->getTBL_Name(),
+						$this->getTBL_Columns()
+					);
+				}else if($action == "UPDATE"){
+					$this->updateTBL();
+				}else if($action == "DROP"){
+					$this->dropTBL(
+						$this->getDB_Name(),
+						$this->getTBL_Name()
+					);
+				}else{
+					echo "OPPS.. TYPO...";
+				}
+			}else if($query_type == "DML"){
+				if($action == "ADD"){
+					$this->addToTBL(
+						$this->getDB_Name(),
+						$this->getTBL_Name(),
+						$this->getTBL_Columns()
+					);
+				}else if($action == "GET"){
+					$this->getFromTable(
+						$this->getDB_Name(),
+						$this->getTBL_Name(),
+						$this->getTBL_Columns()
+					);
+				}else if($action == "DELETE"){
+					$this->deleteFromTable(
+						$this->getDB_Name(),
+						$this->getTBL_Name(),
+						$this->getTBL_Columns()
+					);
+				}else{
+					echo "OPPS.. TYPO...";
+				}
 			}else {
-				echo "OPPS.. TYPO...";
+				echo "ERROR! No such query type...";
 			}
 
 		}
@@ -135,6 +156,52 @@
 
 				}else{
 					echo "Error adding record to table..".PHP_EOL;
+				}
+
+			}else{
+				echo "Error!! Table \"".$tbl_name."\" does not exist in database \"".$db_name."\"".PHP_EOL;
+			}
+		}
+
+
+		function deleteFromTable($db_name, $tbl_name, $tbl_columns)
+		{
+			$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+
+			if(file_exists($tbl_path)){
+				$fileOpened = fopen($tbl_path, "w+");
+
+				if($fileOpened){
+
+					//validate that it is an id 
+					$id_target = $tbl_columns;
+					if(!is_numeric($id_target)){
+						echo "Please specify an Id for the record that you want to delete..".PHP_EOL;
+						return;
+					}
+
+					$found = false;
+					while(!feof($fileOpened)){
+						$record = fgets($fileOpened);
+						$attributes = explode(",", $record);
+						$recordId = $attributes[0];
+						if($recordId == $id_target){
+							$found = true;
+							//on this line do the delete
+
+							str_replace($record, "", $record);
+
+							echo "The record has been deleted succesfully from table \"".$tbl_name.
+								"\" in database \"".$db_name."\"".PHP_EOL;
+						}
+					}
+					if( $found == false ){
+						echo "Error!! Please specify another Id, ".
+							"this table doesn't contain this Id..".PHP_EOL;
+						return;
+					}
+				}else{
+					echo "Error deleting record from table..".PHP_EOL;
 				}
 
 			}else{
