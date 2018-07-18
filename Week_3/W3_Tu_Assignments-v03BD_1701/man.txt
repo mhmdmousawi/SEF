@@ -1,5 +1,5 @@
 
-DLL:
+DLL (TABLE) :
 ----------------------
 if structure of the query starts with:
 
@@ -16,3 +16,41 @@ if the structure of the query starts with:
 -get (select) 
 -add (insert)
 -delete,row
+
+
+EXAMPLES:
+-----------------
+//if user attempted to create db
+//$DDL_action = new Database("CREATE","TEST_Database");
+
+//if user attempted to delete db
+//$DDL_action = new Database("DELETE","TEST_Database");
+
+//if the user attempted to add a table to database
+//$DDL_action = new Table("CREATE","FS_Database","TEST","id,fname,lname,job");
+
+//if the user attempted to drop a table from database
+//$DDL_action = new Table("DROP","FS_Database","TEST");
+
+//DML
+//$DML_transaction = new DML("FS_Database","TEST");
+//get all records
+//$DML_transaction->doAction("GET","","");//validate the id not to be 0 
+
+//get all records of a specific column
+//$DML_transaction->doAction("GET","lname","");//validate the id not to be 0 
+
+//get specific id
+//$DML_transaction->doAction("GET","id","1");//validate the id not to be 0 
+
+//$DML_transaction->commitToTable();
+
+
+//add a record
+//validate if more or less attributes and id if exists
+//$DML_transaction->doAction("ADD","1,Test,test,testinging");
+//$DML_transaction->commitToTable();
+
+//deleter a record by id
+//$DML_transaction->doAction("DELETE","1");
+//$DML_transaction->commitToTable();
