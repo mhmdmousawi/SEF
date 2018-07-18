@@ -22,14 +22,24 @@
 	//$newTBL_action = new Table("ADD","FS_Database","Employee","10, Bassem, Dghaidi, SEF Instructor");
 
 	//DML
+	$DML_transaction = new DML("FS_Database","Employee");
 	//get all records
-	//$DML_transaction = new DML("GET","FS_Database","Employee","","");//validate the id not to be 0 
+	//$DML_transaction->doAction("GET","lname","");//validate the id not to be 0 
 	
 	//get all records of a specific column
-	$DML_transaction = new DML("GET","FS_Database","Employee","lname","");//validate the id not to be 0 
+	//$DML_transaction->doAction("GET","lname","");//validate the id not to be 0 
 	
 	//get specific id
-	//$DML_transaction = new DML("GET","FS_Database","Employee","id","1");//validate the id not to be 0 
+	//$DML_transaction->doAction("GET","id","1");//validate the id not to be 0 
 	
-	//echo $new_record;
+	//$DML_transaction->commitToTable();
+	
+
+	//add a record
+	//$DML_transaction->doAction("ADD","mm,Test,Adding,testing");
+	//$DML_transaction->commitToTable();
+
+	//deleter a record by id
+	// $DML_transaction->doAction("DELETE","50");
+	// $DML_transaction->commitToTable();
 ?>

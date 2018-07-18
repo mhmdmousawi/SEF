@@ -1,8 +1,8 @@
 <?php 
 /*
 * A class to get, add, delete records from a table 
-* Notes: get is done ..........still need to make add and delete and commit changes 
-*
+* Notes: get is done ..........still need to delete  
+* 		For add , check if id exists..
 */
 	class DML
 	{
@@ -13,21 +13,57 @@
 		private $TBL_Array = array();
 
 
-		function __construct($action, $DB_Name, $TBL_Name, $TBL_Column="",$TBL_Row="")
+		function __construct($DB_Name, $TBL_Name)
 		{
 			$this->setDB_Name($DB_Name);
 			$this->setTBL_Name($TBL_Name);
 			$this->setTBL_Array($this->getDB_Name(), $this->getTBL_Name());
-			$this->setTBL_Column($TBL_Column);
-			$this->setTBL_Row($TBL_Row);
+			
 			//print_r($this->getTBL_Array());
 			
+		}
 
+		function commitToTable(){
+			//overwrite the file of that table with all new added to array
+			$array = $this->getTBL_Array();
+			$db_name = $this->getDB_Name();
+			$tbl_name = $this->getTBL_Name();
+			$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
 
-			//actions may be:
-			//GET
-			//ADD
-			//DELETE
+			$array_size = sizeof($array);
+			$sub_array_size = 0 ;
+			foreach ($array as $key => $value) {
+				$sub_array_size = sizeof($array[$key]);
+			}
+
+			if(file_exists($tbl_path)){
+				$fileOpened = fopen($tbl_path, "w");
+				for($j = 0; $j < $sub_array_size;$j++ ){
+					$i=0;
+					foreach ($array as $key => $value) {
+						//fgets($fileOpened);
+						if(++$i === $array_size){
+							fwrite($fileOpened, $array[$key][$j]);
+						}else{
+							fwrite($fileOpened, $array[$key][$j].",");
+						}
+					}
+
+					fwrite($fileOpened, PHP_EOL);	
+				}
+			}else{
+				echo "ERROR!! Couldn't commit! Something went wrong with table file".PHP_EOL;
+			}
+		}
+
+		function rollBackToTable(){
+			$this->setTBL_Array($this->getDB_Name(), $this->getTBL_Name());
+		}
+
+		function doAction($action,$TBL_Column="",$TBL_Row="")
+		{
+			$this->setTBL_Column($TBL_Column);
+			$this->setTBL_Row($TBL_Row);
 
 			if($action == "GET"){
 				$this->getFromTable(
@@ -36,9 +72,15 @@
 					$this->getTBL_Row()
 				);
 			}else if($action == "ADD"){
-
+				$this->addToTable(
+					$this->getTBL_Array(),
+					$this->getTBL_Column()
+				);
 			}else if($action == "DELETE"){
-
+				$this->deleteFromTable(
+					$this->getTBL_Array(),
+					$this->getTBL_Column()//in this case it's the id
+				);
 			}else{
 				echo "OPPS.. TYPO..".PHP_EOL;
 			}
@@ -89,6 +131,75 @@
 					echo $attrib.": ". $tbl_array[$attrib][$indexToGet].PHP_EOL;
 				}
 			}
+		}
+
+		function addToTable($tbl_array, $tbl_columns)
+		{
+			//validate structure
+			//get attribute number added
+			$attrib_added = explode(",", $tbl_columns);
+			$attribNumber_added = sizeof($attrib_added);
+
+			//validate that first is an id and if it exists
+			$id_added = $attrib_added[0];
+			if(!is_numeric($id_added)){
+				echo "Please specify an Id to your record..".PHP_EOL;
+				return;
+			}
+			// else if($this->idExists($db_name, $tbl_name, $id_added)){//check
+			// 	echo "Error!! Please specify another Id, ".
+			// 		"the given Id is already reserved..".PHP_EOL;
+			// 	return;
+			// }
+			$i = 0;
+			foreach ($tbl_array as $key => $value) {
+				$sub_array_size = sizeof($tbl_array[$key]);
+				$tbl_array[$key][$sub_array_size] = $attrib_added[$i++];		
+			}
+
+			$this->TBL_Array = $tbl_array;
+			print_r($this->getTBL_Array());
+		}
+
+		function deleteFromTable($tbl_array, $tbl_column)
+		{
+			$found = false;
+			$index = 0 ;
+			$index_to_be_deleted = -1;
+
+			$id_target = $tbl_column;
+			if(!is_numeric($id_target)){
+				echo "Please specify an Id for the record that you want to delete..".PHP_EOL;
+				return;
+			}
+
+			foreach ($tbl_array as $key => $value) {
+				if($index==0){
+					$id_of_table = $key;
+				}
+				$index++;
+			}
+
+			foreach ($tbl_array[$id_of_table] as $key => $value) {
+				if($value == $id_target){
+					$index_to_be_deleted = $key;
+					$found = true;
+				}
+			}
+
+			if($found == false){
+				echo "This table doesnt have Id provided".PHP_EOL;
+				return;
+			}
+
+			foreach ($tbl_array as $key => $value) {
+				//unset($tbl_array[$key][$index_to_be_deleted]);
+				array_splice($tbl_array[$key],$index_to_be_deleted,1);
+			}
+
+			$this->TBL_Array = $tbl_array;
+			print_r($this->getTBL_Array());
+
 		}
 
 		function setDB_Name($db_name)
