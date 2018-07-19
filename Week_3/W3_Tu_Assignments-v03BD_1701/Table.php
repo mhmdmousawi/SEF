@@ -38,7 +38,6 @@ class Table
 		}else{
 			echo "OPPS.. TYPO...";
 		}
-	
 	}
 
 	function createTBL($db_name, $tbl_name, $tbl_columns)
@@ -80,107 +79,6 @@ class Table
 			echo "Table \"".$tbl_name."\" does not exist in database \"".$db_name."\"".PHP_EOL;
 		}
 	}
-
-	// function addToTBL($db_name, $tbl_name, $tbl_columns)
-	// {
-	// 	$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
-
-	// 	if(file_exists($tbl_path)){
-	// 		$fileOpened = fopen($tbl_path, "a");
-
-	// 		if($fileOpened){
-
-	// 			//validate structure
-	// 			//get attribute number added
-	// 			$attrib_added = explode(",", $tbl_columns);
-	// 			$attribNumber_added = sizeof($attrib_added);
-
-	// 			//validate that first is an id and if it exists
-	// 			$id_added = $attrib_added[0];
-	// 			if(!is_numeric($id_added)){
-	// 				echo "Please specify an Id to your record..".PHP_EOL;
-	// 				return;
-	// 			}else if($this->idExists($db_name, $tbl_name, $id_added)){
-	// 				echo "Error!! Please specify another Id, ".
-	// 					"the given Id is already reserved..".PHP_EOL;
-	// 				return;
-	// 			}
-
-
-	// 			//get attribute number of the tbl
-	// 			$attribNumber_tbl = $this->getAttribNumber($db_name, $tbl_name);
-
-	// 			if($attribNumber_added > $attribNumber_tbl){
-	// 				echo "Error!! Adding more attributes than expected.. ".PHP_EOL;
-	// 				return;
-	// 			}
-	// 			if($attribNumber_added < $attribNumber_tbl){
-	// 				//add some "," to complete the targeted attributes number
-	// 				$numberDiffrence = $attribNumber_tbl - $attribNumber_added;
-	// 				for( $i = 0; $i < $numberDiffrence; $i++ ){
-	// 					$tbl_columns .= ",";
-	// 				}
-	// 			}
-
-	// 			file_put_contents($tbl_path, $tbl_columns.PHP_EOL, FILE_APPEND | LOCK_EX);
-	// 			fclose($fileOpened);
-
-	// 			echo "A record has been added succesfully to table \"".$tbl_name.
-	// 			"\" in database \"".$db_name."\"".PHP_EOL;
-
-	// 		}else{
-	// 			echo "Error adding record to table..".PHP_EOL;
-	// 		}
-
-	// 	}else{
-	// 		echo "Error!! Table \"".$tbl_name."\" does not exist in database \"".$db_name."\"".PHP_EOL;
-	// 	}
-	// }
-
-	// function deleteFromTable($db_name, $tbl_name, $tbl_columns)
-	// {
-	// 	$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
-
-	// 	if(file_exists($tbl_path)){
-	// 		$fileOpened = fopen($tbl_path, "w+");
-
-	// 		if($fileOpened){
-
-	// 			//validate that it is an id 
-	// 			$id_target = $tbl_columns;
-	// 			if(!is_numeric($id_target)){
-	// 				echo "Please specify an Id for the record that you want to delete..".PHP_EOL;
-	// 				return;
-	// 			}
-
-	// 			$found = false;
-	// 			while(!feof($fileOpened)){
-	// 				$record = fgets($fileOpened);
-	// 				$attributes = explode(",", $record);
-	// 				$recordId = $attributes[0];
-	// 				if($recordId == $id_target){
-	// 					$found = true;
-	// 					//on this line do the delete
-
-	// 					str_replace($record, "", $record);
-
-	// 					echo "The record has been deleted succesfully from table \"".$tbl_name.
-	// 						"\" in database \"".$db_name."\"".PHP_EOL;
-	// 				}
-	// 			}
-	// 			if( $found == false ){
-	// 				echo "Error!! Please specify another Id, ".
-	// 					"this table doesn't contain this Id..".PHP_EOL;
-	// 				return;
-	// 			}
-	// 		}else{
-	// 			echo "Error deleting record from table..".PHP_EOL;
-	// 		}
-
-	// 	}else{
-	// 		echo "Error!! Table \"".$tbl_name."\" does not exist in database \"".$db_name."\"".PHP_EOL;
-	// 	}
-	// }
 
 	function getAttribNumber($db_name,$tbl_name)
 	{

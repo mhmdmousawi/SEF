@@ -49,6 +49,7 @@ class DML
 
 				fwrite($fileOpened, PHP_EOL);	
 			}
+			echo "All the work is saved now!".PHP_EOL;
 		}else{
 			echo "ERROR!! Couldn't commit! Something went wrong with table file".PHP_EOL;
 		}
@@ -56,6 +57,7 @@ class DML
 
 	function rollBackToTable(){
 		$this->setTBL_Array($this->getDB_Name(), $this->getTBL_Name());
+		echo "We took you back to the last saved point!".PHP_EOL;
 	}
 
 	function doAction($action,$TBL_Column="",$TBL_Row="")
@@ -144,7 +146,7 @@ class DML
 			}
 
 			if($indexFound == false){
-				echo "No such Id in this table, try another Id ... ".PHP_EOL;
+				echo "No such record in this table, please try again... ".PHP_EOL;
 				return;
 			}
 
