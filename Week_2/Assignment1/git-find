@@ -1,0 +1,100 @@
+#!/usr/bin/php
+<?php 
+
+$options = getopt("a:e:t:d:s:m:");
+
+$authorToSearchFor = ".*";
+$emailToSearchFor = ".*";
+$timeToSearchFor = ".*";
+$date_DM_ToSearchFor = ".*";
+$date_Y_ToSearchFor = ".*";
+$timestampToSearchFor = ".*";
+$commitMsgToSeachFor = ".*";
+
+$byAuther = "";
+$byEmail = "";
+$byTime = "";
+$byDate = "";
+$byTimestamp = ""; 
+$byCommitMsg = "";
+
+$result_set = array();
+$results_found = 0;
+
+foreach ($options as $key => $value) {
+	if($key == "a"){
+		$byAuther = " by Author (".$value.") ";
+		$authorToSearchFor = $value;
+	}else if($key == "e"){
+		$byEmail = " by Email Address (".$value.") ";
+		$emailToSearchFor = $value;
+	}else if($key == "t"){
+		$byTime = " by Time (".$value.") ";
+		$timeToSearchFor = $value;
+	}else if($key == "d"){
+		$byDate = " by Date (".$value.") ";
+		//validate format
+		//change date fromat to be displayed
+		$date_format_old = DateTime::createFromFormat('j-n-Y',$value);//Friday-05-2016)
+		$date_DM_ToSearchFor = $date_format_old->format('D M j'); // Mon Jul 9 16:37:25 2018 +0300
+		$date_Y_ToSearchFor = $date_format_old->format('Y');
+	}else if($key == "s"){
+		$byTimestamp = " by Epoch Timestamp (".$value.") ";
+		$timestampToSearchFor = $value;
+	}else if($key == "m"){
+		$byCommitMsg = " by Commit Message (".$value.") ";
+		$commitMsgToSeachFor = $value;
+	}
+}
+
+$authorPattern = "/Author<".$authorToSearchFor.">/";
+$email_pattern = "/Email<".$emailToSearchFor.">/";
+$time_pattern = "/DateTime<.*".$timeToSearchFor.":[0-9]{2}/";
+$date_pattern = "/DateTime<".$date_DM_ToSearchFor."\s[0-9]{2}:[0-9]{2}:[0-9]{2}\s(".$date_Y_ToSearchFor.")/";
+$timestamp_pattern = "/Timestamp<".$timestampToSearchFor.">/";
+$commitMsg_pattern = "/CommitMsg<".$commitMsgToSeachFor.">/";
+
+exec('git log --pretty="Hash<%H>|Author<%an>|Email<%ae>|DateTime<%cd>|Timestamp<%ct>|CommitMsg<%s>"',$record);
+
+for( $i = 0; $i < sizeof($record); $i++){
+	if(	preg_match($authorPattern, $record[$i]) && 
+		preg_match($email_pattern, $record[$i]) &&
+		preg_match($time_pattern, $record[$i]) &&
+		preg_match($date_pattern, $record[$i]) &&
+		preg_match($timestamp_pattern, $record[$i]) &&
+		preg_match($commitMsg_pattern, $record[$i]) 
+		){
+			array_push($result_set, $record[$i]);
+			$results_found += 1;
+	}	
+}
+echo	"Search results ".$byAuther.$byEmail.$byTime.$byDate.$byTimestamp.$byCommitMsg.
+		"- Total: ".$results_found.PHP_EOL.PHP_EOL;
+
+printResults($result_set);
+
+function printResults($result_set){
+	
+	for($i=0;$i<sizeof($result_set);$i++){
+
+		$partByPart = explode("|", $result_set[$i]);
+
+		for($j=0;$j<sizeof($partByPart);$j++){
+
+			if($j == 0){
+				//hash sh1
+				echo ($i+1).":: ".substr($partByPart[0],5,40)." - ";
+			}else if($j == 1){
+				//name
+				echo substr($partByPart[1],7,strlen($partByPart[1])-8)." - ";
+			}else if($j ==3){
+				//Date and Time
+				echo substr($partByPart[3],9,strlen($partByPart[3])-10)." - ";
+			}else if($j ==5){
+				//Commit Message
+				echo "\"".substr($partByPart[5],10,strlen($partByPart[5])-11)."\"".PHP_EOL; 
+			}
+		}
+	}	
+}
+?>

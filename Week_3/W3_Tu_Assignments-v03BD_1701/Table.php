@@ -13,6 +13,7 @@ class Table
 		$this->setTBL_Columns($TBL_Columns);
 
 		$DB_Path = "Databases".DIRECTORY_SEPARATOR.$this->getDB_Name();
+
 		if ( !file_exists($DB_Path) ) {
 			echo "Please specify a created database".PHP_EOL;
 			return;
@@ -60,7 +61,9 @@ class Table
 	function dropTBL($db_name, $tbl_name)
 	{
 		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+
 		if ( file_exists($tbl_path) ) {
+
 			$fileOpened = fopen($tbl_path, "r");
 			if($fileOpened){
 				unlink($tbl_path);
@@ -79,6 +82,7 @@ class Table
 	function getAttribNumber($db_name,$tbl_name)
 	{
 		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+
 		if ( file_exists($tbl_path)){
 			$fileOpened = fopen($tbl_path,"r");
 			if($fileOpened){
@@ -96,6 +100,7 @@ class Table
 	function idExists($db_name, $tbl_name, $id)
 	{
 		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+
 		if ( file_exists($tbl_path)){
 			$fileOpened = fopen($tbl_path,"r");
 			if ( $fileOpened){

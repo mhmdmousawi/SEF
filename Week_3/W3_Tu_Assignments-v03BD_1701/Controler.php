@@ -49,10 +49,8 @@ class Controler
 					$db_name
 				)
 			) {
-
 				$DDL_action = new Database("DELETE",$db_name[1]);
 				$this->setDB("Not Specified");
-
 			} else if ( 
 				preg_match(
 					"/^CREATE\s*,\s*TABLE\s*,\s*\"([^\"]+)\"\s*,".
@@ -167,7 +165,6 @@ class Controler
 					continue;
 				}
 				$this->get_DML_transaction()->doAction("DELETE",$config[1]);
-
 			} else if ( preg_match("/^COMMIT$/",$query) ) {
 				if(!$this->openTransaction()){
 					continue;
@@ -330,5 +327,4 @@ class Controler
 		return $this->DML_transaction;
 	}
 }
-
 ?>

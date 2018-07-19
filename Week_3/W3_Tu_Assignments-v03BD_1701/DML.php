@@ -115,7 +115,6 @@ class DML
 			}
 
 		} else if( $tbl_row == "") {
-
 			echo $tbl_column."'s ".PHP_EOL;
 			echo "--------------------".PHP_EOL;
 			foreach ($tbl_array[$tbl_column] as $key => $value) {
@@ -159,6 +158,7 @@ class DML
 
 		//validate that first is an id and if it exists
 		$id_added = $attrib_added[0];
+
 		if ( !is_numeric($id_added) ) {
 			echo "Please specify an Id to your record..".PHP_EOL;
 			return;
@@ -168,6 +168,7 @@ class DML
 				"the given Id is already reserved..".PHP_EOL;
 			return;
 		}
+
 		$i = 0;
 		foreach ($tbl_array as $key => $value) {
 			$sub_array_size = sizeof($tbl_array[$key]);
@@ -204,6 +205,7 @@ class DML
 		$index_to_be_deleted = -1;
 
 		$id_target = $tbl_column;
+
 		if ( !is_numeric($id_target) ) {
 			echo "Please specify an Id for the record that you want to delete..".PHP_EOL;
 			return;

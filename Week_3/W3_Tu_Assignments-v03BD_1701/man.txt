@@ -1,4 +1,5 @@
 
+
 THIS IS THE MANUAL  MOUSAWI DATABASE SYSTEM
 YOU WILL FIND HERE THE SYNTAX YOU NEED AS FOLLOWS:
 --------------------------------------------------------------
@@ -91,3 +92,4 @@ TO QUIT:
 
 	---> quit or QUIT
 --------------------------------------------------------------
+

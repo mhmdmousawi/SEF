@@ -25,6 +25,7 @@ class Database
 		}
 
 		$db_path = "Databases".DIRECTORY_SEPARATOR.$db_name;
+
 		if ( !file_exists($db_path) ) {
 			mkdir($db_path);
 			echo "\"".$db_name."\" CREATED".PHP_EOL;
