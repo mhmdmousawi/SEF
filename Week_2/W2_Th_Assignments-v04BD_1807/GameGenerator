@@ -1,0 +1,67 @@
+<?php 
+
+class GameGenerator
+{	
+	private $array4Num = array(25,50,75,100);
+	private $array20Num = array(1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10);
+	private $arrayToGet = array();
+	private $pickFromArray1;
+	private $pickFromArray2;
+	protected $target;
+
+	function __construct()
+	{
+		$this->pickFromArray1 = rand(1,4);
+		$this->pickFromArray2 = 6-($this->pickFromArray1);
+		$this->target = rand(101,999);
+		$this->randomlyPickingAll();
+		$this->printing();
+	}
+
+	function randomlyPickingAll()
+	{
+		$this->pickFromArrays($this->array4Num,$this->pickFromArray1);
+		$this->pickFromArrays($this->array20Num,$this->pickFromArray2);
+	}
+
+	function pickFromArrays($array,$numbersToPick)
+	{
+		for($i = 1 ; $i <= $numbersToPick; $i++){
+			$indexRand = rand(0,sizeof($array)-1);
+			if($array[$indexRand] > 0 ){
+				array_push($this->arrayToGet, $array[$indexRand]);
+				$array[$indexRand]= -($array[$indexRand]);
+			}else{
+				$i--;
+			}
+		}
+	}
+
+	//returns an array
+	function getRandomNumbers()
+	{
+		return $this->arrayToGet;
+	}
+
+	function getTarget()
+	{
+		return $this->target;
+	}
+
+	function printing()
+	{	
+		echo "{ ";
+		for( $i = 0 ; $i < 6 ;$i++){
+			echo $this->arrayToGet[$i].", ";
+			if($i == 5){
+				echo $this->arrayToGet[$i]." }".PHP_EOL;
+			}
+		}
+		echo "Target: ".$this->target.PHP_EOL;
+	}
+
+}
+
+//$objectX = new GameGenerator();
+?>
+

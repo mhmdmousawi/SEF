@@ -1,0 +1,194 @@
+
+<?php 
+
+require_once "GameGenerator";
+
+class GameSolver
+{	
+	public $game;
+	private $arrayToSolve;
+	private $target = 18;
+	private $solutions = array();
+	private $additionSolution=0;
+	private $calculationSolution=0;
+	private $operations = array("addition","subtraction","multiplication","division");
+	private $allSolutions = array();
+
+	//another way
+	private $result = 0;
+	private $numbersUsedMohsen = 0;
+	private $arrayToTry = array(6,4,1);
+	private $targetMohsen = 5;
+	//private $numberToTry=0;
+
+	function __construct()
+	{
+		$game = new GameGenerator();
+		$this->arrayToSolve = $game->getRandomNumbers();
+		$this->target = $game->getTarget();
+
+		//$this->solving(0 ,$this->arrayToTry, $this->targetMohsen,$this->result,$this->numbersUsedMohsen);
+		$array = $this->arrayToSolve;
+		array_push($this->allSolutions, $array[0]);
+		$this->loop($array,$array[0],1,0,$this->allSolutions);
+
+		array_push($this->allSolutions, $this->target);
+		asort($this->allSolutions);
+
+		foreach ($this->allSolutions as $index => $value) {
+			if($value == $this->target ){
+				echo "Exact Solution ".$value.PHP_EOL;
+				break;
+
+				// echo "Not Exact ".$value." with (+".$value %$this->target.")";
+				// break;
+			// }else{
+			// 	echo "Not Exact ".$value." with (+".$value %$this->target.")";
+			// 	break;
+			}
+		}
+		//print_r($this->allSolutions);
+	}
+
+
+	function solving($indexOfNumber, $arrayToTry, $target,$result,$numbersUsedMohsen)
+	{
+		//$equation = " ";
+		//startFunction:
+		$try = "addition";
+		startTry:
+			//echo "Trying a new arthmetic operation ((".$try.")) to number used: ".$numbersUsedMohsen.PHP_EOL;
+			if($indexOfNumber == -1){
+				echo "No result found";
+				return;
+			}
+			
+			//addition 
+			if($try == "addition"){
+
+				$numbersUsedMohsen += 1 ;
+				$numberToTry = $arrayToTry[$indexOfNumber];
+				$result += $numberToTry ;
+				//$equation += " + ".$numberToTry." ";
+				echo " + ".$numberToTry;
+				if($numbersUsedMohsen!=4){
+					//echo " + ".$numberToTry.PHP_EOL;
+					$this->solving($indexOfNumber+1,$arrayToTry,$target,$result,$numbersUsedMohsen);	
+
+				}else{
+					if($result==$target){
+						echo "FOUND EXACT RESULT ".$result;
+					}else {
+						$result-= $numberToTry;
+						$numbersUsedMohsen -= 1;
+						echo " (back - ".$numberToTry.")".PHP_EOL;
+						//continue;
+						$try = "subtraction";
+						goto startTry;
+					}
+				}
+			}else if($try == "subtraction"){ //subtraction
+
+				$numbersUsedMohsen += 1 ;
+				$numberToTry = $arrayToTry[$indexOfNumber];
+				$result -= $numberToTry ;
+				echo " - ".$numberToTry;
+
+				if($numbersUsedMohsen!=4){
+					//echo " - ".PHP_EOL;
+					$this->solving($indexOfNumber+1,$arrayToTry,$target,$result,$numbersUsedMohsen);	
+				}else{
+					if($result==$target){
+						echo "FOUND EXACT RESULT ".$result;
+					}else {
+						$result += $numberToTry;
+						echo " (back + ".$numberToTry.")".PHP_EOL;
+						$numbersUsedMohsen -= 1 ;
+			
+						$try = "multiplication";
+						goto startTry;
+					}
+				}
+			}else if($try == "multiplication"){ //subtraction
+
+				$numbersUsedMohsen += 1 ;
+				$numberToTry = $arrayToTry[$indexOfNumber];
+				$result *= $numberToTry ;
+				echo " * ".$numberToTry;
+
+				if($numbersUsedMohsen!=4){
+					//echo " - ".PHP_EOL;
+					$this->solving($indexOfNumber+1,$arrayToTry,$target,$result,$numbersUsedMohsen);	
+				}else{
+					if($result==$target){
+						echo "FOUND EXACT RESULT ".$result;
+					}else {
+						$result /= $numberToTry;
+						echo " (back / ".$numberToTry.")".PHP_EOL;
+						$numbersUsedMohsen -= 1 ;
+						//continue;
+						// $try = "multiplication";
+						// goto startTry;
+
+						//after last try
+						$indexOfNumber -= 1;
+						if($indexOfNumber > 0 ){
+							$result -= $arrayToTry[$indexOfNumber];
+							echo " (back - ".$arrayToTry[$indexOfNumber].")".PHP_EOL;
+						}
+						//$indexOfNumber -= 1;
+						$numbersUsedMohsen -= 1 ;
+						$try = "subtraction";
+						goto startTry;
+					}
+				}
+			}
+	}
+
+	function loop($array,$lastCalculations,$indexToContinueFrom,$loops,&$allSolutions)
+	{
+		//$array = $this->arrayToTry;
+		$loops +=1;
+
+		$calculationSolution = $lastCalculations;
+
+		for ($i= $indexToContinueFrom; $i<6; $i++){
+			for($j = 0;$j<4;$j++){
+
+				$solution =  $this->calculateNext( $calculationSolution, $array,$i,$this->operations[$j]);	
+				array_push($allSolutions, $solution);
+
+				if($solution == $this->target){
+					echo "found";
+					return;
+				}else{
+
+					if( $solution < 0 || floor( $solution ) != $solution){
+						continue;
+					}
+
+					$this->loop($array,$solution,$i+1,$loops,$allSolutions);
+				}
+			}
+			//echo PHP_EOL;
+		}
+	}
+
+	function calculateNext($calculationSolution,$array,$indexToCalculate,$operation)
+	{
+		if($operation == "addition"){
+			$calculationSolution += $array[$indexToCalculate];
+		}else if($operation == "subtraction"){
+			$calculationSolution -= $array[$indexToCalculate];
+		}else if($operation == "multiplication"){
+			$calculationSolution *= $array[$indexToCalculate];
+		}else if($operation == "division"){
+			$calculationSolution /= $array[$indexToCalculate];
+		}
+
+		return $calculationSolution;
+	}
+}
+$objectX = new GameSolver();
+
+?>
