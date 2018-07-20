@@ -21,7 +21,8 @@ class DML
 		$array = $this->getTBL_Array();
 		$db_name = $this->getDB_Name();
 		$tbl_name = $this->getTBL_Name();
-		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+		$tbl_path = "Databases".DIRECTORY_SEPARATOR.
+						$db_name.DIRECTORY_SEPARATOR.$tbl_name;
 
 		$array_size = sizeof($array);
 		$sub_array_size = 0 ;
@@ -45,7 +46,8 @@ class DML
 			}
 			echo "All the work is saved now!".PHP_EOL;
 		} else {
-			echo "ERROR!! Couldn't commit! Something went wrong with table file".PHP_EOL;
+			echo "ERROR!! Couldn't commit!".
+				" Something went wrong with table file".PHP_EOL;
 		}
 	}
 
@@ -281,7 +283,8 @@ class DML
 	function setTBL_Array($db_name,$tbl_name)
 	{
 		$tbl_array = array();
-		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
+		$tbl_path = "Databases".DIRECTORY_SEPARATOR.
+						$db_name.DIRECTORY_SEPARATOR.$tbl_name;
 		if(!file_exists($tbl_path)){
 			echo "ERROR!! No such table in database \"".$db_name."\"".PHP_EOL;
 			return;
@@ -303,7 +306,11 @@ class DML
 
 					foreach($attributes as $key_attr => $attribute){
 						$attribute = str_replace(PHP_EOL, "", $attribute);
-						$record_info[$key_attr] = str_replace(PHP_EOL, "", $record_info[$key_attr]);
+						$record_info[$key_attr] = str_replace(
+													PHP_EOL, 
+													"", 
+													$record_info[$key_attr]
+												);
 						$tbl_array[$attribute][]= $record_info[$key_attr];
 					}
 				}

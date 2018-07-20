@@ -79,51 +79,6 @@ class Table
 		}
 	}
 
-	function getAttribNumber($db_name,$tbl_name)
-	{
-		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
-
-		if ( file_exists($tbl_path)){
-			$fileOpened = fopen($tbl_path,"r");
-			if($fileOpened){
-				$attribNumber_tbl = sizeof(explode(",", fgets($fileOpened)));
-				return $attribNumber_tbl;
-			}else{
-				echo "Error accessing the table".PHP_EOL;
-			}
-		}else{
-			echo "Error!! table \"".$tbl_name."\" does not exists in database \"".$db_name."\"".PHP_EOL;
-			return 0;
-		}
-	}
-
-	function idExists($db_name, $tbl_name, $id)
-	{
-		$tbl_path = "Databases".DIRECTORY_SEPARATOR.$db_name.DIRECTORY_SEPARATOR.$tbl_name;
-
-		if ( file_exists($tbl_path)){
-			$fileOpened = fopen($tbl_path,"r");
-			if ( $fileOpened){
-				//search in file for the id
-				$found = false;
-				while(!feof($fileOpened)){
-					$record = fgets($fileOpened);
-					$attributes = explode(",", $record);
-					$recordId = $attributes[0];
-					if($recordId == $id){
-						$found = true;
-					}
-				}
-				return $found;
-			}else{
-				echo "Error accessing the table".PHP_EOL;
-			}
-		}else{
-			echo "Error!! table \"".$tbl_name."\" does not exists in database \"".$db_name."\"".PHP_EOL;
-			return 0;
-		}
-	}
-
 	function setDB_Name($db_name)
 	{
 		$this->DB_Name = $db_name;
