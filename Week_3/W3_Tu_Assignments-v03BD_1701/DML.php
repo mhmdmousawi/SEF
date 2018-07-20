@@ -17,7 +17,6 @@ class DML
 
 	function commitToTable()
 	{
-		//overwrite the file of that table with all new added to array
 		$array = $this->getTBL_Array();
 		$db_name = $this->getDB_Name();
 		$tbl_name = $this->getTBL_Name();
