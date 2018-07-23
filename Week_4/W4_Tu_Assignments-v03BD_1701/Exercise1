@@ -1,0 +1,64 @@
+
+/* Creating database*/
+CREATE DATABASE FinanceDB;
+
+/* Select Database to use*/
+USE FinanceDB;
+
+/* Creating table */
+CREATE Table FiscalYearTable (
+				fiscal_year INT(4) NOT NULL,
+				start_date DATE NOT NULL,
+				end_date DATE NOT NULL,
+				CONSTRAINT fy_primary_key PRIMARY KEY (fiscal_year)
+			);
+
+/* Constrains:
+*	1. no overlap between fiscal years 
+*	2. check if fiscal year is valid ( meaning start and end duration 
+*		represent the year inserted)
+*
+*
+*/
+
+/* Triggers */
+DELIMITER $$
+
+CREATE TRIGGER checkOnFiscalYearAdded
+BEFORE INSERT ON FiscalYearTable 
+FOR EACH ROW 
+BEGIN  
+	DECLARE dummy INT;
+	IF (NEW.fiscal_year > 9999)
+THEN 
+	SELECT 'Any Message' INTO dummy FROM mysql.user WHERE used = 'anything';
+END IF;
+END $$
+
+DELIMITER;
+
+/* Insert query */
+INSERT INTO FiscalYearTable (fiscal_year, start_date, end_date) 
+VALUES ('19081', '1981-08-24','1981-08-24');
+
+
+
+CREATE TRIGGER overlapCheck
+BEFORE INSERT ON FiscalYearTable 
+FOR EACH ROW 
+IF NEW.start_date < 0 
+THEN SET NEW.age = 0;
+END IF;//
+
+
+
+
+
+
+/* Triggers */
+CREATE TRIGGER overlapCheck
+BEFORE INSERT ON FiscalYearTable 
+FOR EACH ROW 
+IF NEW.start_date < 0 
+THEN SET NEW.age = 0; 
+END IF;
