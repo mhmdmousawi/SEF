@@ -49,10 +49,13 @@ BEGIN
 	SELECT COUNT(*) FROM AnestProcedures INTO n;
 	IF (startPoint<n)
 	THEN
+		SET start_time_new = (SELECT start_time from AnestProcedures LIMIT depth, 1);
+		SET end_time_new = (SELECT end_time from AnestProcedures LIMIT depth, 1);
 
+		SET depth = depth + 1;
 		SET result = result + MAX(
-									CALL OVERLAP(startPoint+1,),
-									CALL OVERLAP(startPoint+1,)
+									CALL OVERLAP(startPoint+1,start_time_new,end_time_new,depth),
+									CALL OVERLAP(startPoint+1,start_time_new,end_time_new,depth)
 									);
 	END IF;
 	select 0;
