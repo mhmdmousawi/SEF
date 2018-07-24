@@ -42,12 +42,6 @@ BEGIN
 	END IF;
 END;
 
-/* Insert query */
-/*INSERT INTO FiscalYearTable (fiscal_year, start_date, end_date) 
-VALUES ('19081', '1981-08-24','1982-08-24');
-*/
-
-
 /* Trigger 2 startBeforeEnd */
 
 CREATE TRIGGER startBeforeEnd
@@ -61,7 +55,6 @@ BEGIN
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = msg;
 	END IF;
 END;
-
 
 /* Trigger 3 OverLap */
 
@@ -86,6 +79,18 @@ BEGIN
 					AND 
 					DATEDIFF(FYT.end_date, New.end_date) >= 0
 				)
+				OR
+				(
+					DATEDIFF(New.start_date, FYT.start_date) >= 0
+					AND 
+					DATEDIFF(FYT.end_date, New.end_date) >= 0
+				)
+				OR
+				(
+					DATEDIFF(FYT.start_date, New.start_date) >= 0
+					AND 
+					DATEDIFF(New.end_date, FYT.end_date) >= 0
+				)
 		) IS NOT NULL
 	)
 	THEN 
@@ -94,6 +99,10 @@ BEGIN
 	END IF;
 END
 
+
+/* Insert query */
+INSERT INTO FiscalYearTable (fiscal_year, start_date, end_date) 
+VALUES ('1980', '1980-08-24','1981-08-24');
 
 
 /* Insert query test startBeforeEnd */
@@ -116,6 +125,7 @@ VALUES ('2002', '2001-02-01','2001-3-01');
 *	1. wrongFiscalYear
 *	1. startBeforeEnd
 *	2. overLap
-*
+*	------------------not done yet \/
+*	3. date of fiscal year is at least included in start and end
 *
 */
