@@ -44,9 +44,9 @@ CREATE TABLE `ClaimStatusCodes` (
 -- DELETE FROM `LegalMedicalClaimsDB`.`LegalEvents`;
 
 /* Claims Table Insertion */
-insert into Claims value(1, 'Bassem Dghaidi' );
-insert into Claims value(2, 'Omar Breidi'  );
-insert into Claims value(3, 'Marwan Sawwan' );
+insert INTO Claims VALUES(1, 'Bassem Dghaidi' );
+insert INTO Claims VALUES(2, 'Omar Breidi'  );
+insert INTO Claims VALUES(3, 'Marwan Sawwan' );
 
 /* Defendants Table Insertion */
 INSERT INTO Defendants (claim_id,defendant_name) VALUES(1,'Jean Skaff');
@@ -58,26 +58,47 @@ INSERT INTO Defendants (claim_id,defendant_name) VALUES(2,'Radwan Sameh');
 INSERT INTO Defendants (claim_id,defendant_name) VALUES(3,'Issam Awwad');
 
 /* ClaimStatusCodes Table Insertion */
-INSERT into ClaimStatusCodes VALUES('AP','Awaiting review panel',1);
-INSERT into ClaimStatusCodes VALUES('OR','Panel opinion rendered',2);
-INSERT into ClaimStatusCodes VALUES('SF','Suit filed',3);
-INSERT into ClaimStatusCodes VALUES('CL','Closed',4);
+INSERT INTO ClaimStatusCodes VALUES('AP','Awaiting review panel',1);
+INSERT INTO ClaimStatusCodes VALUES('OR','Panel opinion rendered',2);
+INSERT INTO ClaimStatusCodes VALUES('SF','Suit filed',3);
+INSERT INTO ClaimStatusCodes VALUES('CL','Closed',4);
 
 /* LegalEvents Table Insertion */
-insert into LegalEvents values(1 ,'Jean Skaff', 'AP','2016-01-01');
-insert into LegalEvents values(1,'Jean Skaff','OR','2016-02-02' );
-insert into LegalEvents values(1,'Jean Skaff','SF','2016-03-01');
-insert into LegalEvents values( 1,'Jean Skaff','CL','2016-04-01');
-insert into LegalEvents values(1,'Radwan Sameh','AP','2016-01-01');
-insert into LegalEvents values(1,'Radwan Sameh','OR','2016-02-02');
-insert into LegalEvents values(1 ,'Radwan Sameh','SF','2016-03-01');
-insert into LegalEvents values(1,'Elie Meouchi','AP','2016-01-01');
-insert into LegalEvents values(1,'Elie Meouchi','OR','2016-02-02');
-insert into LegalEvents values(2,'Radwan Sameh','AP','2016-01-01');
-insert into LegalEvents values(2,'Radwan Sameh','OR','2016-02-01');
-insert into LegalEvents values(2,'Paul Syoufi','AP','2016-01-01');
-insert into LegalEvents values(3,'Issam Awwad','AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(1 ,'Jean Skaff', 'AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(1,'Jean Skaff','OR','2016-02-02' );
+INSERT INTO LegalEvents VALUES(1,'Jean Skaff','SF','2016-03-01');
+INSERT INTO LegalEvents VALUES(1,'Jean Skaff','CL','2016-04-01');
+INSERT INTO LegalEvents VALUES(1,'Radwan Sameh','AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(1,'Radwan Sameh','OR','2016-02-02');
+INSERT INTO LegalEvents VALUES(1 ,'Radwan Sameh','SF','2016-03-01');
+INSERT INTO LegalEvents VALUES(1,'Elie Meouchi','AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(1,'Elie Meouchi','OR','2016-02-02');
+INSERT INTO LegalEvents VALUES(2,'Radwan Sameh','AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(2,'Radwan Sameh','OR','2016-02-01');
+INSERT INTO LegalEvents VALUES(2,'Paul Syoufi','AP','2016-01-01');
+INSERT INTO LegalEvents VALUES(3,'Issam Awwad','AP','2016-01-01');
 
--- trigger before inserting
-/*Changes in claim status for each defendant occur in a known sequence, determined by law, as shown in
-the ClaimStatusCodes table:*/
+
+/* Solution */
+-- \/ get the label of each claims status 
+SELECT	claim_pateint_status_seq.claim_id ,
+		claim_pateint_status_seq.patient_name ,
+        CSC.claim_status
+FROM (
+	-- \/ get the minimum between the defendats statuses and get patients names
+	SELECT	defendants_statuses.claim_id,
+			C.patient_name, 
+            MIN(defendants_statuses.claim_status) AS claim_seq
+	FROM (
+		-- \/ get each defendant status on claims 
+		SELECT	LE.claim_id,
+				LE.defendant_name,
+                COUNT(LE.claim_status) AS claim_status
+		FROM LegalEvents AS LE 
+		GROUP BY LE.claim_id ,LE.defendant_name
+	 )AS defendants_statuses 
+	INNER JOIN Claims AS C on C.claim_id = defendants_statuses.claim_id
+	GROUP BY defendants_statuses.claim_id
+)AS claim_pateint_status_seq
+INNER JOIN ClaimStatusCodes AS CSC on CSC.claim_seq = claim_pateint_status_seq.claim_seq
+ORDER BY claim_id;
