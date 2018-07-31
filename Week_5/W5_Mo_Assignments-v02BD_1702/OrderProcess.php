@@ -5,21 +5,35 @@
 *	if error return an error..
 *	else return the reciept 
 */
+require_once 'MySQLWrap.php';
+session_start();
+
+$film_id= "";
+$customer_id= $_SESSION["customer_id"];
+//3 is for the staf responsible for online payments
+$staff_id = 3;
 
 if(isset($_POST['btn_submit'])){
-	if(isset($_POST['film_title'])) {
-		$film_title = $_POST['film_title'];
-		if($film_title == "" || $film_title == "error"){
+	if(isset($_POST['film_id'])) {
+		$film_id = $_POST['film_id'];
+		if($film_id == "" || $film_id == "error"){
 			echo "Please specify a film to be rented";
 		}
 	}
 
-	if(!isset($_POST['rental_date']) || !isset($_POST['return_date']) ) {
-		echo "Please specify start and return dates..";
-	}else{
-		$rental_date = $_POST['rental_date'];
-		$return_date = $_POST['return_date'];
+	echo $film_id . " ";
+	echo $customer_id . " ";
+	echo $staff_id . " ";
+
+	$newSQLWrap = new MySQLWrap();
+	$order_status = $newSQLWrap->makeRentalOrder($film_id,$customer_id,$staff_id);
+
+	if($order_status){
+		echo "inserted successfully";
+	}else {
+		echo "ERROR not inserted successfully";
 	}
+
 }
 
 

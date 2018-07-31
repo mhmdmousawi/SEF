@@ -6,13 +6,13 @@
 
 
 <?php 
-	require_once 'Database.php';
-	$conn = new Database();
-	$moviesNames = $conn->getMoviesNames();
+	require_once 'MySQLWrap.php';
+	$wrap = new MySQLWrap();
+	$moviesNames = $wrap->getMoviesNames();
 
 	session_start();
 	$_SESSION["costumer_name"]= "mhmd";
-	$_SESSION["costumer_id"]= "1";
+	$_SESSION["customer_id"]= "1";
 ?>
 <body>
 	<center>
@@ -20,22 +20,20 @@
 		<form action="OrderProcess.php" method="POST">
 
 		<p> Specify the film you want to rent: </p>
-			<select name="film_title">
+			<select name="film_id">
 				<option value="">-- Select Film --</option>
 				<?php
 						if($moviesNames == false){
 							echo "<option value=\"error\"> Error connect to DB</option>";
 						}
 						foreach ($moviesNames as $key => $value) {
-							echo "<option value=\"" . $value. "\">" . $value. "</option>";
+							echo "<option value=\"" . $key. "\">" . $value. "</option>";
 						}
 				?>
 			</select>
-			<p> Specify the rental date of your order: </p>
-			<input type="date" name="rental_date" min="2018-07-31" max="2018-12-31" required>
-			<br>
-			<p> Specify the return date of your rental: </p>
-			<input type="date" name="return_date" min="2018-07-31" max="2018-12-31" required>
+			
+			<!-- <p> Specify the return date of your rental: </p> -->
+			<!-- <input type="date" name="return_date" min="2018-07-31" max="2018-12-31" required> -->
 			<br><br>
 			<button type="submit" name="btn_submit">Order Film</button>
 
