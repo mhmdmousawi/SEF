@@ -13,16 +13,13 @@ class MySQLWrap {
 	
 	function __construct()
 	{
-		echo "MySQLWrap is created";
 		//get all credintials 
 		$connection = new Config();
-		echo "host: ".$connection->getDBHost();
 		$this->setDBHost($connection->getDBHost()); 
 		$this->setDBUser($connection->getDBUser());
 		$this->setDBPassword($connection->getDBPasword());
 		$this->setDBName($connection->getDBName());
 
-		echo "MySQLWrap is created";
 	}
 
 	function connect()
@@ -38,7 +35,6 @@ class MySQLWrap {
 			return false;
 		}
 
-		echo "Connected !!!!!!!!!!";
 		$this->setConnection($connect_db);
 		return true;
 	}
@@ -57,7 +53,6 @@ class MySQLWrap {
 		if(!$result){
 			return false;
 		}
-
 		return true;
 	}
 
@@ -81,7 +76,6 @@ class MySQLWrap {
 		}
 
 		while ($row = $result->fetch_assoc()) {
-			//array_push($names[], $row['title']);
 			$names[$row['film_id']] = $row['title'];
 		}
 		return $names;

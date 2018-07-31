@@ -11,7 +11,6 @@ class Config {
 
 	function __construct()
 	{
-		echo "Config created";
 		$this->setDBHost('127.0.0.1'); 
 		$this->setDBUser('phpuser');
 		$this->setDBPassword('la2ya7obbi');

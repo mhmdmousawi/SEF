@@ -6,12 +6,12 @@
 *	else return the reciept 
 */
 require_once 'MySQLWrap.php';
+
 session_start();
 
 $film_id= "";
 $customer_id= $_SESSION["customer_id"];
-//3 is for the staf responsible for online payments
-$staff_id = 3;
+$staff_id = 2;
 
 if(isset($_POST['btn_submit'])){
 	if(isset($_POST['film_id'])) {

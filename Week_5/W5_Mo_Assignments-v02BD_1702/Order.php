@@ -11,8 +11,7 @@
 	$moviesNames = $wrap->getMoviesNames();
 
 	session_start();
-	$_SESSION["costumer_name"]= "mhmd";
-	$_SESSION["customer_id"]= "1";
+	
 ?>
 <body>
 	<center>
