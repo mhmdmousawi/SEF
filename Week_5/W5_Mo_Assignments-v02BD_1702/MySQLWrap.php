@@ -56,7 +56,7 @@ class MySQLWrap {
 		return true;
 	}
 
-	public function getMoviesNames()
+	function getMoviesNames()
 	{
 		$names = array();
 		$query = "select distinct F.film_id,F.title ".
@@ -64,6 +64,31 @@ class MySQLWrap {
 				"inner join film as F on F.film_id = I.film_id ".
 				"where inventory_in_stock(I.inventory_id) ".
 				"limit 20; ";
+
+		if(!$this->connect()){
+			return false;
+		}
+		$result = $this->getConnection()->query($query);
+
+		//error in query
+		if(!$result){
+			return false;
+		}
+
+		while ($row = $result->fetch_assoc()) {
+			$names[$row['film_id']] = $row['title'];
+		}
+		return $names;
+	}
+
+	function getMoviesNamesRented($customer)
+	{
+		$names = array();
+		$query = "select  distinct F.film_id,F.title ".
+				"FROM inventory as I inner JOIN rental USING(inventory_id) ".
+				"inner join film as F on F.film_id = I.film_id ".
+				"WHERE  rental.return_date IS NULL ".
+				"and rental.customer_id = ".$customer." ;";
 
 		if(!$this->connect()){
 			return false;
