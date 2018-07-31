@@ -12,7 +12,8 @@ CREATE TABLE `Defendants` (
   `defendant_name` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   KEY `fk_Defendants_1_idx` (`claim_id`),
   KEY `index2` (`defendant_name`),
-  CONSTRAINT `fk_Defendants_1` FOREIGN KEY (`claim_id`) REFERENCES `Claims` (`claim_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_Defendants_1` FOREIGN KEY (`claim_id`) 
+	REFERENCES `Claims` (`claim_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /* LegalEvents Table Creation */
@@ -24,9 +25,12 @@ CREATE TABLE `LegalEvents` (
   KEY `fk_LegalEvents_2_idx` (`defendant_name`),
   KEY `fk_LegalEvents_to_claim_status_idx` (`claim_status`),
   KEY `fk_LegalEvents_to_claims` (`claim_id`),
-  CONSTRAINT `fk_LegalEvents_to_claim_status` FOREIGN KEY (`claim_status`) REFERENCES `ClaimStatusCodes` (`claim_status`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_LegalEvents_to_claims` FOREIGN KEY (`claim_id`) REFERENCES `Claims` (`claim_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_LegalEvents_to_defendants` FOREIGN KEY (`defendant_name`) REFERENCES `Defendants` (`defendant_name`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_LegalEvents_to_claim_status` FOREIGN KEY (`claim_status`) 
+	REFERENCES `ClaimStatusCodes` (`claim_status`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_LegalEvents_to_claims` FOREIGN KEY (`claim_id`) 
+	REFERENCES `Claims` (`claim_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_LegalEvents_to_defendants` FOREIGN KEY (`defendant_name`) 
+	REFERENCES `Defendants` (`defendant_name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 /* ClaimStatusCodes Table Creation */
