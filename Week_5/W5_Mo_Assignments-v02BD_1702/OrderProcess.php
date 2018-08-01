@@ -59,10 +59,10 @@ if (isset($_POST['btn_submit_login'])){
 
 	if($order_status){
 		
-		echo "<center>"
+		echo "<center>";
 		echo "<p> Rented successfully </p> <br>";
-		echo "<a href='Home.php'>Go back Home!</a>"
-		echo "</center>"
+		echo "<a href='Home.php'>Go back Home!</a>";
+		echo "</center>";
 	}else {
 
 		echo "<p> ERROR not inserted successfully </p> <br>";
@@ -80,10 +80,10 @@ if (isset($_POST['btn_submit_login'])){
 	$order_status = $newSQLWrap->makeReturnOrder($rental_id);
 
 	if($order_status){
-		echo "<center>"
+		echo "<center>";
 		echo "<p> Returned successfully </p> <br>";
 		echo "<a href='Home.php'>Go back Home!</a>";
-		echo "</center>"
+		echo "</center>";
 	}else {
 		echo "<p> ERROR!! film not returned </p> <br>";
 	}
