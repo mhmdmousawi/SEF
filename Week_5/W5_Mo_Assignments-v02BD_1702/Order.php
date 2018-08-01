@@ -6,20 +6,26 @@
 
 
 <?php 
-	require_once 'MySQLWrap.php';
-	$wrap = new MySQLWrap();
-	$moviesNames = $wrap->getMoviesNames();
 
-	session_start();
-	
+require_once 'MySQLWrap.php';
+session_start();
+
+if(!$_SESSION["customer_id"]){
+	header('Location: '.'Login.php?error=dont_try');
+}
+
+$wrap = new MySQLWrap();
+$moviesNames = $wrap->getMoviesNames();
+
 ?>
 <body>
 	<center>
-		<h2> Hello <?php echo $_SESSION["costumer_name"] ?> </h2>
-		<form action="OrderProcess.php" method="POST">
+		<h2> Hello <?php echo $_SESSION["customer_name"] ?> !!</h2>
 
-		<p> Specify the film you want to rent: </p>
-			<select name="film_id">
+		<form action="OrderProcess.php" method="POST">
+			<button type="submit" name="btn_submit_logout">Logout</button>
+			<p> Specify the film you want to rent: </p>
+			<select name="inventory_id">
 				<option value="">-- Select Film --</option>
 				<?php
 						if($moviesNames == false){
@@ -30,12 +36,9 @@
 						}
 				?>
 			</select>
-			
-			<!-- <p> Specify the return date of your rental: </p> -->
-			<!-- <input type="date" name="return_date" min="2018-07-31" max="2018-12-31" required> -->
-			<br><br>
+			<br>
+			<br>
 			<button type="submit" name="btn_submit_order">Order Film</button>
-
 		</form>
 	</center>
 </body>

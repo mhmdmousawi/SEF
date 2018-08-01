@@ -4,9 +4,12 @@
 	<title>Home</title>
 </head>
 <?php 
-	session_start();
-	$_SESSION["customer_name"]= "mhmd";
-	$_SESSION["customer_id"]= 1;
+session_start();
+
+if(!$_SESSION["customer_id"]){
+	header('Location: '.'Login.php?error=dont_try');
+}
+
 ?>
 <body>
 	<center>
@@ -14,6 +17,9 @@
 		<p>Please choose whether you want to rent a DVD or return one: </p>
 		<input type="button" value="Rent" onClick="document.location.href='Order.php'" />
 		<input type="button" value="Return" onClick="document.location.href='Return.php'" />
+		<form action="OrderProcess.php" method="POST">
+			<button type="submit" name="btn_submit_logout">Logout</button>
+		</form>
 	</center>
 </body>
 </html>

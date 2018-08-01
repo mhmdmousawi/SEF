@@ -39,6 +39,28 @@ class MySQLWrap {
 		return true;
 	}
 
+	function login($email)
+	{
+		$query = "SELECT customer_id,first_name from customer where email = '".$email."' ";
+
+		if(!$this->connect()){
+			return false;
+		}
+		$result = $this->getConnection()->query($query);
+
+		//error in query
+		if(!$result){
+			return false;
+		}
+
+		if ($row = $result->fetch_assoc()) {
+			$customer_info['customer_id']= $row['customer_id'];
+			$customer_info['first_name']= $row['first_name'];
+		}
+		return $customer_info;
+
+	}
+
 	function makeRentalOrder($inventory_id, $customer_id, $staff_id)
 	{
 		$query = "INSERT INTO rental(rental_date, inventory_id, customer_id, staff_id) ".
@@ -56,14 +78,32 @@ class MySQLWrap {
 		return true;
 	}
 
+	function makeReturnOrder($rental_id)
+	{
+		$query = "UPDATE rental ". 
+				"SET return_date = NOW() ".
+				"WHERE rental_id = ".$rental_id." ";
+
+    	if(!$this->connect()){
+			return false;
+		}
+		$result = $this->getConnection()->query($query);
+
+		//error in query
+		if(!$result){
+			return false;
+		}
+		return true;
+	}
+
 	function getMoviesNames()
 	{
 		$names = array();
-		$query = "select distinct F.film_id,F.title ".
+		$query = "select F.title, min(I.inventory_id) as inventory_id ".
 				"from inventory as I ".
 				"inner join film as F on F.film_id = I.film_id ".
 				"where inventory_in_stock(I.inventory_id) ".
-				"limit 20; ";
+				"group by F.title; ";
 
 		if(!$this->connect()){
 			return false;
@@ -76,7 +116,7 @@ class MySQLWrap {
 		}
 
 		while ($row = $result->fetch_assoc()) {
-			$names[$row['film_id']] = $row['title'];
+			$names[$row['inventory_id']] = $row['title'];
 		}
 		return $names;
 	}
@@ -84,11 +124,13 @@ class MySQLWrap {
 	function getMoviesNamesRented($customer)
 	{
 		$names = array();
-		$query = "select  distinct F.film_id,F.title ".
-				"FROM inventory as I inner JOIN rental USING(inventory_id) ".
-				"inner join film as F on F.film_id = I.film_id ".
+		$query = "select F.title , min(rental_id) as rental_id ".
+				"from rental ".
+				"left join inventory as I using(inventory_id) ".
+				"left join film as F on F.film_id = I.film_id ".
 				"WHERE  rental.return_date IS NULL ".
-				"and rental.customer_id = ".$customer." ;";
+				"and rental.customer_id = ".$customer." ".
+				"group by F.title;";
 
 		if(!$this->connect()){
 			return false;
@@ -101,7 +143,7 @@ class MySQLWrap {
 		}
 
 		while ($row = $result->fetch_assoc()) {
-			$names[$row['film_id']] = $row['title'];
+			$names[$row['rental_id']] = $row['title'];
 		}
 		return $names;
 	}
