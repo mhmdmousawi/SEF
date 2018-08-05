@@ -96,7 +96,13 @@ textarea {
     height: 712px;
     background: transparent url('../img/our_team_backg1600x712_overlay.jpg') no-repeat;
     background-size: cover;
-    border: 1px solid #000;
+    overflow: auto;
+}
+
+.container__our_works{
+    width: 100%;
+    height: 737px;
+    overflow: auto;
 }
 
 .grid960 {
@@ -381,7 +387,13 @@ textarea {
     overflow: auto;
 }
 
-.our_team__header > h2,p{
+.our_team__header > h2{
+    margin: 0;
+    padding: 0;
+    color: #FFF;
+}
+
+.our_team__header > p{
     margin: 0;
     padding: 0;
     color: #FFF;
@@ -429,6 +441,7 @@ textarea {
 }
 
 .our_team__article__member > p {
+    margin:0px;
     font-size: 13px;
     color: #b1b0ba;
     font-family:   sans-serif;
@@ -446,6 +459,7 @@ textarea {
     margin-top: 70px;
     margin-bottom: 29px;
     font-size: 12pt;
+    color: #fff;
     font-family:   Arial, sans-serif;
 }
 
@@ -457,6 +471,56 @@ textarea {
     color: #FFF;
     border: 1px solid #FFF;
 }
+
+.our_works__header{
+    width: 960px;
+    margin: 0 auto;
+    height: 156px;
+    overflow: auto;
+}
+
+.our_works__header >h2 {
+    float: left;
+    height: 16px;
+    width: 200px;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    margin-left: 10px;
+    font-family:  'Times New Roman', Times, serif;
+}
+
+.our_works__header > p {
+    margin-top:70px;
+    float: right;
+}
+
+.our_works__article{
+    width: 100%;
+    height: 400px;
+    overflow: auto;
+}
+
+.our_works__article >a > img {
+    float: left;
+    display: block;
+    width: 308px;
+    height: 200px;
+    overflow: auto;
+}
+
+.our_works__footer{
+    width: 960px;
+    height: 100%;
+    margin: 0 auto;
+    height: 180px;
+    overflow: auto;
+    text-align: center;
+}
+
+.our_works__footer > button {
+    margin-top: 70px;
+}
+
 /* ==========================================================================
    Media Queries
    ========================================================================== */
