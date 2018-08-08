@@ -6,12 +6,11 @@ window.onload = function startGame(){
             });
 
     var disk_num = 5;
-    
-    if( document.getElementById("disk_num_input").value.trim() != ''){
-        disk_num = document.getElementById("disk_num_input").value;
-    }
 
-    alert(disk_num);
+    // if( document.getElementById("disk_num_input").value){
+    //     disk_num = document.getElementById("disk_num_input").value;
+    // }
+
     var colors = ['rgb(120, 131, 182)',
                     'rgb(60, 74, 136)',
                     'rgb(38, 52, 114)',

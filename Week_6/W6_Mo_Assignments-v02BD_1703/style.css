@@ -4,12 +4,18 @@
     width: 100%;
     height: 60vh;
     float: left;
+    text-align: center;
 }
+
+.container > h2 {
+    margin-top: 20px;
+    
+}
+
 .grid1600 {
-    /* width: 1600px; */
     width: 80%;
     height: 110% ;
-    margin: 100px auto;
+    margin: 50px auto;
     overflow: auto;
 }
 
@@ -36,4 +42,30 @@
     border-radius: 10px;
 }
 
+.pole_goal > p {
+    writing-mode: vertical-rl;
+    text-orientation: mixed; 
+    position: absolute; 
+    top: 10px;
+    left:50%;
+    margin-left:-12.5px;
+}
 
+.disk{
+    width:300px;
+    height: 30px;
+    position: absolute;
+    bottom: 0px;
+    left:50%;
+    margin-left:-150px;
+    background-color: blueviolet;
+    border-radius: 20px;
+}
+
+.controller{
+    width: 100%;
+    height: 50px;
+    display: block;
+    text-align: center;
+    margin: 20px auto;
+}
