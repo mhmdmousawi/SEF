@@ -159,7 +159,7 @@ textarea {
         width: 90%;
         height: auto;
         border-right: 1.5px solid gray;
-         flex: 0 1 auto;
+        flex: 0 1 auto;
     }
     
     .content__time{
@@ -177,9 +177,10 @@ textarea {
     }
 
     .v_separator {
+        widows: 1.5px;
         height: 100%;
-        float: left;
         border-left: 1.5px solid gray;
+        flex: 0 1 auto;
     }
     
     .item__delete {
