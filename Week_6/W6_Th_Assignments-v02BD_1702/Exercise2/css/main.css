@@ -1,0 +1,344 @@
+/*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
+
+html {
+    color: #222;
+    font-size: 1em;
+    line-height: 1.4;
+}
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 1em 0;
+    padding: 0;
+}
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+    vertical-align: middle;
+}
+
+fieldset {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.browserupgrade {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+    h1 {
+        margin: 0 ;
+    }
+    h2 {
+        margin: 0 ;
+    }
+    p {
+        margin: 0 ;
+    }
+   .container{
+       width: 100%;
+       height: 100vh;
+
+    }
+   .sef_todo_list{
+        width: 500px;
+        height: auto;
+        padding: 20px;
+        margin: 0 auto;
+        margin-top: 30px;
+        /* display: block; */
+        border: 1px solid #000;
+        border-radius: 10px;
+
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+   }
+
+    .sef_todo_list__header{
+        width: 100%;
+        height: auto;
+        flex: 0 1 auto;
+    }
+    
+    .sef_todo_list__header > h1:first-child{
+        text-align: center;
+    }
+
+    .sef_todo_list__header > h1{
+        text-align: left;
+    }
+
+    .sef_todo_list__header > input{
+        width: 65%;
+        height: 20px;
+        padding: 10px;
+        font-size: 20px;
+        border: 1px solid #000;
+    }
+
+    .sef_todo_list__header > button {
+        
+        width: 27%;
+        height: 40px;
+        font-size: 20px;
+        float: right;
+        border: 1px solid #000;
+        border-radius: 10px;
+        font-weight: bold;
+    }
+
+    .sef_todo_list__header > textarea{
+        /* min-height: 40px; */
+        width: 96%;
+        margin-top: 10px;
+        padding: 2%;
+        resize: none;
+        height: 40px;
+        border: 1px solid #000;
+    }
+
+    .h_separator{
+        width: 40%;
+        margin: auto;
+        margin-top: 20px;
+        border-top: 1.5px solid gray;
+    }
+
+    .sef_todo_list__article {
+        width: 100%;
+        height: 100%;
+        flex: 0 1 auto;
+    }
+
+    .article__item{
+        flex: 0 1 auto;
+        width: 96%;
+        height: auto;
+        margin: 10px auto;
+        padding: 10px;
+        border: 1px solid #000;
+        border-radius: 10px;
+
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+    }
+
+    .item__content{
+        width: 90%;
+        height: auto;
+        border-right: 1.5px solid gray;
+         flex: 0 1 auto;
+    }
+    
+    .content__time{
+        margin-top: 8px;
+        margin-bottom: 8px;
+        color: gray;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .content__desc{
+        size: 16px;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .v_separator {
+        height: 100%;
+        float: left;
+        border-left: 1.5px solid gray;
+    }
+    
+    .item__delete {
+
+        width: 10%;
+        height: auto;
+        flex: 0 1 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+    }
+
+    .item__delete >button{
+
+        width: 30px;
+        height: 40px;
+        font-size: 18px;
+        /* margin: 0 auto; */
+        border: 1px solid #000;
+        border-radius: 5px;
+        font-weight: bold;
+
+        margin: -20px -50px; 
+        top:50%; 
+        left:50%;
+    }
+
+
+
+
+
+
+
+
+
+/* ==========================================================================
+   Media Queries
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+
+}
+
+@media print,
+       (-o-min-device-pixel-ratio: 5/4),
+       (-webkit-min-device-pixel-ratio: 1.25),
+       (min-resolution: 120dpi) {
+
+}
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+.hidden {
+    display: none !important;
+    visibility: hidden;
+}
+
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+
+.visuallyhidden.focusable:active,
+.visuallyhidden.focusable:focus {
+    clip: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    position: static;
+    width: auto;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " ";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
+
+/* ==========================================================================
+   Print styles
+   ========================================================================== */
+
+@media print {
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    a[href^="#"]:after,
+    a[href^="javascript:"]:after {
+        content: "";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}
