@@ -126,6 +126,7 @@ textarea {
         resize: none;
         height: 40px;
         border: 1px solid #000;
+        color: gray;
     }
 
     .h_separator{
@@ -184,7 +185,6 @@ textarea {
     }
     
     .item__delete {
-
         width: 10%;
         height: auto;
         flex: 0 1 auto;
@@ -195,15 +195,12 @@ textarea {
     }
 
     .item__delete >button{
-
         width: 30px;
         height: 40px;
         font-size: 18px;
-        /* margin: 0 auto; */
         border: 1px solid #000;
         border-radius: 5px;
         font-weight: bold;
-
         margin: -20px -50px; 
         top:50%; 
         left:50%;
