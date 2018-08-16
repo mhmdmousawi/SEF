@@ -3,12 +3,13 @@
 
 
 if(isset($_GET["submit"])){
-    if((isset($_GET["input_url"]) && !empty($_GET["input_url"]))){
+   if((isset($_GET["input_url"]) && !empty($_GET["input_url"]))){
         //$input_url = $_GET["input_url"];
         $input_url = "https://medium.freecodecamp.org/the-art-of-computer-programming-by-donald-knuth-82e275c8764f";
         $page_content = proxy($input_url);
-    }
+   }
 }
+
 function proxy($URL)
 {
     $json = file_get_contents($URL);
@@ -38,11 +39,14 @@ function proxy_with_header($URL){
 }
 
 ?>
-
+<script src="js/main.js"></script>
 <script type="text/javascript">
-
-    var page_content = <?php echo $page_content ?>;
+    
+    window.addEventListener("load", function() {
+        var content = <?php echo proxy("https://medium.freecodecamp.org/the-art-of-computer-programming-by-donald-knuth-82e275c8764f") ?> ;
+        
+        var app = Object.create(APP);
+        app.init(content);
+    });
 
 </script>
-
-<script src="js/main.js"></script>
