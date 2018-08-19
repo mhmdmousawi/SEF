@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('/', "PagesController@index");
+Route::get('/posts', "PagesController@posts");
+Route::get('/posting', "PagesController@index");
+
+Route::get('/post/{id}', function ($id) {
+    //return view('');
+    return "This is post ". $id;
 });
+
