@@ -8,7 +8,7 @@
         {{$post->body}}
     </div>
     <hr>
-    <small>Written on {{$post->created_at}} by {{$post->user}}</small>
+    <small>Written on {{$post->created_at}} by{{$post->user}}</small>
     <hr>
     
 @endsection
