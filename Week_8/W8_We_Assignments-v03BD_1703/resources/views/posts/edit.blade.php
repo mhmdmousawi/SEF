@@ -14,7 +14,7 @@
             {{Form::textarea('body', $post->body, [ 'class' => 'form-control', 'placeholder' => 'Body Text'])}}
         </div>
         {{Form::hidden('_method',"PUT")}}
-        {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+        {{Form::submit('Edit Post', ['class'=>'btn btn-primary'])}}
     {!! Form::close() !!}
        
     

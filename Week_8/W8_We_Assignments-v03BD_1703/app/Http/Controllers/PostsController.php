@@ -18,7 +18,7 @@ class PostsController extends Controller
         //
         //$posts = Post::all();
         //$posts = DB::select("SELECT * from posts");
-        $posts = Post::orderBy('created_at','desc')->paginate(1);
+        $posts = Post::orderBy('created_at','desc')->paginate(6);
         return view('posts.index')->with('posts',$posts);
     }
 
@@ -94,7 +94,7 @@ class PostsController extends Controller
         ]);
 
         // Create Post
-        $post = new Post;
+        $post = Post::find($id);
         $post->user = 'Anonymous';
         $post->title = $request->input('title');
         $post->body = $request->input('body');
@@ -111,6 +111,8 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::find($id);
+        $post->delete();
+        return redirect('/posts')->with('success', 'Post Deleted');
     }
 }
