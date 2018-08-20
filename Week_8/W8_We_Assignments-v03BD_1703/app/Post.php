@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    //Table name
+    // //Table name
     // public $table = "posts";
 
     // //primary key

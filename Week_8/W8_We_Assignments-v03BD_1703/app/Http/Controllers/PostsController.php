@@ -42,13 +42,12 @@ class PostsController extends Controller
     {
         $this->validate($request, [
             'title' => 'required',
-            'body' => 'required',
-            'cover_image' => 'image|nullable|max:1999'
+            'body' => 'required'
         ]);
 
         // Create Post
         $post = new Post;
-        $post->user = ('Anonymous');
+        $post->user = 'Anonymous';
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->save();
@@ -89,7 +88,19 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        // Create Post
+        $post = new Post;
+        $post->user = 'Anonymous';
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->save();
+
+        return redirect('/posts')->with('success', 'Post Edited');
     }
 
     /**
