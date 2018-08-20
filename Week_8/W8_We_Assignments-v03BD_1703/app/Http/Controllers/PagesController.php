@@ -7,13 +7,18 @@ use Illuminate\Http\Request;
 class PagesController extends Controller
 {
     //
-    public function index() 
+    public function home() 
     {
         return view('pages.home');
     }
 
-    public function posts() 
+    public function about() 
     {
-        return view('pages.posts');
+        return view('pages.about');
+    }
+
+    public function login() 
+    {
+        return view('pages.login');
     }
 }

@@ -15,12 +15,8 @@
 //     return view('welcome');
 // });
 
-Route::get('/', "PagesController@index");
-Route::get('/posts', "PagesController@posts");
-Route::get('/posting', "PagesController@index");
+Route::get('/', "PagesController@home");
+Route::get('/home', "PagesController@home");
 
-Route::get('/post/{id}', function ($id) {
-    //return view('');
-    return "This is post ". $id;
-});
+Route::resource('posts','PostsController');
 
