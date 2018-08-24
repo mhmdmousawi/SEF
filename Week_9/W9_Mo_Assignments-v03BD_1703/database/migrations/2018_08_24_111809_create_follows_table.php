@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePicturesTable extends Migration
+class CreateFollowsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreatePicturesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pictures', function (Blueprint $table) {
+        Schema::create('follows', function (Blueprint $table) {
             $table->increments('id');
-            $table->Integer("user_id")->unsigned();
-            $table->string("URL");
+            $table->Integer("user_id_following")->unsigned();
+            $table->Integer("user_id_followed")->unsigned();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreatePicturesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pictures');
+        Schema::dropIfExists('follows');
     }
 }
