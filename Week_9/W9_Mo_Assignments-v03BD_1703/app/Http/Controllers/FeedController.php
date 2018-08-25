@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Picture;
 
-class HomeController extends Controller
+class FeedController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -23,7 +24,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $posts = [];
-        return view('home')->with('posts',$posts);
+        $posts = Picture::all();
+        // return $posts;
+        return view('feed')->with('posts',$posts);
     }
 }

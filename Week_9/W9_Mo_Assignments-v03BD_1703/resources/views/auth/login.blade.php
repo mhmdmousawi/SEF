@@ -61,7 +61,9 @@
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             </div>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </div>
+
                     </form>
                 </div>
             </div>
