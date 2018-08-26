@@ -29,6 +29,6 @@ Route::get('/profile', 'ProfileController@index');
 Route::get('/feed', 'FeedController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/uploadPost', 'UploadPictureController@index');
+Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
 
 

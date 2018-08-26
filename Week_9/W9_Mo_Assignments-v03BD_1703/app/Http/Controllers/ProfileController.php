@@ -12,17 +12,18 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        $user = Auth::user();
-        $picture = DB::select("SELECT * from pictures where user_id = $user->id limit 1");
         
-        // return $picture.child->URL;
-            
-        //$picture = "default.png";
+        $user = Auth::user();
+        $pictures = DB::select("SELECT * from pictures where user_id = $user->id limit 1");
+        
+        foreach($pictures as $picture){
+            $profile_pic = $picture;
+        }
         
 
         return view("profile",array(
             'user' => $user,
-            'picture' => $profilePic
+            'profile_pic' => $profile_pic
         ));
     }
 }

@@ -7,33 +7,23 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Image;
 
 class UploadPictureController extends Controller
 {
-    public function index(Request $request)
+    public function profile_picture(Request $request)
     {
-        //upload picture
+        //sudo apt-get install php7.2-gd
 
-
-        //test 
-        //return $request["picture"];
-        //$posts = Picture::all();
-        // return $posts;
-        //return view('feed')->with('posts',$posts);
-
+        if($request->hasFile("profile_pic")){
+            $profile_pic = $request->file('profile_pic');
+            $file_name = $profile_pic->getClientOriginalName() ;//. $profile_pic->getClientOriginalExtension();
         
-        $file = $request->file('picture');
-        
-        //$filename = $request['first_name'] . '-' . $user->id . '.jpg';
-        //$old_filename = $old_name . '-' . $user->id . '.jpg';
-        //$update = false;
-
-        if ($file) {
-            return "fe soora";
-            Storage::disk('local')->put("picture1.jpg", File::get($file));
+            Image::make($profile_pic)
+                        ->resize(300,300)
+                        ->save( public_path('/uploads/users/'. $file_name ) );
         }
-        return "nooop";
-        
-        //return redirect()->route('\feed');
+
+        return redirect('/profile');
     }
 }
