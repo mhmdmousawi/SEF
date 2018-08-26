@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Image;
 //sudo apt-get install php7.2-gd
 use Auth;
@@ -14,10 +15,14 @@ use App\Post;
 
 class UploadPictureController extends Controller
 {
-    
+
     public function profile_picture(Request $request)
     {
 
+        $this->validate($request,[
+            'profile_pic' =>'required|image|mimes:jpg,jpeg,png'
+        ]);
+        
         if($request->hasFile("profile_pic")){
 
             $user = Auth::user();
@@ -47,6 +52,9 @@ class UploadPictureController extends Controller
 
     public function post_picture(Request $request)
     {
+        $this->validate($request,[
+            'post_pic' =>'required|image|mimes:jpg,jpeg,png'
+        ]);
 
         if($request->hasFile("post_pic")){
 

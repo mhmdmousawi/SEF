@@ -19,12 +19,13 @@ Route::get('/', function () {
 
 Auth::routes();
 
+//works fine
 Route::get('/profile', 'ProfileController@index');
 
 
 Route::get('/feed', 'FeedController@index');
 Route::get('/home', 'HomeController@index')->name('home');
 
+//work fine
 Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
-
 Route::post('/uploadPostPicture', 'UploadPictureController@post_picture');

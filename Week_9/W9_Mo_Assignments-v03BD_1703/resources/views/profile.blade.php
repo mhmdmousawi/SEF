@@ -11,6 +11,11 @@
             <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadProfilePicture" method="POST">
                 <lable>Update Proflile Picture</lable>
                 <input type="file" name="profile_pic">
+                @if ($errors->has('profile_pic'))
+                    <span role="alert">
+                        <strong>{{ $errors->first('profile_pic') }}</strong>
+                    </span>
+                @endif
                 <input type= "hidden" name="_token" value="{{ csrf_token()}}">
                 <input type="submit" class="btn btn-sm btn-primary" value="Update Profile Picture">
             </form>
@@ -18,6 +23,11 @@
             <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadPostPicture" method="POST">
                 <lable>Update Proflile Picture</lable>
                 <input type="file" name="post_pic">
+                @if ($errors->has('post_pic'))
+                    <span role="alert">
+                        <strong>{{ $errors->first('post_pic') }}</strong>
+                    </span>
+                @endif
                 <input type= "hidden" name="_token" value="{{ csrf_token()}}">
                 <input type="submit" class="btn btn-sm btn-primary" value="Add Post Picture">
             </form>
