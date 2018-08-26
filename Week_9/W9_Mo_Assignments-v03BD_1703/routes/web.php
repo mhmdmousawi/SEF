@@ -10,16 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-//return redirect('/home');
+
 
 Route::get('/', function () {   
     return view('welcome');
 });
 
-// Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function()
-// {
-//     Route::get('/home', 'HomeController@index')->name('home');
-// });
 
 Auth::routes();
 
@@ -31,4 +27,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
 
-
+Route::post('/uploadPostPicture', 'UploadPictureController@post_picture');
