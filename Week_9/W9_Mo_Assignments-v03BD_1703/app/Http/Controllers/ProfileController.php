@@ -7,8 +7,12 @@ use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 //use App\Http\Request;
 use Auth;
+use App\User;
 use App\Picture;
 use App\Post;
+use App\Like;
+use App\Comment;
+use App\Follow;
 use DB;
 
 class ProfileController extends Controller
@@ -24,6 +28,13 @@ class ProfileController extends Controller
         //add condition on deleted posts later
         $posts = Post::where('user_id',$user->id)->get();
 
+        //link user info
+        $user_followers = Follow::where('user_id_followed',$user->id)->get();
+        $user_following = Follow::where('user_id_following',$user->id)->get();
+        $user->followers = $user_followers;
+        $user->following =  $user_following;
+        
+
         //assign defauls img if there is no profile pic
         if($ppicture){
             $profile_pic = $ppicture;
@@ -33,18 +44,44 @@ class ProfileController extends Controller
             $profile_pic->source = "default.png";
         }
 
-        //link pictures to posts
+        //link profile_pic to ther user
+        $user->profile_pic = $profile_pic;
+
+        //get all info needed of posts
         if(count($posts)>0){
             foreach($posts as $post){
+                
+                //get picture of the post
                 $post_pic = Picture::where('id',$post->picture_id )->get()->first();
                 $post->pic = $post_pic;
+
+                //get likes of the post
+                $post_likes = Like::where('post_id',$post->id)->get();
+
+                //get like user's username
+                foreach($post_likes as $like){
+                    $user_liking = User::where('id',$like->user_liking_id)->get()->first();
+                    $like->username  = $user_liking->username;
+                }
+                $post->likes = $post_likes;
+
+                //get comments of the post
+                $post_comments = Comment::where('post_id',$post->id)->get();
+                
+                //get commenting user's username
+                foreach($post_comments as $comment){
+                    $user_commenting = User::where('id',$comment->user_commenting_id)->get()->first();
+                    $comment->username  = $user_commenting->username;
+                }
+                $post->comments = $post_comments;
             }
         }
+
+        //link posts to user
+        $user->posts = $posts;
         
         return view("profile",array(
-            'user' => $user,
-            'profile_pic' => $profile_pic,
-            'posts' => $posts
+            'user' => $user
         ));
     }
 }
