@@ -22,6 +22,9 @@ Auth::routes();
 //works fine
 Route::get('/profile', 'ProfileController@index');
 
+//test
+Route::get('/profile/{user_id}', 'ProfileController@index');
+
 
 Route::get('/feed', 'FeedController@index');
 Route::get('/home', 'HomeController@index')->name('home');

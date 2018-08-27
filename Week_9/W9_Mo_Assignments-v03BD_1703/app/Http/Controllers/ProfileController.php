@@ -17,9 +17,16 @@ use DB;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function index($user_id)
     {
-        $user = Auth::user();
+        $user_logged_in = Auth::user();
+        $user = User::where('id',$user_id)->get()->first();
+        
+        $is_follower = DB::table('follows')
+                            ->where('user_id_following',$user_logged_in->id)
+                            ->where('user_id_followed',$user->id)
+                            ->exists();
+
         $ppicture = Picture::where('user_id',$user->id )
                             ->where('URL', 'like','profile_picture%')
                             ->orderBy('created_at', 'desc')
@@ -33,6 +40,7 @@ class ProfileController extends Controller
         $user_following = Follow::where('user_id_following',$user->id)->get();
         $user->followers = $user_followers;
         $user->following =  $user_following;
+        $user->visible = false;
         
 
         //assign defauls img if there is no profile pic
@@ -47,38 +55,47 @@ class ProfileController extends Controller
         //link profile_pic to ther user
         $user->profile_pic = $profile_pic;
 
-        //get all info needed of posts
-        if(count($posts)>0){
-            foreach($posts as $post){
-                
-                //get picture of the post
-                $post_pic = Picture::where('id',$post->picture_id )->get()->first();
-                $post->pic = $post_pic;
+        //show full access if ..
+        if( $user == $user_logged_in || $user->private == false || $is_follower ){
+            
+            $user->visible = true;
 
-                //get likes of the post
-                $post_likes = Like::where('post_id',$post->id)->get();
+            //get all info needed of posts
+            if(count($posts)>0){
+                foreach($posts as $post){
+                    
+                    //get picture of the post
+                    $post_pic = Picture::where('id',$post->picture_id )->get()->first();
+                    $post->pic = $post_pic;
 
-                //get like user's username
-                foreach($post_likes as $like){
-                    $user_liking = User::where('id',$like->user_liking_id)->get()->first();
-                    $like->username  = $user_liking->username;
+                    //get likes of the post
+                    $post_likes = Like::where('post_id',$post->id)->get();
+
+                    //get like user's username
+                    foreach($post_likes as $like){
+                        $user_liking = User::where('id',$like->user_liking_id)->get()->first();
+                        $like->username  = $user_liking->username;
+                    }
+                    $post->likes = $post_likes;
+
+                    //get comments of the post
+                    $post_comments = Comment::where('post_id',$post->id)->get();
+                    
+                    //get commenting user's username
+                    foreach($post_comments as $comment){
+                        $user_commenting = User::where('id',$comment->user_commenting_id)->get()->first();
+                        $comment->username  = $user_commenting->username;
+                    }
+                    $post->comments = $post_comments;
                 }
-                $post->likes = $post_likes;
-
-                //get comments of the post
-                $post_comments = Comment::where('post_id',$post->id)->get();
-                
-                //get commenting user's username
-                foreach($post_comments as $comment){
-                    $user_commenting = User::where('id',$comment->user_commenting_id)->get()->first();
-                    $comment->username  = $user_commenting->username;
-                }
-                $post->comments = $post_comments;
             }
+            
+            
         }
 
         //link posts to user
         $user->posts = $posts;
+        
         
         return view("profile",array(
             'user' => $user

@@ -6,7 +6,7 @@
         
         {{-- FOR PROFILE DISPLAY --}}
         <div class="col-md-8">
-            <img value="{{$user->profile_pic_source}}" src="uploads/users/{{$user->profile_pic->source}}"/>
+            <img value="{{$user->profile_pic_source}}" src="{{config('app.url')}}/uploads/users/{{$user->profile_pic->source}}"/>
             <h2>Profile username: {{$user->username}}</h2>
             <h2>Post Num: {{$user->posts->count()}}</h2>
             <h2>Followers Num: {{$user->followers->count()}}</h2>
@@ -38,17 +38,21 @@
 
         {{-- FOR POSTS DISPLAY --}}
         <div class="col-md-8 posts_container">
-            @foreach($user->posts as $post)
-                <div class="post one">
-                    <h2>{{$user->username}}</h2>
-                    <p>likes: {{$post->likes->count()}}</p>
-                    <p>comments: {{$post->comments->count()}}</p>
-                    @foreach($post->comments as $comment)
-                        <p>{{$comment->username}}: {{$comment->content}}</p>
-                    @endforeach
-                    <img value="{{$post->pic->URL}}" src="uploads/users/{{$user->id}}/posts/{{$post->pic->URL}}"/>
-                </div>
-            @endforeach
+            @if($user->visible)
+                @foreach($user->posts as $post)
+                    <div class="post one">
+                        <h2>{{$user->username}}</h2>
+                        <p>likes: {{$post->likes->count()}}</p>
+                        <p>comments: {{$post->comments->count()}}</p>
+                        @foreach($post->comments as $comment)
+                            <p>{{$comment->username}}: {{$comment->content}}</p>
+                        @endforeach
+                        <img value="{{$post->pic->URL}}" src="{{config('app.url')}}/uploads/users/{{$user->id}}/posts/{{$post->pic->URL}}"/>
+                    </div>
+                @endforeach
+            @else
+                    <p>No Posts to display</p>
+            @endif
         </div>
     </div>
 </div>
