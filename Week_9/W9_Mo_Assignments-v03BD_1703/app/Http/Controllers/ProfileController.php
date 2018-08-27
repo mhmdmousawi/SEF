@@ -50,7 +50,7 @@ class ProfileController extends Controller
         $ppicture = Picture::where('id',$user->profile_picture_id)->get()->first();
 
         //add condition on deleted posts later
-        $posts = Post::where('user_id',$user->id)->get();
+        $posts = Post::where('user_id',$user->id)->orderBy("created_at","DESC")->get();
 
         //link user info
         $user_followers = Follow::where('user_id_followed',$user->id)->get();
