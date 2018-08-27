@@ -45,6 +45,9 @@ class UploadPictureController extends Controller
             $picture->URL = $file_name;
             $picture->save();
 
+            $user->profile_picture_id = $picture->id;
+            $user->save();
+
         }
 
         return redirect('/profile');

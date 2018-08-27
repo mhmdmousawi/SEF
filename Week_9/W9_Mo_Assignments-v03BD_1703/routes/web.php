@@ -20,10 +20,8 @@ Route::get('/', function () {
 Auth::routes();
 
 //works fine
-Route::get('/profile', 'ProfileController@index');
-
-//test
-Route::get('/profile/{user_id}', 'ProfileController@index');
+Route::get('/profile', 'ProfileController@profile');
+Route::get('/profile/{user_id}', 'ProfileController@profile_with_id');
 
 
 Route::get('/feed', 'FeedController@index');
@@ -32,3 +30,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 //work fine
 Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
 Route::post('/uploadPostPicture', 'UploadPictureController@post_picture');
+
+//test
+Route::post('/follow/{user_id}', 'FollowController@follow');
+Route::post('/unfollow/{user_id}', 'FollowController@unfollow');

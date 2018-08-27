@@ -11,29 +11,44 @@
             <h2>Post Num: {{$user->posts->count()}}</h2>
             <h2>Followers Num: {{$user->followers->count()}}</h2>
             <h2>Following Num: {{$user->following->count()}}</h2>
-            <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadProfilePicture" method="POST">
-                <lable>Update Proflile Picture</lable>
-                <input type="file" name="profile_pic">
-                @if ($errors->has('profile_pic'))
-                    <span role="alert">
-                        <strong>{{ $errors->first('profile_pic') }}</strong>
-                    </span>
+            @if($user->is_profile)
+                <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadProfilePicture" method="POST">
+                    <lable>Update Proflile Picture</lable>
+                    <input type="file" name="profile_pic">
+                    @if ($errors->has('profile_pic'))
+                        <span role="alert">
+                            <strong>{{ $errors->first('profile_pic') }}</strong>
+                        </span>
+                    @endif
+                    <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                    <input type="submit" class="btn btn-sm btn-primary" value="Update Profile Picture">
+                </form>
+                <br>
+                <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadPostPicture" method="POST">
+                    <lable>Update Post Picture</lable>
+                    <input type="file" name="post_pic">
+                    @if ($errors->has('post_pic'))
+                        <span role="alert">
+                            <strong>{{ $errors->first('post_pic') }}</strong>
+                        </span>
+                    @endif
+                    <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                    <input type="submit" class="btn btn-sm btn-primary" value="Add Post Picture">
+                </form>
+            @else
+                @if($user->is_follower)
+                    <form enctype="multipart/form-data" action="{{config('app.url')}}/unfollow/{{$user->id}}" method="POST">
+                        <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                        <input type="submit" class="btn btn-sm btn-primary" value="Unfollow">
+                    </form>
+                @else
+                    <form enctype="multipart/form-data" action="{{config('app.url')}}/follow/{{$user->id}}" method="POST">
+                        <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                        <input type="submit" class="btn btn-sm btn-primary" value="Follow">
+                    </form>
                 @endif
-                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                <input type="submit" class="btn btn-sm btn-primary" value="Update Profile Picture">
-            </form>
-            <br>
-            <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadPostPicture" method="POST">
-                <lable>Update Post Picture</lable>
-                <input type="file" name="post_pic">
-                @if ($errors->has('post_pic'))
-                    <span role="alert">
-                        <strong>{{ $errors->first('post_pic') }}</strong>
-                    </span>
-                @endif
-                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                <input type="submit" class="btn btn-sm btn-primary" value="Add Post Picture">
-            </form>
+            @endif
+            
         </div>
 
         {{-- FOR POSTS DISPLAY --}}
@@ -51,7 +66,7 @@
                     </div>
                 @endforeach
             @else
-                    <p>No Posts to display</p>
+                <p>No Posts to display</p>
             @endif
         </div>
     </div>

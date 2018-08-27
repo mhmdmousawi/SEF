@@ -17,21 +17,38 @@ use DB;
 
 class ProfileController extends Controller
 {
-    public function index($user_id)
+    public function profile()
     {
+        $user = Auth::user();
+        return $this->profile_with_id($user->id);
+    }
+
+    public function profile_with_id($user_id)
+    {
+       
         $user_logged_in = Auth::user();
-        $user = User::where('id',$user_id)->get()->first();
+        $user_profile = User::where('id',$user_id)->get()->first();
+        $user = clone $user_profile;
         
         $is_follower = DB::table('follows')
                             ->where('user_id_following',$user_logged_in->id)
                             ->where('user_id_followed',$user->id)
                             ->exists();
 
-        $ppicture = Picture::where('user_id',$user->id )
-                            ->where('URL', 'like','profile_picture%')
-                            ->orderBy('created_at', 'desc')
-                            ->get()
-                            ->first();
+        if($is_follower){
+            $user->is_follower = true;
+        }else{
+            $user->is_follower = false;
+        }
+
+        if( $user_profile == $user_logged_in){
+            $user->is_profile=true;
+        }else{
+            $user->is_profile=false;
+        }
+
+        $ppicture = Picture::where('id',$user->profile_picture_id)->get()->first();
+
         //add condition on deleted posts later
         $posts = Post::where('user_id',$user->id)->get();
 
@@ -56,7 +73,7 @@ class ProfileController extends Controller
         $user->profile_pic = $profile_pic;
 
         //show full access if ..
-        if( $user == $user_logged_in || $user->private == false || $is_follower ){
+        if( $user_profile == $user_logged_in || $user->private == false || $is_follower ){
             
             $user->visible = true;
 
@@ -89,14 +106,12 @@ class ProfileController extends Controller
                     $post->comments = $post_comments;
                 }
             }
-            
-            
         }
 
         //link posts to user
         $user->posts = $posts;
         
-        
+        // return $user;
         return view("profile",array(
             'user' => $user
         ));
