@@ -5,9 +5,17 @@
     <div class="row justify-content-center">
         {{-- FOR POSTS DISPLAY --}}
         <div class="col-md-8 posts_container">
+                <style>
+                        .liked{
+                            background-color: red;
+                        }
+                        .not_liked{
+                            background-color: gray;
+                        }
+                    </style>
             @foreach($posts as $post)
                 <div class="post one">
-                    <h2>{{$post->user->username}}</h2>
+                    <a href ='{{config('app.url')}}/profile/{{$post->user->id}}' >{{$post->user->username}}</a>
                     <p>likes: {{$post->likes->count()}}</p>
                     <p>comments: {{$post->comments->count()}}</p>
                     @foreach($post->comments as $comment)
@@ -16,19 +24,18 @@
                     <img value="{{$post->pic->URL}}" src="{{config('app.url')}}/uploads/users/{{$post->user->id}}/posts/{{$post->pic->URL}}"/>
                     {{-- FOR LIKING POST --}}
                     @if(!$post->liked)
-                        <form enctype="multipart/form-data" action="{{config('app.url')}}/like/{{$post->id}}" method="POST">
+
                             <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                            <input type="submit" class="btn btn-sm btn-primary" value="Like">
-                        </form>
+                            <button class="btn-like not_liked" data-btn_type= "like_btn" data-post_id= "{{$post->id}}" >Like</button>
                     @else
-                        <form enctype="multipart/form-data" action="{{config('app.url')}}/unlike/{{$post->id}}" method="POST">
                             <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                            <input type="submit" class="btn btn-sm btn-primary" value="Unlike">
-                        </form>
+                            <button class="btn-like liked" data-btn_type= "like_btn" data-post_id= "{{$post->id}}" >Unlike</button>
                     @endif
                 </div>
             @endforeach
         </div>
     </div>
 </div>
+
+<script src="js/like-button.js"></script>
 @endsection

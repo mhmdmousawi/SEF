@@ -56,7 +56,7 @@
             @if($user->visible)
                 @foreach($user->posts as $post)
                     <div class="post one">
-                        <h2>{{$user->username}}</h2>
+                        <a href ='{{config('app.url')}}/profile/{{$post->user->id}}' >{{$post->user->username}}</a>
                         <p>likes: {{$post->likes->count()}}</p>
                         <p>comments: {{$post->comments->count()}}</p>
                         @foreach($post->comments as $comment)
@@ -65,15 +65,12 @@
                         <img value="{{$post->pic->URL}}" src="{{config('app.url')}}/uploads/users/{{$user->id}}/posts/{{$post->pic->URL}}"/>
                         {{-- FOR LIKING POST --}}
                         @if(!$post->liked)
-                            <form enctype="multipart/form-data" action="{{config('app.url')}}/like/{{$post->id}}" method="POST">
-                                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                                <input type="submit" class="btn btn-sm btn-primary" value="Like">
-                            </form>
+
+                            <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                            <button class="btn-like not_liked" data-btn_type= "like_btn" data-post_id= "{{$post->id}}" >Like</button>
                         @else
-                            <form enctype="multipart/form-data" action="{{config('app.url')}}/unlike/{{$post->id}}" method="POST">
-                                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                                <input type="submit" class="btn btn-sm btn-primary" value="Unlike">
-                            </form>
+                            <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                            <button class="btn-like liked" data-btn_type= "like_btn" data-post_id= "{{$post->id}}" >Unlike</button>
                         @endif
                     </div>
                 @endforeach
@@ -83,4 +80,6 @@
         </div>
     </div>
 </div>
+
+<script src="js/like-button.js"></script>
 @endsection

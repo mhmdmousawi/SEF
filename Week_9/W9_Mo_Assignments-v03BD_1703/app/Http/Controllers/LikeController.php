@@ -5,7 +5,7 @@ use Auth;
 use App\Like;
 
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 class LikeController extends Controller
 {
@@ -17,7 +17,8 @@ class LikeController extends Controller
         $like->user_liking_id = $user_liking->id;
         $like->save();
 
-        return redirect()->back();
+        Log::info('test 1 is ok');
+        // return redirect()->back();
     }
 
     public function unlike($post_id){
@@ -28,8 +29,5 @@ class LikeController extends Controller
                         ->get()
                         ->first()
                         ->delete();
-
-        return redirect()->back();
-        
     }
 }

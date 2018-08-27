@@ -39,7 +39,6 @@ class FeedController extends Controller
         }
         $users_ids[$i] = $user->id;
 
-
         $posts = Post::whereIn('user_id',$users_ids)
                             ->orderBy('created_at',"DESC")
                             ->get();

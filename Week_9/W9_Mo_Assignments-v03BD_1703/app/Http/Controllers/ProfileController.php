@@ -84,6 +84,10 @@ class ProfileController extends Controller
                     //by default post is not liked
                     $post->liked = false;
 
+                    //get user of this post
+                    $post_user = User::where('id',$post->user_id)->get()->first();
+                    $post->user = $post_user;
+                    
                     //get picture of the post
                     $post_pic = Picture::where('id',$post->picture_id )->get()->first();
                     $post->pic = $post_pic;
