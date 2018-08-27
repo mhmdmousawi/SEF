@@ -1,20 +1,34 @@
 @extends('layouts.app')
 
 @section('content')
-    @if(count($posts)>0)
-    <div class="row">
-        @foreach($posts as $post)
-            <div class="col-md-4">
-                <h3>{{$post->title}}</h3>
-                <p>{{$post->body}}</small>
-                <img alt= "insta pic" src="{{$post->URL}}"/>
-                <p><a class="btn btn-secondary" href="/Week_8/W8_We_Assignments-v03BD_1703/public/posts/{{$post->id}}" role="button">View details &raquo;</a></p>
-            </div>
-        @endforeach
+<div class="container">
+    <div class="row justify-content-center">
+        {{-- FOR POSTS DISPLAY --}}
+        <div class="col-md-8 posts_container">
+            @foreach($posts as $post)
+                <div class="post one">
+                    <h2>{{$post->user->username}}</h2>
+                    <p>likes: {{$post->likes->count()}}</p>
+                    <p>comments: {{$post->comments->count()}}</p>
+                    @foreach($post->comments as $comment)
+                        <p>{{$comment->username}}: {{$comment->content}}</p>
+                    @endforeach
+                    <img value="{{$post->pic->URL}}" src="{{config('app.url')}}/uploads/users/{{$post->user->id}}/posts/{{$post->pic->URL}}"/>
+                    {{-- FOR LIKING POST --}}
+                    @if(!$post->liked)
+                        <form enctype="multipart/form-data" action="{{config('app.url')}}/like/{{$post->id}}" method="POST">
+                            <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                            <input type="submit" class="btn btn-sm btn-primary" value="Like">
+                        </form>
+                    @else
+                        <form enctype="multipart/form-data" action="{{config('app.url')}}/unlike/{{$post->id}}" method="POST">
+                            <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                            <input type="submit" class="btn btn-sm btn-primary" value="Unlike">
+                        </form>
+                    @endif
+                </div>
+            @endforeach
+        </div>
     </div>
-    <hr>
-    {{-- {{$posts->links()}} --}}
-    @else
-        <p>No posts Found</p>
-    @endif
+</div>
 @endsection
