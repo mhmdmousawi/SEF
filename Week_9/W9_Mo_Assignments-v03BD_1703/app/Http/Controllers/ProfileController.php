@@ -81,6 +81,9 @@ class ProfileController extends Controller
             if(count($posts)>0){
                 foreach($posts as $post){
                     
+                    //by default post is not liked
+                    $post->liked = false;
+
                     //get picture of the post
                     $post_pic = Picture::where('id',$post->picture_id )->get()->first();
                     $post->pic = $post_pic;
@@ -90,9 +93,19 @@ class ProfileController extends Controller
 
                     //get like user's username
                     foreach($post_likes as $like){
-                        $user_liking = User::where('id',$like->user_liking_id)->get()->first();
-                        $like->username  = $user_liking->username;
+                        $users_liking = User::where('id',$like->user_liking_id)->get();
+
+                        foreach($users_liking as $user_liking){
+                            $like->user_id = $user_liking->id;
+                            $like->username = $user_liking->username;
+
+                            //check if user has liked that post
+                            if($like->user_id == $user->id){
+                                $post->liked = true;
+                            }
+                        }
                     }
+
                     $post->likes = $post_likes;
 
                     //get comments of the post
@@ -107,7 +120,6 @@ class ProfileController extends Controller
                 }
             }
         }
-
         //link posts to user
         $user->posts = $posts;
         

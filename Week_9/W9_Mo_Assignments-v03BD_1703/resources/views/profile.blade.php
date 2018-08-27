@@ -63,6 +63,18 @@
                             <p>{{$comment->username}}: {{$comment->content}}</p>
                         @endforeach
                         <img value="{{$post->pic->URL}}" src="{{config('app.url')}}/uploads/users/{{$user->id}}/posts/{{$post->pic->URL}}"/>
+                        {{-- FOR LIKING POST --}}
+                        @if(!$post->liked)
+                            <form enctype="multipart/form-data" action="{{config('app.url')}}/like/{{$post->id}}" method="POST">
+                                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                                <input type="submit" class="btn btn-sm btn-primary" value="Like">
+                            </form>
+                        @else
+                            <form enctype="multipart/form-data" action="{{config('app.url')}}/unlike/{{$post->id}}" method="POST">
+                                <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+                                <input type="submit" class="btn btn-sm btn-primary" value="Unlike">
+                            </form>
+                        @endif
                     </div>
                 @endforeach
             @else
