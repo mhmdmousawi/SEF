@@ -17,8 +17,9 @@ class LikeController extends Controller
         $like->user_liking_id = $user_liking->id;
         $like->save();
 
-        Log::info('test 1 is ok');
-        // return redirect()->back();
+        $likes = Like::where('post_id',$post_id)->get();
+
+        return $likes ;
     }
 
     public function unlike($post_id){
@@ -29,5 +30,8 @@ class LikeController extends Controller
                         ->get()
                         ->first()
                         ->delete();
+
+        $likes = Like::where('post_id',$post_id)->get();
+        return $likes;
     }
 }

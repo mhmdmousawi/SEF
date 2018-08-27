@@ -36,3 +36,6 @@ Route::post('/unfollow/{user_id}', 'FollowController@unfollow');
 //works fine
 Route::post('/like/{post_id}', 'LikeController@like');
 Route::post('/unlike/{post_id}', 'LikeController@unlike');
+
+//test
+Route::get('/addPost', 'PostController@addPost');

@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -36,6 +37,9 @@
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{ config('app.url') }}/profile">{{ __('Profile') }}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ config('app.url') }}/addPost">{{ __('Add Post') }}</a>
                         </li>
                     </ul>
 
@@ -72,10 +76,10 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
     </div>
+    
 </body>
 </html>

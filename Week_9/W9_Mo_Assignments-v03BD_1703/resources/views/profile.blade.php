@@ -24,17 +24,7 @@
                     <input type="submit" class="btn btn-sm btn-primary" value="Update Profile Picture">
                 </form>
                 <br>
-                <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadPostPicture" method="POST">
-                    <lable>Update Post Picture</lable>
-                    <input type="file" name="post_pic">
-                    @if ($errors->has('post_pic'))
-                        <span role="alert">
-                            <strong>{{ $errors->first('post_pic') }}</strong>
-                        </span>
-                    @endif
-                    <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                    <input type="submit" class="btn btn-sm btn-primary" value="Add Post Picture">
-                </form>
+                
             @else
                 @if($user->is_follower)
                     <form enctype="multipart/form-data" action="{{config('app.url')}}/unfollow/{{$user->id}}" method="POST">
@@ -57,7 +47,7 @@
                 @foreach($user->posts as $post)
                     <div class="post one">
                         <a href ='{{config('app.url')}}/profile/{{$post->user->id}}' >{{$post->user->username}}</a>
-                        <p>likes: {{$post->likes->count()}}</p>
+                        <p id="like_count_{{$post->id}}">Likes: {{$post->likes->count()}}</p>
                         <p>comments: {{$post->comments->count()}}</p>
                         @foreach($post->comments as $comment)
                             <p>{{$comment->username}}: {{$comment->content}}</p>
