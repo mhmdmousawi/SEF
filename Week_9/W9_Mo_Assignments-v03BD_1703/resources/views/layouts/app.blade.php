@@ -12,6 +12,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script type="text/javascript" src="{{ URL::asset('js/like-button.js') }}"></script>
     
 
     <!-- Fonts -->
@@ -20,6 +21,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -77,7 +79,15 @@
             </div>
         </nav>
         <main class="py-4">
-            @yield('content')
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card">
+                            @yield('content')
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
     

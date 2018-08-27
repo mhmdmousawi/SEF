@@ -1,0 +1,114 @@
+
+.profile_container {
+    width: 100%;
+    height: 300px;
+    padding-top: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.container__header{
+    height: 100%;
+    width: 30%;
+    float: left;
+}
+
+.profile_picture{
+    height: 67%;
+    width: 90%;
+    border-radius: 50%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+    float: left;
+}
+
+.profile__info{
+    width: 60% ;
+    height: 100%;
+    margin-left: 10%;
+    float: left;
+}
+
+.info__header{
+    width: 100%;
+    height: 20%;
+}
+.info__article{
+    width: 100%;
+    height: auto;
+}
+.info__article>h4{
+    /* width: 30%; */
+    margin-right: 5%;
+    float: left;
+}
+
+.form_follow{
+    width: 100%;
+    height: 30%;
+    padding: 10% 10% 10% 10%;
+    float: left;
+}
+
+.btn-follow{
+    height: 100%;
+    width: 100%;
+    font-size: 120%;
+}
+
+/* POSTs */
+.posts_container{
+    height: auto;
+    width: 100%;
+    padding: 4% 4% 4% 4%;
+}
+
+.post{
+    width: 100%;
+    /* height: 800px; */
+    border: 1px solid rgb(201, 201, 201);
+    margin-bottom: 3%;
+    padding: 5% 5% 5% 5%;
+}
+
+.post__header{
+    width: 100%;
+    height: 5%;
+    
+    /* border: 1px solid rgb(201, 201, 201); */
+}
+.username{
+    font-size: 160%;
+}
+
+.post__article{
+    width: 100%;
+    height: 75%;
+    float: left;
+}
+.post__article>img{
+    width: 100%;
+    height: 100%;
+}
+.post__footer{
+    width: 100%;
+    height: 15%;
+    float: left;
+    border: 1px solid rgb(201, 201, 201);
+}
+.post__footer>button{
+    height: 40px;
+    width: 15%;
+    float: left;
+}
+
+.post__info{
+
+}
+.post__info>p{
+    margin: 0;
+}
+

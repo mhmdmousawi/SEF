@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
+<div class="card-header">{{$user->name}}</div>
+    <div class="card-body">
             <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadPostPicture" method="POST">
                 <lable>Update Post Picture</lable>
                 <input type="file" name="post_pic">

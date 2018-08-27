@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
 
 class PostController extends Controller
 {
     public function addPost(){
-        return view('add_post');
+
+        $user = Auth::user();
+        return view("add_post",array(
+            'user' => $user
+        ));
     }
 }

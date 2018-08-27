@@ -1,10 +1,7 @@
 var LIKE = {
 
     csrf_token: document.getElementsByTagName('meta')[3].getAttribute("content"),
-    //btns : document.querySelectorAll('button[data-btn_type="like_btn"]'),
     btns : document.getElementsByClassName('btn-like'),
-    //like_btns : document.getElementsByClassName("not_liked"),
-    //un_like_btns : document.getElementsByClassName("liked"),
     like_or_unlike : function(post_id){
     
         var that = this;
@@ -32,11 +29,11 @@ var LIKE = {
                 if(post_status!="btn-like liked"){
                     my_btn.setAttribute("class", 'btn-like liked');
                     my_btn.innerHTML = "Unlike";
-                    like_count.innerHTML = 'Likes: '+recieved_likes.length;
+                    like_count.innerHTML = "<b>"+recieved_likes.length+"</b> likes";
                 }else{
                     my_btn.setAttribute("class", 'btn-like not_liked');
                     my_btn.innerHTML = "Like";
-                    like_count.innerHTML = 'Likes: '+recieved_likes.length;
+                    like_count.innerHTML = "<b>"+recieved_likes.length+"</b> likes";
                 }
             }
         };
