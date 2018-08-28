@@ -21,7 +21,7 @@ Route::get('/home', 'FeedController@index')->name('home');
 
 Auth::routes();
 
-Route::middleware(['middleware' => 'auth'],function () {
+// Route::middleware(['middleware' => 'auth'],function () {
 
     //works fine
     Route::get('/profile', 'ProfileController@profile');
@@ -47,4 +47,4 @@ Route::middleware(['middleware' => 'auth'],function () {
 
     //test
     Route::get('/editProfile', 'EditProfileController@index');
-});
+// });
