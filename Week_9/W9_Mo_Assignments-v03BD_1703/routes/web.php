@@ -37,5 +37,8 @@ Route::post('/unfollow/{user_id}', 'FollowController@unfollow');
 Route::post('/like/{post_id}', 'LikeController@like');
 Route::post('/unlike/{post_id}', 'LikeController@unlike');
 
+//test
+Route::post('/comment', 'CommentController@comment');
+
 //works fine
 Route::get('/addPost', 'PostController@addPost');

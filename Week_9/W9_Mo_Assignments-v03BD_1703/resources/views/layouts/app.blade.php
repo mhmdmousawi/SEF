@@ -12,7 +12,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script type="text/javascript" src="{{ URL::asset('js/like-button.js') }}"></script>
+    <script src="{{ asset('js/like-button.js') }}" defer></script>
+    <script src="{{ asset('js/comment-button.js') }}" defer></script>
     
 
     <!-- Fonts -->
