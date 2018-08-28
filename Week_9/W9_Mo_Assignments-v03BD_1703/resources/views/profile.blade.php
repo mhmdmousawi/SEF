@@ -25,6 +25,9 @@
             <div class="profile__info">
                 <header class="info__header">
                     <h3>{{$user->username}}</h3>
+                    @if($user->is_profile)
+                        <a href="{{config('app.url')}}/editProfile" class="btn btn-primary">Edit Profile</a>
+                    @endif
                 </header>
                 <article class="info__article">
                     <h4><b>{{$user->posts->count()}}</b> posts</h4>
@@ -32,20 +35,10 @@
                     <h4><b>{{$user->following->count()}}</b> following</h4>
                 </article>
             </div>
-            @if($user->is_profile)
-                <form enctype="multipart/form-data" action="{{config('app.url')}}/uploadProfilePicture" method="POST">
-                    <lable>Update Proflile Picture</lable>
-                    <input type="file" name="profile_pic">
-                    @if ($errors->has('profile_pic'))
-                        <span role="alert">
-                            <strong>{{ $errors->first('profile_pic') }}</strong>
-                        </span>
-                    @endif
-                    <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-                    <input type="submit" class="btn btn-sm btn-primary" value="Update Profile Picture">
-                </form>
+            {{-- @if($user->is_profile)
+                
                 <br>
-            @endif
+            @endif --}}
             
         </div>
         <hr>
@@ -72,7 +65,7 @@
                             <button class="btn-comment" data-btn_type= "comment_btn" data-post_id= "{{$post->id}}" >Comment</button>
 
                             {{-- FOR Comment POST --}}
-                            <input id="input_{{$post->id}}" class="input-comment" data-btn_type= "comment_input" data-post_id= "{{$post->id}}" placeholder="Comment.."></input>
+                            <input id="input_{{$post->id}}" class="input_comment" data-btn_type= "comment_input" data-post_id= "{{$post->id}}" placeholder="Comment.."></input>
 
                         </footer>
                         <div class="post__info">

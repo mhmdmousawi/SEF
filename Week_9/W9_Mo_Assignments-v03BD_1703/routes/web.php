@@ -21,24 +21,30 @@ Route::get('/home', 'FeedController@index')->name('home');
 
 Auth::routes();
 
-//works fine
-Route::get('/profile', 'ProfileController@profile');
-Route::get('/profile/{user_id}', 'ProfileController@profile_with_id');
+Route::middleware(['middleware' => 'auth'],function () {
 
-//work fine
-Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
-Route::post('/uploadPostPicture', 'UploadPictureController@post_picture');
+    //works fine
+    Route::get('/profile', 'ProfileController@profile');
+    Route::get('/profile/{user_id}', 'ProfileController@profile_with_id');
 
-//works fine
-Route::post('/follow/{user_id}', 'FollowController@follow');
-Route::post('/unfollow/{user_id}', 'FollowController@unfollow');
+    //work fine
+    Route::post('/uploadProfilePicture', 'UploadPictureController@profile_picture');
+    Route::post('/uploadPostPicture', 'UploadPictureController@post_picture');
 
-//works fine
-Route::post('/like/{post_id}', 'LikeController@like');
-Route::post('/unlike/{post_id}', 'LikeController@unlike');
+    //works fine
+    Route::post('/follow/{user_id}', 'FollowController@follow');
+    Route::post('/unfollow/{user_id}', 'FollowController@unfollow');
 
-//test
-Route::post('/comment', 'CommentController@comment');
+    //works fine
+    Route::post('/like/{post_id}', 'LikeController@like');
+    Route::post('/unlike/{post_id}', 'LikeController@unlike');
 
-//works fine
-Route::get('/addPost', 'PostController@addPost');
+    //works fine
+    Route::post('/comment', 'CommentController@comment');
+
+    //works fine
+    Route::get('/addPost', 'PostController@addPost');
+
+    //test
+    Route::get('/editProfile', 'EditProfileController@index');
+});

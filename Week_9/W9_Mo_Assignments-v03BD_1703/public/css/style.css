@@ -35,10 +35,25 @@
 .info__header{
     width: 100%;
     height: 20%;
+    float: left;
+}
+
+.info__header>h3{
+    width: 60%;
+    height: 100%;
+    float: left;
+
+}
+.info__header>a{
+    width: 25%;
+    height: 70%;
+    margin-top: -2%;
+
 }
 .info__article{
+    margin-top: 2%;
     width: 100%;
-    height: auto;
+    height: 70%;
 }
 .info__article>h4{
     /* width: 30%; */
@@ -110,5 +125,10 @@
 }
 .post__info>p{
     margin: 0;
+}
+
+.input_comment{
+    width: 70%;
+    height: 40px;
 }
 

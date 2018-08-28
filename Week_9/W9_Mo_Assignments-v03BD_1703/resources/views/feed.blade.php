@@ -26,8 +26,7 @@
                         @endif
                         <button class="btn-comment " data-btn_type= "comment_btn" data-post_id= "{{$post->id}}" >Comment</button>
                         {{-- FOR Comment POST --}}
-                        <input id="input_{{$post->id}}" class="input-comment" data-btn_type= "comment_input" data-post_id= "{{$post->id}}" placeholder="Comment.."></input>
-
+                        <input id="input_{{$post->id}}" class="input_comment" data-btn_type= "comment_input" data-post_id= "{{$post->id}}" placeholder="Comment.."></input>
                     </footer>
                     <div class="post__info">
                         <p id="like_count_{{$post->id}}"><b>{{$post->likes->count()}}</b> likes</p>

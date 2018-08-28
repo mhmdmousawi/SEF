@@ -9,11 +9,15 @@ use Auth;
 
 class CommentController extends Controller
 {
-    public function comment(){
+    public function comment(Request $request){
 
+        $this->validate($request,[
+            'content' =>'required',
+            'post_id' =>'required'
+        ]);
         
-        $content = htmlspecialchars($_POST["content"]);
-        $post_id = htmlspecialchars($_POST["post_id"]);
+        $content = $request->content;
+        $post_id = $request->post_id;
 
         $user_commenting = Auth::user();
         $comment = new Comment;

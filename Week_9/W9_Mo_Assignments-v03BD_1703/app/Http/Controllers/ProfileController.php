@@ -17,6 +17,9 @@ use DB;
 
 class ProfileController extends Controller
 {
+    public function edit(){
+        
+    }
     public function profile()
     {
         $user = Auth::user();
