@@ -70,6 +70,7 @@
                                 <input type= "hidden" name="_token" value="{{ csrf_token()}}">
                                 <button class="btn-like liked" data-btn_type= "like_btn" data-post_id= "{{$post->id}}" >Unlike</button>
                             @endif
+                            <button class="btn-comment " data-btn_type= "comment_btn" data-post_id= "{{$post->id}}" >Comment</button>
                         </footer>
                         <div class="post__info">
                             <p id="like_count_{{$post->id}}"><b>{{$post->likes->count()}}</b> likes</p>

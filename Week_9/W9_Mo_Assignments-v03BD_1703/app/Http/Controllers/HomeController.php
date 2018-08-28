@@ -24,6 +24,6 @@ class HomeController extends Controller
     public function index()
     {
         $posts = [];
-        return view('home')->with('posts',$posts);
+        return view('feed')->with('posts',$posts);
     }
 }
