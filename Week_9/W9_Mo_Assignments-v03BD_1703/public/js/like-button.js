@@ -5,9 +5,9 @@ var LIKE = {
     like_or_unlike : function(post_id){
     
         var that = this;
-        //var my_btn = document.querySelector('button[data-post_id="'+post_id+'"]');
+        var my_btn = document.querySelector('button[data-post_id="'+post_id+'"]');
         var like_count = document.getElementById("like_count_"+post_id);
-        var post_status = that.getAttribute("class");
+        var post_status = my_btn.getAttribute("class");
         let xhr = new XMLHttpRequest();
 
 
@@ -27,12 +27,12 @@ var LIKE = {
                 let recieved_likes = JSON.parse(this.responseText);
 
                 if(post_status!="btn-like liked"){
-                    that.setAttribute("class", 'btn-like liked');
-                    that.innerHTML = "Unlike";
+                    my_btn.setAttribute("class", 'btn-like liked');
+                    my_btn.innerHTML = "Unlike";
                     like_count.innerHTML = "<b>"+recieved_likes.length+"</b> likes";
                 }else{
-                    that.setAttribute("class", 'btn-like not_liked');
-                    that.innerHTML = "Like";
+                    my_btn.setAttribute("class", 'btn-like not_liked');
+                    my_btn.innerHTML = "Like";
                     like_count.innerHTML = "<b>"+recieved_likes.length+"</b> likes";
                 }
             }

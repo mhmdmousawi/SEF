@@ -20,10 +20,6 @@ var COMMENT = {
         let xhr = new XMLHttpRequest();
         let params = 'content='+comment_content+'&post_id='+post_id;
 
-        console.log(comment_content);
-        console.log(post_id);
-        console.log(params);
-
         xhr.open("POST", 'http://localhost/Week_9/W9_Mo_Assignments-v03BD_1703/public/comment', true);
         xhr.setRequestHeader("X-CSRF-Token", this.csrf_token);
         // xhr.setRequestHeader("Content-type", "application/json");
