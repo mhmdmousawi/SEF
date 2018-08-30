@@ -12,16 +12,17 @@
 */
 
 
-Route::get('/', function () {   
-    return view('welcome');
-});
 
-Route::get('/feed', 'FeedController@index');
-Route::get('/home', 'FeedController@index')->name('home');
 
 Auth::routes();
 
 // Route::middleware(['middleware' => 'auth'],function () {
+Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function()
+{
+    Route::get('/', 'FeedController@index');
+    Route::get('/feed', 'FeedController@index');
+    Route::get('/home', 'FeedController@index')->name('home');
+
 
     //works fine
     Route::get('/profile', 'ProfileController@profile');
@@ -47,4 +48,4 @@ Auth::routes();
 
     //test
     Route::get('/editProfile', 'EditProfileController@index');
-// });
+});
