@@ -15,8 +15,8 @@ class CreateForeignKeysProfile extends Migration
     {
         Schema::table('profiles', function (Blueprint $table) {
             
-            $table->index('user_id');
-            $table->foreign('user_id')
+            $table->index('profile_id');
+            $table->foreign('profile_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
@@ -39,9 +39,9 @@ class CreateForeignKeysProfile extends Migration
     {
         Schema::table('profiles', function (Blueprint $table) {
 
-            $table->dropForeign('profiles_user_id_foreign');
+            $table->dropForeign('profiles_profile_id_foreign');
             $table->dropForeign('profiles_profile_picture_id_foreign');
-            $table->dropIndex('profiles_user_id_index');
+            $table->dropIndex('profiles_profile_id_index');
             $table->dropIndex('profiles_profile_picture_id_index');
         });
     }

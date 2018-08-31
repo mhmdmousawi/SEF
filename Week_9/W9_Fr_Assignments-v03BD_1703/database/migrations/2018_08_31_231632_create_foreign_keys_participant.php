@@ -17,7 +17,7 @@ class CreateForeignKeysParticipant extends Migration
             
             $table->index('profile_id');
             $table->foreign('profile_id')
-                ->references('user_id')
+                ->references('profile_id')
                 ->on('profiles')
                 ->onDelete('cascade');
             

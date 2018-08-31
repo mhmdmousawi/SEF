@@ -17,8 +17,8 @@ class CreateForeignKeysChannel extends Migration
             
             $table->index('creator_id');
             $table->foreign('creator_id')
-                ->references('id')
-                ->on('users')
+                ->references('profile_id')
+                ->on('profiles')
                 ->onDelete('cascade');
 
             $table->index('profile_picture_id');
