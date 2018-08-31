@@ -16,7 +16,7 @@ class CreateParticipantsTable extends Migration
         Schema::create('participants', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('channel_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('profile_id')->unsigned();
             $table->boolean('removed')->default(false);
             $table->timestamps();
         });

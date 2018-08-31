@@ -15,10 +15,10 @@ class CreateForeignKeysParticipant extends Migration
     {
         Schema::table('participants', function (Blueprint $table) {
             
-            $table->index('user_id');
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
+            $table->index('profile_id');
+            $table->foreign('profile_id')
+                ->references('user_id')
+                ->on('profiles')
                 ->onDelete('cascade');
             
             $table->index('channel_id');
@@ -38,9 +38,9 @@ class CreateForeignKeysParticipant extends Migration
     {
         Schema::table('participants', function (Blueprint $table) {
 
-            $table->dropForeign('participants_user_id_foreign');
+            $table->dropForeign('participants_profile_id_foreign');
             $table->dropForeign('participants_channel_id_foreign');
-            $table->dropIndex('participants_user_id_index');
+            $table->dropIndex('participants_profile_id_index');
             $table->dropIndex('participants_channel_id_index');
             
         });
