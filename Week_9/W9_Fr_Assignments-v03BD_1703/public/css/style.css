@@ -1,0 +1,86 @@
+.card-body{
+    padding: 0;
+}
+
+.side_bar{
+    height: 100vh;
+    width: 25%;
+    /* border: 1px solid #000; */
+    padding: 20px;
+    background-color: #4B3949;
+    color: #90838D;
+    float: left;
+}
+
+.side_bar__header{
+    height: 7vh;
+    width: 100%;
+}
+
+.side_bar__header>h2{
+    color: #FFF;
+}
+
+.side_bar__header>p{
+    margin: 0;
+}
+
+.btn-add{
+    height: 25px;
+    width: 25px;
+    border:2px solid #90838D;
+    border-radius: 50%;
+    float: right;
+}
+.btn-add:hover {
+    text-decoration: none;
+}
+
+.btn-add>p{
+    color:#90838D;
+    font-size: 100%;
+    padding-left: 30%;
+}
+
+.status{
+    margin: 7px;
+    float: left;
+    height: 10px;
+    width: 10px;
+    border: 1px solid #FFF;
+    border-radius: 50%;
+}
+
+.status-active{
+    background-color: #319187;
+    border: 0px;
+}
+
+.channel_name>a>p{
+    color:#90838D;
+}
+
+.channel_name>a:hover{
+    text-decoration: none;
+}
+
+.dm_name>a>p{
+    color:#90838D;
+}
+
+.dm_name>a:hover{
+    text-decoration: none;
+}
+
+/* .private-status{ */
+    /* margin: 7px;
+    float: left;
+    height: 10px;
+    width: 10px;
+    border: 3px solid #FFF;
+    border-radius: 20%; */
+/* } */
+
+/* .private-status-on{ */
+    /* border: 3px solid #261C25; */
+/* } */
