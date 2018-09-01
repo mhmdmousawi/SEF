@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Faker\Factory as Faker;
 
 class ProfilesTableSeeder extends Seeder
 {
@@ -11,14 +12,15 @@ class ProfilesTableSeeder extends Seeder
      */
     public function run()
     {
-        $profiles_ids = App\Profile::all()->pluck('profile_id')->toArray();
-
-        for( $i = 1 ; $i< 5; $i++){
+        $faker = Faker::create();
+        for( $i = 1 ; $i< 50; $i++){
             
-            App\Channel::create([
-                'name' => $faker->name,
-                'purpose' => $faker->sentence,
-                'creator_id' => $faker->randomElement($profiles_ids)
+            App\Profile::create([
+                'profile_id' => $i,
+                'full_name' => $faker->name,
+                'display_name' => $faker->name,
+                'status' => $faker->title,
+                'phone' => rand(1000000,9999999)
             ]);
         }
     }

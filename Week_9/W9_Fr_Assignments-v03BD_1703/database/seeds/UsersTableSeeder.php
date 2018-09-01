@@ -22,35 +22,11 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('password')
             ]);
             
-            App\Profile::create([
-                'profile_id' => $i,
-                'full_name' => $faker->name,
-                'display_name' => $faker->name,
-                'status' => $faker->title,
-                'phone' => rand(1000000,9999999)
-            ]);
         }
 
-        $profiles_ids = App\Profile::all()->pluck('profile_id')->toArray();
+        
 
-        for( $i = 1 ; $i< 5; $i++){
-            
-            App\Channel::create([
-                'name' => $faker->name,
-                'purpose' => $faker->sentence,
-                'creator_id' => $faker->randomElement($profiles_ids)
-            ]);
-        }
-
-        $channels_ids = App\Channel::all()->pluck('id')->toArray();
-
-        for( $i = 1 ; $i< 50; $i++){
-            
-            App\Participant::create([
-                'channel_id' => $faker->randomElement($channels_ids),
-                'profile_id' => $faker->randomElement($profiles_ids)
-            ]);
-        }
+        
 
         $participants_ids = App\Participant::all()->pluck('id')->toArray();
 
