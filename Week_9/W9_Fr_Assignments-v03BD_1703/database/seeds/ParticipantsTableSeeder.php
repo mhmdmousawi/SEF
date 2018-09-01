@@ -14,6 +14,7 @@ class ParticipantsTableSeeder extends Seeder
     {
         $faker = Faker::create();
         $channels_ids = App\Channel::all()->pluck('id')->toArray();
+        $profiles_ids = App\Profile::all()->pluck('profile_id')->toArray();
 
         for( $i = 1 ; $i< 50; $i++){
             
