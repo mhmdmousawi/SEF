@@ -17,8 +17,8 @@ class CreateProfilesTable extends Migration
             $table->Integer('profile_id')->unsigned()->primary();
             $table->string('full_name')->nullable();
             $table->string('display_name')->nullable();
-            $table->mediumText('status')->nullablr();
-            $table->integer('phone');
+            $table->mediumText('status')->nullable();
+            $table->integer('phone')->nullable();
             $table->integer('profile_picture_id')->unsigned()->nullable();
             $table->timestamps();
         });
