@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-xl-12">
             <div class="card">
-                <div class="card-header">Side Bar</div>
+                <div class="card-header">Slack - {{ config('app.name', 'Laravel') }}</div>
 
                 <div class="card-body">
                     <div class="side_bar">

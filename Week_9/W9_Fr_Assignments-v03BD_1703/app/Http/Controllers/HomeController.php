@@ -34,6 +34,7 @@ class HomeController extends Controller
         $participants = Participant::where('profile_id',$profile->profile_id)
             ->with('channel')->get();
         $i = 0;
+        $channel_ids=[];
         foreach($participants as $participant){
             $channel_ids[$i++] = $participant->channel_id;
         }
