@@ -1,5 +1,7 @@
 @extends('layouts.side_bar')
 
 @section('content_chat')
-    Chatting
+    <div class="chat_box">
+        Chatting
+    </div>
 @endsection
