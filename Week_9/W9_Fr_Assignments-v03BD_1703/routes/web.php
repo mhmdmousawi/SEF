@@ -17,3 +17,7 @@ Route::get('/', function () {
 
 Route::post('/test', 'WebSocketsController@start');
 Route::get('/test', 'WebSocketsController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
