@@ -11,19 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
-Route::post('/test', 'WebSocketsController@start');
-Route::get('/test', 'WebSocketsController@index');
 
 Auth::routes();
+Route::group([ 'middleware' => 'auth'], function()
+{
 
-Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/channel/{channel_id}', 'RoomController@channel');
+    Route::get('/chat/{profile_id}', 'RoomController@chat');
+    
+    Route::post('/sendChannel', 'ChatController@channel');
+    Route::post('/sendDirect', 'ChatController@direct');
 
-Route::get('/channel/{channel_id}', 'RoomController@channel');
-Route::get('/chat/{profile_id}', 'RoomController@chat');
+});
 
-Route::post('/sendChannel', 'ChatController@channel');
-Route::post('/sendDirect', 'ChatController@direct');
+
+
+

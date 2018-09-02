@@ -13,7 +13,7 @@ var MESSAGE = {
         chat_type : document.getElementById('chat_type').value
     },
     setInfo : function(){
-        if (this.chat_type == "channel"){
+        if (this.INFO.chat_type == "channel"){
             this.INFO.user_participant_id = document.getElementById('user_participant_id').value;
             this.INFO.channel_id = document.getElementById('channel_id').value;
         }else{
@@ -60,7 +60,6 @@ var MESSAGE = {
             if (this.readyState == XMLHttpRequest.DONE && this.status == 201) {
 
                 let chat = JSON.parse(this.responseText);
-                console.log(chat.content);
 
                 // if(authenticated){
                 //     //send websocket request

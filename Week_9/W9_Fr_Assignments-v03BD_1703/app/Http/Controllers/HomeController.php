@@ -7,6 +7,7 @@ use Auth;
 use App\Profile;
 use App\Participant;
 use App\Channel;
+use App\Custom\SideBarInfo;
 
 class HomeController extends Controller
 {
@@ -27,23 +28,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
-        $profile = $user->profile;
         
-        //get channels in which this profile is a participant in
-        $participants = Participant::where('profile_id',$profile->profile_id)
-            ->with('channel')->get();
-        $i = 0;
-        $channel_ids=[];
-        foreach($participants as $participant){
-            $channel_ids[$i++] = $participant->channel_id;
-        }
-        $channels = Channel::whereIn('id',$channel_ids)->get();
-        $profile->channels = $channels;
 
-        //get profile's friends
-        $profile->friends= Profile::all()->take(10);
+        return view('home')->with('profile',$this->getUserProfile());
+    }
 
-        return view('home')->with('profile',$profile);
+    public function getUserProfile()
+    {
+        //get profile user info for side bar
+        $sbi = new SideBarInfo;
+        $sbi->init();
+        return $sbi->getProfile();
     }
 }
