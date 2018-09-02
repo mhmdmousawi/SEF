@@ -24,7 +24,7 @@
                                 <header class="received_msg__header">
                                     {{-- 11:01 AM    |     --}}
                                     <span class="time_date"> {{$chat->created_at}}</span>
-                                    <h5>Sender Name</h5>
+                                    <h5>{{$chat->sender->display_name}}</h5>
                                 </header>
                                 <div class="received_withd_msg">
                                     <p>{{$chat->content}}</p>
