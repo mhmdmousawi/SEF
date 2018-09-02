@@ -21,3 +21,6 @@ Route::get('/test', 'WebSocketsController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/channel/{channel_id}', 'RoomController@channel');
+Route::get('/chat/{profile_id}', 'RoomController@chat');

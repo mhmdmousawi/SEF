@@ -30,7 +30,7 @@
                                     <div class="private-status"></div>
                                 @endif
                                     <div class="channel_name">
-                                        <a href="#"><p>{{$channel->name}}</p></a>
+                                        <a href="{{config('app.url')}}/channel/{{$channel->name}}"><p>{{$channel->name}}</p></a>
                                     </div>
                                 @endforeach
                             </article>
@@ -46,7 +46,7 @@
                                 @foreach($profile->friends as $friend)
                                     <div class="status"></div>
                                     <div class="dm_name">
-                                        <a href="#"><p>{{$friend->display_name}}</p></a>
+                                        <a href="{{config('app.url')}}/chat/{{$friend->profile_id}}"><p>{{$friend->display_name}}</p></a>
                                     </div>
                                 @endforeach
                             </article>
