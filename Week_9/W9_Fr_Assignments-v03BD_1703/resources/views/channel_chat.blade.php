@@ -10,11 +10,8 @@
         </header>
         <hr>
         <article class="chat_box__article">
-            
             <div class="mesgs">
-                <div class="msg_history">
-
-                    {{-- loop on msgs --}}
+                <div id="messages_container" class="msg_history">
                     @foreach($channel->chats as $chat)
                         <div class="incoming_msg">
                             <div class="incoming_msg_img"> 
@@ -32,14 +29,19 @@
                             </div>
                         </div>
                     @endforeach
-                    {{-- End loop --}}
-
                 </div>
             </div>
                     
         </article>
         <footer class="chat_box__footer">
-            <input class="input_msg" placeholder="Enter message here..."/>
+            <input type= "hidden" name="_token" value="{{ csrf_token()}}">
+            <input id="input_msg" class="input_msg" placeholder="Enter message here..."/>
         </footer>
     </div>
+    {{-- Hiddin info --}}
+    <input type="hidden" id="app_url" value="{{config('app.url')}}"/>
+    <input type='hidden' id='user_profile_id' value='{{$profile->profile_id}}'/>
+    <input type='hidden' id='user_profile_display_name' value='{{$profile->display_name}}'/>
+    <input type='hidden' id='user_participant_id' value='{{$profile->participant_id}}'/>
+    <input type='hidden' id='channel_id' value='{{$channel->id}}'/>
 @endsection

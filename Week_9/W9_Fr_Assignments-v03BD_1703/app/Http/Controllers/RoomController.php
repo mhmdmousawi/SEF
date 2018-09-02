@@ -26,7 +26,9 @@ class RoomController extends Controller
     public function chat($profile_id){
         
         $user_profile = $this->getUserProfile();
-        $chat_profile = Profile::where('profile_id',$profile_id)->get()->first();
+        $chat_profile = Profile::where('profile_id',$profile_id)
+                                ->get()
+                                ->first();
 
         $chats = ChatDm::where(function($query) use ($chat_profile,$user_profile) {
                             $query->where('reciever_id', $chat_profile->profile_id)
@@ -37,7 +39,9 @@ class RoomController extends Controller
                         })->get();
 
         foreach ($chats as $chat) {
-            $sender_profile = Profile::where('profile_id',$chat->sender_id)->get()->first();
+            $sender_profile = Profile::where('profile_id',$chat->sender_id)
+                                        ->get()
+                                        ->first();
             $chat->sender = $sender_profile;
         }
         return view('direct_chat',array(
@@ -49,6 +53,13 @@ class RoomController extends Controller
 
     public function channel($channel_id){
         
+        $user_profile = $this->getUserProfile();
+        
+        $user_participant_id = Participant::where('profile_id',$user_profile->profile_id)
+                                            ->where('channel_id',$channel_id)
+                                            ->pluck('id')
+                                            ->first();
+        $user_profile->participant_id = $user_participant_id;
         $channel = Channel::where('id',$channel_id)->get()->first();
         $channel->participants = Participant::where('channel_id',$channel->id)->get();
 
@@ -58,18 +69,25 @@ class RoomController extends Controller
         }
         $participants_ids[$i] = 0;
         
-        $channel->chats = Chat::whereIn('participant_id',$participants_ids)->orderBy('created_at','DESC')->take(20)->get();
+        $channel->chats = Chat::whereIn('participant_id',$participants_ids)
+                                ->orderBy('created_at','DESC')
+                                ->take(20)
+                                ->get();
         
         foreach ($channel->chats as $chat) {
 
-            $sender_participant = Participant::where('id',$chat->participant_id)->get()->first();
-            $sender_profile = Profile::where('profile_id',$sender_participant->profile_id)->get()->first();
+            $sender_participant = Participant::where('id',$chat->participant_id)
+                                                ->get()
+                                                ->first();
+            $sender_profile = Profile::where('profile_id',$sender_participant->profile_id)
+                                        ->get()
+                                        ->first();
             $chat->sender = $sender_profile;
         }
 
         return view('channel_chat',array(
             'channel' => $channel,
-            'profile' => $this->getUserProfile()
+            'profile' => $user_profile
         ));
     }
 }
