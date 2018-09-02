@@ -3,10 +3,10 @@
 @section('content_chat')
     <div class="chat_box">
         <header class="chat_box__header">
-            <h5>Display Name</h5>
+            <h5>{{$chat_profile->display_name}}</h5>
             <a href="#">fav</a>&nbsp;|&nbsp;
             <a href="#">status </a>&nbsp;|&nbsp;
-            <a href="#">full name</a>
+            <a href="#">{{$chat_profile->full_name}}</a>
         </header>
         <hr>
         <article class="chat_box__article">

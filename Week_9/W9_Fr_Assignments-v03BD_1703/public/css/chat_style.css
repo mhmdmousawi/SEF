@@ -91,6 +91,7 @@ img{ max-width:100%;}
 .mesgs {
   float: left;
   /* padding: 30px 15px 0 25px; */
+  height: 100%;
   width: 100%;
 }
 
@@ -132,7 +133,7 @@ img{ max-width:100%;}
 }
 .messaging { padding: 0 0 50px 0;}
 .msg_history {
-  height: 516px;
+  height: 100%;
   overflow-y: auto;
 }
 .incoming_msg{

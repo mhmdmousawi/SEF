@@ -30,7 +30,7 @@
                                     <div class="private-status"></div>
                                 @endif
                                     <div class="channel_name">
-                                        <a href="{{config('app.url')}}/channel/{{$channel->name}}"><p>{{$channel->name}}</p></a>
+                                        <a href="{{config('app.url')}}/channel/{{$channel->id}}"><p>{{$channel->name}}</p></a>
                                     </div>
                                 @endforeach
                             </article>
