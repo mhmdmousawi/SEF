@@ -35,7 +35,7 @@
         </article>
         <footer class="chat_box__footer">
             <input type= "hidden" name="_token" value="{{ csrf_token()}}">
-            <input id="input_msg" class="input_msg" placeholder="Enter message here..."/>
+            <input id="input_msg" name="input_msg" class="input_msg" placeholder="Enter message here..."/>
         </footer>
     </div>
     {{-- Hiddin info --}}
@@ -44,4 +44,5 @@
     <input type='hidden' id='user_profile_display_name' value='{{$profile->display_name}}'/>
     <input type='hidden' id='user_participant_id' value='{{$profile->participant_id}}'/>
     <input type='hidden' id='channel_id' value='{{$channel->id}}'/>
+    <input type='hidden' id='chat_type' value='channel'/>
 @endsection

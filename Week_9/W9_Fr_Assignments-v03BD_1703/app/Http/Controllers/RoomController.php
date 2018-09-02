@@ -70,7 +70,7 @@ class RoomController extends Controller
         $participants_ids[$i] = 0;
         
         $channel->chats = Chat::whereIn('participant_id',$participants_ids)
-                                ->orderBy('created_at','DESC')
+                                ->orderBy('created_at','ASC')
                                 ->take(20)
                                 ->get();
         
