@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Slack - {{ config('app.name', 'Laravel') }}</div>
 
-                <div class="card-body">
+                <div class="card-body-sb">
                     <div class="side_bar">
                         <header class="side_bar__header">
                             <h2>{{ config('app.name', 'Laravel') }}</h2>
