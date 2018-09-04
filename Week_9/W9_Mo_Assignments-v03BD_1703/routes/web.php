@@ -17,7 +17,7 @@
 Auth::routes();
 
 // Route::middleware(['middleware' => 'auth'],function () {
-Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function()
+Route::group([  'middleware' => 'auth'], function()
 {
     Route::get('/', 'FeedController@index');
     Route::get('/feed', 'FeedController@index');
