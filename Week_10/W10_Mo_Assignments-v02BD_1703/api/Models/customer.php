@@ -8,7 +8,7 @@ class Customer{
     private $conn;
     private $table_name = "customer";
  
-    // Actor properties
+    // Customer properties
     public $customer_id;
     public $store_id;
     public $first_name;

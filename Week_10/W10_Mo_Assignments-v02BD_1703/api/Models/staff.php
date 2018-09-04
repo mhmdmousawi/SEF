@@ -8,7 +8,7 @@ class Staff{
     private $conn;
     private $table_name = "staff";
  
-    // Actor properties
+    // Staff properties
     public $staff_id;
     public $first_name;
     public $last_name;

@@ -8,7 +8,7 @@ class Address{
     private $conn;
     private $table_name = "address";
  
-    // Actor properties
+    // Address properties
     public $address_id;
     public $address;
     public $address2;

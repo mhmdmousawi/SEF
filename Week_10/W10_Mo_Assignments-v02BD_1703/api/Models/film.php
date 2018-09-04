@@ -8,7 +8,7 @@ class Film{
     private $conn;
     private $table_name = "film";
  
-    // Actor properties
+    // Film properties
     public $film_id;
     public $title;
     public $description;

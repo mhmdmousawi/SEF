@@ -8,7 +8,7 @@ class Payment{
     private $conn;
     private $table_name = "payment";
  
-    // Actor properties
+    // Payment properties
     public $payment_id;
     public $customer_id;
     public $staff_id;

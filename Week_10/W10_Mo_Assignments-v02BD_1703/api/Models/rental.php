@@ -8,7 +8,7 @@ class Rental{
     private $conn;
     private $table_name = "rental";
  
-    // Actor properties
+    // Rental properties
     public $rental_id;
     public $rental_date;
     public $inventory_id;
