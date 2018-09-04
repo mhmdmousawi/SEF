@@ -1,10 +1,13 @@
 <?php
+
+// namespace Config\Database;
+
 class Database{
  
     // specify your own database credentials
     private $host = "localhost";
     private $db_name = "sakila";
-    private $username = "root";
+    private $username = "phpuser";
     private $password = "la2ya7obbi";
     public $conn;
  
