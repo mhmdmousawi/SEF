@@ -13,12 +13,14 @@ abstract class Model {
     private $select_filter = " * ";
     private $limit_filter = " ";
     private $order_by_filter = " ";
+    private $where_filter = " ";
 
-    abstract function setTableName($table_name);
+    // abstract function setTableName($table_name);
 
     public function __construct()
     {
         $this->setConn();
+        $this->setTableName();
     }
 
     private function setConn()
@@ -26,6 +28,10 @@ abstract class Model {
         $database = new Database;
         $db = $database->getConnection();
         $this->conn = $db;
+    }
+
+    public function setTableName(){
+        $this->table_name = lcfirst(get_called_class());
     }
 
     // FILTER FUNCTIONS 
@@ -54,6 +60,26 @@ abstract class Model {
         return $this;
     }
 
+    public function where($attribute,$operator = '=', $value)
+    {
+        if($this->where_filter == " "){
+            $this->where_filter = " WHERE " . $attribute . " " . $operator . " '" . $value ."' ";
+        }else{
+            $this->where_filter .= " AND " . $attribute . " " . $operator . " '" . $value ."' ";
+        }
+        return $this;
+    }
+
+    public function whereIn($attribute, $array)
+    {
+        if($this->where_filter == " "){
+            $this->where_filter = " WHERE " . $attribute . " IN(" . implode(",", $array).") ";
+        }else{
+            $this->where_filter .= " AND " . $attribute . " IN(" . implode(",", $array).") ";
+        }
+        return $this;
+    }
+
     public function get()
     {
         $this->setQuery();
@@ -64,9 +90,11 @@ abstract class Model {
     {
         $this->query = " SELECT ".$this->select_filter ." ".
                         " FROM " . $this->table_name . " ".
+                        $this->where_filter . " ". 
                         $this->order_by_filter . " ". 
                         $this->limit_filter. " ";
     }
+
     private function result()
     {
         // prepare query statement
@@ -83,7 +111,9 @@ abstract class Model {
          
             // retrieve our table contents
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+
                 array_push($result_array["records"], $row);
+                
             }
          
             $result_array["message"]= "success";
