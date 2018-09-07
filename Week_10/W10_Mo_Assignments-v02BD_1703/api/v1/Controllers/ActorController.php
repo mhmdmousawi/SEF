@@ -57,7 +57,17 @@ class ActorController
             //handle spaces ** replace "+" with " " 
             $actor->first_name = $data['first_name'];
             $actor->last_name = $data['last_name'];
-            echo json_encode($actor->save());
+
+            $added_record["first_name"] = $actor->first_name;
+            $added_record["last_name"] = $actor->last_name;
+
+            $result = $actor->save();
+            if($result['message'] ==  "success"){
+                $result["Added Record"] = $added_record;
+            }
+            echo json_encode(
+                $result
+            );
             return;
         }
     }
@@ -74,12 +84,21 @@ class ActorController
             }else{
                 if($data['first_name']){
                     $actor->set("first_name",$data['first_name']);
+                    $updated_actor["First Name"] = $data['first_name'];
                 }
                 if($data['last_name']){
                     $actor->set("last_name",$data['last_name']);
+                    $updated_actor["Last Name"] = $data['last_name'];
                 }
             }
-            echo json_encode($actor->update());
+
+            $result = $actor->update();
+            if($result['message'] ==  "success"){
+                $result["updated records for id ".$data['actor_id'].""] = $updated_actor;
+            }
+            echo json_encode(
+                $result
+            );
             return;
         }else{
             echo json_encode($actor->errorMsg());
@@ -93,6 +112,7 @@ class ActorController
 
         if($data['actor_id'] && is_numeric($data['actor_id'])){
             $actor->where("actor_id","=",$data['actor_id']);
+
             echo json_encode($actor->delete());
         }else{
             echo json_encode($actor->errorMsg());

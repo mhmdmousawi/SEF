@@ -178,7 +178,6 @@ abstract class Model {
     {
         $stmt = $this->conn->prepare($this->query);
         if($stmt->execute()){
-
             return $this->successMsg();
         }else{
             return $this->errorMsg();
