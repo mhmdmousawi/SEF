@@ -176,9 +176,7 @@ abstract class Model {
 
     private function msgResult()
     {
-        // prepare query statement
         $stmt = $this->conn->prepare($this->query);
-        // execute query
         if($stmt->execute()){
 
             return $this->successMsg();
@@ -189,9 +187,7 @@ abstract class Model {
 
     private function result()
     {
-        // prepare query statement
         $stmt = $this->conn->prepare($this->query);
-        // execute query
         $stmt->execute();
 
         $num = $stmt->rowCount();
