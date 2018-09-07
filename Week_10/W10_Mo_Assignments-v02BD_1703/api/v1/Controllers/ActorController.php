@@ -4,8 +4,6 @@ require_once __DIR__.'/../App/Actor.php';
 
 class ActorController 
 {
-    private $actor;
-
     public function read()
     {
         $actor = new Actor;
