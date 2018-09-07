@@ -12,11 +12,11 @@ class Actor extends Model
     public $values = [];
 
     //values and fillables should match
-    // public function setValues()
-    // {
-    //     $this->values = [
-    //         $this->first_name,
-    //         $this->last_name
-    //     ];
-    // } 
+    public function setValues()
+    {
+        $this->values = [
+            $this->first_name,
+            $this->last_name
+        ];
+    } 
 }

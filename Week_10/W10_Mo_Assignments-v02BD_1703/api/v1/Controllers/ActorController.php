@@ -15,8 +15,8 @@ class ActorController
                     // ->where('first_name'," = ",'JULIA')
                     //->where('actor_id'," < ",'50')
                     //->whereIn('actor_id',[1,2,3,4,5])
-                    ->limit(20)
-                    ->orderBy("actor_id","DESC")
+                    ->limit(5)
+                    // ->orderBy("actor_id","DESC")
                     ->get()
         );
     }
