@@ -11,7 +11,7 @@ if($request->request_uri == "/actor/read"){
     /*
     *   send as get:
     *   returns all actors
-    */
+    */ 
     $request->get("/actor/read","ActorController@read");
     
 }else if( preg_match("#^\/actor\/read\/.*#",$request->request_uri) ){
