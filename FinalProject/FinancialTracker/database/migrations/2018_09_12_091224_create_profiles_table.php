@@ -14,7 +14,7 @@ class CreateProfilesTable extends Migration
     public function up()
     {
         Schema::create('profiles', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id', 11)->unsigned();
             $table->string('username');
             $table->integer('default_currency_id')->default(1);
             $table->boolean('active')->default(true);;
