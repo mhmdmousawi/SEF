@@ -19,7 +19,7 @@ class CurrencyTableSeeder extends Seeder
 
         
         for( $i = 0 ; $i < count($codes) ; $i++ ){
-            DB::table('currancies')->insert([
+            DB::table('currencies')->insert([
                 'code' => $codes[$i],
                 'name' => $names[$i],
                 'amount_per_dollar' => $valus[$i],

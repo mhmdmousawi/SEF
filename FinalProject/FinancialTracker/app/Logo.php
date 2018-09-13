@@ -6,5 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Logo extends Model
 {
-    //
+    public function categories()
+    {
+        return $this->hasMany('App\Category','logo_id','id');
+    }
 }

@@ -24,7 +24,7 @@ class AddTransactionsForeignKeyRelations extends Migration
             $table->index('currency_id');
             $table->foreign('currency_id')
                   ->references('id')
-                  ->on('currancies');
+                  ->on('currencies');
 
             $table->index('category_id');
             $table->foreign('category_id')
