@@ -25,21 +25,10 @@ Route::group(['middleware' => 'auth'], function()
     // });
 
     // Dashboard Pages
-    Route::get('/dashboard/overview', function() {
-        return 'Dashboard Page -- Overview' ;
-    } );
-
-    Route::get('/dashboard/incomes', function() {
-        return 'Dashboard Page -- Incomes' ;
-    } );
-
-    Route::get('/dashboard/expenses', function() {
-        return 'Dashboard Page -- Expenses' ;
-    } );
-
-    Route::get('/dashboard/savings', function() {
-        return 'Dashboard Page -- Savings' ;
-    } );
+    Route::get('/dashboard/overview', 'Dashboard\OverviewController@index');
+    Route::get('/dashboard/incomes', 'Dashboard\IncomeController@index' );
+    Route::get('/dashboard/expenses', 'Dashboard\ExpenseController@index');
+    Route::get('/dashboard/savings', 'Dashboard\SavingController@index');
     
 
     //Page Configuration Pages
