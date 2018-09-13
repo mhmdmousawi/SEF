@@ -16,7 +16,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('profile_id')->unsigned();
-            $table->enum('type', ['income', 'expence','saving']);
+            $table->enum('type', ['income', 'expense','saving']);
             $table->string('title');
             $table->integer('logo_id')->unsigned();
             $table->timestamps();
