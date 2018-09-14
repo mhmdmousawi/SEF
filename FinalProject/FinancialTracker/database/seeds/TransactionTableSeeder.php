@@ -14,6 +14,7 @@ class TransactionTableSeeder extends Seeder
         for($i=0; $i<10;$i++){
             $transaction = new App\Transaction;
             $transaction->profile_id = "1";
+            $transaction->title = "Title Test"; 
             if($i <5){
                 $transaction->type = 'income';
             }else{
