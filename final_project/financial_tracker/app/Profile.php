@@ -37,10 +37,14 @@ class Profile extends Model
         return $transactions;
     }
 
-    public function transactionsInTimeFrame($type,$ss_date,$se_date)
+    public function transactionsInTimeFrame($ss_date,$se_date,$type = null)
     {
 
-        $transactions = $this->transactionsWithType($type);
+        if($type === null){
+            $transactions = $this->transactions()->get();
+        }else{
+            $transactions = $this->transactionsWithType($type);
+        }
         $ss_date = new DateTime($ss_date);
         $se_date = new DateTime($se_date);
 

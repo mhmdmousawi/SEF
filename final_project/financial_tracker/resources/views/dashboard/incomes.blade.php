@@ -7,6 +7,7 @@
 {{-- Monthly presentation --}}
 
 </br></br></br> 
+Number of Transactions: {{count($user->expanded_incomes)}}
 
 {{-- {{$user->incomes}} --}}
 @foreach(($user->expanded_incomes) as $income)
@@ -17,6 +18,7 @@
     Logo: {{$income->category->logo->class_name}}</br>
     repeat type:{{$income->repeat->type}}</br>
     Start Date: {{$income->start_date}}</br>
+    Transaction type: {{$income->type}} </br>
     {{-- @if($income->repeat->type == 'fixed') --}}
         Amount: ${{$income->amount}}</br> 
     {{-- @elseif($income->repeat->type == 'daily') --}}
