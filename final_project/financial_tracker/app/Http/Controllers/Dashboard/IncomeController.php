@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use DateTime;
 use DateInterval;
+use Carbon\Carbon;
 
 class IncomeController extends Controller
 {
@@ -14,68 +15,36 @@ class IncomeController extends Controller
     {
         $user = Auth::user();
 
-        $user->incomes = $this->transactionsInTimeFrame("income");
-
+        // $user->expanded_incomes = $this->transactionsInTimeFrame("income",'2018-9-1','2018-9-13');
+        $user->expanded_incomes = json_decode(Auth::user()->profile->transactionsInTimeFrame("income",'2018-9-1','2018-9-13'));
+        
         return view('dashboard.incomes')->with('user',$user);
     }
 
-
-    public function transactionsInTimeFrame($type)
+    public function monthly()
     {
+        $user = Auth::user();
+        $now = Carbon::now();
+        $start_current_month = Carbon::now()->startOfMonth();
+        $end_current_month = Carbon::now()->endOfMonth();
 
-        //custom duration
-        $s_date = '2018-9-1';
-        $e_date = '2018-9-20';
-
-        $transactions = Auth::user()->profile->transactionsWithType($type);
-
-        // $start_date = strtotime($s_date);
-        // $end_date = strtotime($e_date);
-
-        $ss_date = new DateTime($s_date);
-        $se_date = new DateTime($e_date);
-         
-        $filtered_transactions = [];
-        foreach ($transactions as $transaction) {
-
-            $ts_date = new DateTime($transaction->start_date);
-            $te_date = new DateTime($transaction->end_date);
-
-
-            if($transaction->repeat->type == 'fixed'){
-                
-                if($ts_date > $ss_date && $ts_date < $se_date ){
-                    // $filtered_transactions[$i++] = $transaction;
-                    $transaction->category;
-                    $transaction->category->logo;
-                    $transaction->repeat;
-                    array_push($filtered_transactions, $transaction);
-                }
-                
-            }else {
-            
-                $recurrent_date = $ts_date;
-
-                while($recurrent_date > $ss_date && $recurrent_date <= $se_date){
-                    
-                    $transaction->start_date = $recurrent_date->format('Y-m-d');
-                    // $filtered_transactions[$i++] = clone $transaction;
-                    $transaction->category;
-                    $transaction->category->logo;
-                    $transaction->repeat;
-
-                    array_push($filtered_transactions, clone $transaction);
-                
-                    if($transaction->repeat->type == 'daily'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1D'));
-                    }else if($transaction->repeat->type = 'weekly'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1W'));
-                    }else if($transaction->repeat->type = 'monthly'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1M'));
-                    }
-                }
-            }
-        }
-        return json_encode($filtered_transactions);
+        $user->expanded_incomes = json_decode(
+            $user->profile->transactionsInTimeFrame("income",$start_current_month,$end_current_month));
+        
+        return view('dashboard.incomes')->with('user',$user);
     }
+
+    public function weekly()
+    {
+        $user = Auth::user();
+        $now = Carbon::now();
+        $start_current_week = Carbon::now()->startOfWeek();
+        $end_current_week = Carbon::now()->endOfWeek();
+
+        $user->expanded_incomes = json_decode(
+            $user->profile->transactionsInTimeFrame("income",$start_current_week,$end_current_week));
+        
+        return view('dashboard.incomes')->with('user',$user);
+    }
+
 }

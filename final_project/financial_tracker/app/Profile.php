@@ -3,6 +3,7 @@
 namespace App;
 use DateTime;
 use DateInterval;
+use Carbon\Carbon;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -36,54 +37,52 @@ class Profile extends Model
         return $transactions;
     }
 
-    
-    public function transactionInTimeFrame($type)
+    public function transactionsInTimeFrame($type,$ss_date,$se_date)
     {
 
-        $s_date = '2018-9-1';
-        $e_date = '2018-9-20';
-
         $transactions = $this->transactionsWithType($type);
+        $ss_date = new DateTime($ss_date);
+        $se_date = new DateTime($se_date);
 
-        // $start_date = strtotime($s_date);
-        // $end_date = strtotime($e_date);
-
-        $ss_date = new DateTime($s_date);
-        $se_date = new DateTime($e_date);
-        
-        $i = 0;
         $filtered_transactions = [];
         foreach ($transactions as $transaction) {
 
             $ts_date = new DateTime($transaction->start_date);
             $te_date = new DateTime($transaction->end_date);
 
-
             if($transaction->repeat->type == 'fixed'){
                 
-                if($ts_date > $ss_date && $ts_date < $se_date ){
-                    $filtered_transactions[$i++] = $transaction;
+                if($ts_date >= $ss_date && $ts_date <= $se_date ){
+                    $transaction->category;
+                    $transaction->category->logo;
+                    $transaction->repeat;
+                    array_push($filtered_transactions, $transaction);
                 }
                 
             }else {
             
-                $recurrent_date = $ts_date;
+                $recurrent_start = $ts_date;
+                $recurrent_end = $te_date;
 
-                while($recurrent_date > $ss_date && $recurrent_date <= $se_date){
+                while($recurrent_start < $recurrent_end){
 
-                    $transaction->start_date = $recurrent_date->format('Y-m-d');
-                    $filtered_transactions[$i++] = clone $transaction;
-                
+                    if(($recurrent_start >= $ss_date) && ($recurrent_start <= $se_date)){
+                        $transaction->start_date = $recurrent_start->format('Y-m-d');
+                        $transaction->category;
+                        $transaction->category->logo;
+                        $transaction->repeat;
+                        array_push($filtered_transactions, clone $transaction);
+                    }
+
                     if($transaction->repeat->type == 'daily'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1D'));
+                        $recurrent_start = $recurrent_start->add(new DateInterval('P1D'));
                     }else if($transaction->repeat->type = 'weekly'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1W'));
+                        $recurrent_start = $recurrent_start->add(new DateInterval('P1W'));
                     }else if($transaction->repeat->type = 'monthly'){
-                        $recurrent_date = $recurrent_date->add(new DateInterval('P1M'));
+                        $recurrent_start = $recurrent_start->add(new DateInterval('P1M'));
                     }
                 }
             }
-            
         }
         return json_encode($filtered_transactions);
     }
