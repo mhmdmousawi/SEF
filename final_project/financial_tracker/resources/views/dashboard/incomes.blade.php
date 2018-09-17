@@ -4,11 +4,11 @@
 
 <h3>Incomes</h3>
 
-{{-- Monthly presentation --}}
+Number of Transactions: {{count($user->expanded_incomes)}}</br>
 
-</br></br></br> 
-Number of Transactions: {{count($user->expanded_incomes)}}
-
+total amount: ${{$user->total_amount}}</br>
+daily average: ${{$user->daily_average}}</br>
+</br></br> 
 {{-- {{$user->incomes}} --}}
 @foreach(($user->expanded_incomes) as $income)
 
@@ -19,12 +19,8 @@ Number of Transactions: {{count($user->expanded_incomes)}}
     repeat type:{{$income->repeat->type}}</br>
     Start Date: {{$income->start_date}}</br>
     Transaction type: {{$income->type}} </br>
-    {{-- @if($income->repeat->type == 'fixed') --}}
-        Amount: ${{$income->amount}}</br> 
-    {{-- @elseif($income->repeat->type == 'daily') --}}
-        {{-- Amount: ${{($income->amount)*30}}</br>  --}}
-    {{-- @endif  --}}
-    
+    Amount: ${{$income->amount}}</br> 
+    Percentage: %{{$income->percentage}}
     
     </br></br> 
 

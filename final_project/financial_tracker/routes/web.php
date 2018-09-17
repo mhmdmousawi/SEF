@@ -38,9 +38,8 @@ Route::group(['middleware' => 'auth'], function()
     } );
 
     //Adding transactions Pages
-    Route::get('/add/income', function() {
-        return 'Adding an income transaction ' ;
-    } );
+    Route::get('/add/income', 'AddTransactionController@basic' );
+    Route::post('/add/income/details', 'AddTransactionController@details');
 
     Route::get('/add/expense', function() {
         return 'Adding an expense transaction ' ;
