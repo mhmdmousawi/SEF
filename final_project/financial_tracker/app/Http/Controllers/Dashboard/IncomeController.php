@@ -63,8 +63,14 @@ class IncomeController extends Controller
 
     private function addPercentages($transactions,$total_amount)
     {
+        $default_currency_rate = Auth::user()->profile->defaultCurrency->amount_per_dollar;
+
         foreach($transactions as $transaction){
-            $transaction->percentage = round($transaction->amount/$total_amount*100,2);
+            //need edit
+            $amount_in_default_curr = ($transaction->amount*$default_currency_rate)
+                                        /($transaction->currency->amount_per_dollar);
+            
+            $transaction->percentage = round($amount_in_default_curr/$total_amount*100,2);
         }
     }
 
@@ -75,7 +81,7 @@ class IncomeController extends Controller
         $total_amount = 0 ;
         foreach($transactions as $transaction){
             $amount_in_default_curr = ($transaction->amount*$default_currency_rate)
-                                            /($transaction->currency->amount_per_dollar);
+                                        /($transaction->currency->amount_per_dollar);
             $total_amount+=$amount_in_default_curr;
         }
         return $total_amount;

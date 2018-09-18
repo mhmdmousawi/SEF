@@ -34,17 +34,17 @@ Route::group(['middleware' => 'auth'], function()
     } );
 
     //Adding transactions Pages
-    Route::get('/add/income', 'AddTransactionController@basic' );
-    Route::post('/add/income/create', 'AddTransactionController@add');
+    Route::get('/add/transaction', 'AddTransactionController@index' );
+    Route::post('/add/transaction/create', 'AddTransactionController@create');
+
+    //Adding savings Pages
+    Route::get('/add/saving', 'AddSavingController@index' );
+    Route::post('/add/saving/create', 'AddSavingController@create');
 
     Route::get('/add/expense', function() {
         return 'Adding an expense transaction ' ;
     } );
 
-    //Adding Saving plan
-    Route::get('/add/saving', function() {
-        return 'Adding a saving plan ' ;
-    } );
 
     Route::get('/add/saving/validate', function() {
         return 'Saving Validation ' ;

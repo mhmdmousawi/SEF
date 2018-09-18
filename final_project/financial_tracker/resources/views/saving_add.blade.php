@@ -2,25 +2,22 @@
 
 @section('content')
 
-<h3>Add Incomes or Expense</h3>
+<h3>Add Saving</h3>
 
-<form action="{{config('app.url')}}/add/transaction/create" method="POST">
+<form action="{{config('app.url')}}/add/saving/create" method="POST">
     @csrf
-    <input name='amount' placeholder="$0.00"/>
-    <input type='text' name='type' placeholder="type"/>
-    
+    <input name='goal_amount' placeholder="Goal Amount"/>
+    <input name='amount' placeholder="Amount"/>
 
     <div class="basic_info">
         <input type='text' name='currency_id' placeholder="currency_id"/>
         <input type='text' name='category_id' placeholder="category_id"/>
-        {{-- <input type='text' name='profile_id' placeholder="{{$user->profile->id}}"/> --}}
-        
     </div>
     <div class="detailed_info">
         <input type='text' name='title' placeholder="title"/>
         <input type='text' name='description' placeholder="description"/>
         <input type='date' name='start_date'/>
-        <input type='text' name='repeat_id' placeholder="repeat_id"/>
+        Saving Fequency:<input type='text' name='repeat_id' placeholder="repeat_id"/>
         <input type='date' name='end_date'/>
     </div>
 
