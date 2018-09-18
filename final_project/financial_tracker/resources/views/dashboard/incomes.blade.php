@@ -6,8 +6,8 @@
 
 Number of Transactions: {{count($user->expanded_incomes)}}</br>
 
-total amount: ${{$user->total_amount}}</br>
-daily average: ${{$user->daily_average}}</br>
+total amount: {{$user->profile->defaultCurrency->code}} {{$user->total_amount}}</br>
+daily average: {{$user->profile->defaultCurrency->code}} {{$user->daily_average}}</br>
 </br></br> 
 {{-- {{$user->incomes}} --}}
 @foreach(($user->expanded_incomes) as $income)
@@ -19,7 +19,7 @@ daily average: ${{$user->daily_average}}</br>
     repeat type:{{$income->repeat->type}}</br>
     Start Date: {{$income->start_date}}</br>
     Transaction type: {{$income->type}} </br>
-    Amount: ${{$income->amount}}</br> 
+    Amount: {{$income->currency->code}} {{$income->amount}}</br> 
     Percentage: %{{$income->percentage}}
     
     </br></br> 

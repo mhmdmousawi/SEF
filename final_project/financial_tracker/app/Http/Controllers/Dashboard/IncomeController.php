@@ -70,9 +70,13 @@ class IncomeController extends Controller
 
     private function getTotalAmount($transactions)
     {
+        $user = Auth::user();
+        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
         $total_amount = 0 ;
         foreach($transactions as $transaction){
-            $total_amount+=$transaction->amount;
+            $amount_in_default_curr = ($transaction->amount*$default_currency_rate)
+                                            /($transaction->currency->amount_per_dollar);
+            $total_amount+=$amount_in_default_curr;
         }
         return $total_amount;
     }

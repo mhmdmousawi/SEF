@@ -58,6 +58,7 @@ class Profile extends Model
                 
                 if($ts_date >= $ss_date && $ts_date <= $se_date ){
                     $transaction->category;
+                    $transaction->currency;
                     $transaction->category->logo;
                     $transaction->repeat;
                     array_push($filtered_transactions, $transaction);
@@ -73,6 +74,7 @@ class Profile extends Model
                     if(($recurrent_start >= $ss_date) && ($recurrent_start <= $se_date)){
                         $transaction->start_date = $recurrent_start->format('Y-m-d');
                         $transaction->category;
+                        $transaction->currency;
                         $transaction->category->logo;
                         $transaction->repeat;
                         array_push($filtered_transactions, clone $transaction);
