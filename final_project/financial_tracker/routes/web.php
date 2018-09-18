@@ -20,13 +20,9 @@ Auth::routes();
 
 Route::group(['middleware' => 'auth'], function()
 {
-    // Route::get('/', function () {
-    //     return view('welcome');
-    // });
-
     // Dashboard Pages
     Route::get('/dashboard/overview', 'Dashboard\OverviewController@index');
-    Route::get('/dashboard/incomes/monthly', 'Dashboard\IncomeController@monthly' );
+    Route::get('/dashboard/incomes/monthly', 'Dashboard\IncomeController@monthly' )->name('/dashboard/incomes/monthly');
     Route::get('/dashboard/incomes/weekly', 'Dashboard\IncomeController@weekly' );
     Route::get('/dashboard/expenses', 'Dashboard\ExpenseController@index');
     Route::get('/dashboard/savings', 'Dashboard\SavingController@index');
@@ -39,7 +35,7 @@ Route::group(['middleware' => 'auth'], function()
 
     //Adding transactions Pages
     Route::get('/add/income', 'AddTransactionController@basic' );
-    Route::post('/add/income/details', 'AddTransactionController@details');
+    Route::post('/add/income/create', 'AddTransactionController@add');
 
     Route::get('/add/expense', function() {
         return 'Adding an expense transaction ' ;

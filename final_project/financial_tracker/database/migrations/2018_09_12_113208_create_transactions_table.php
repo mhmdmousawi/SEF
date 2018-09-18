@@ -24,7 +24,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('category_id')->unsigned();
             $table->integer('repeat_id')->unsigned();
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }
