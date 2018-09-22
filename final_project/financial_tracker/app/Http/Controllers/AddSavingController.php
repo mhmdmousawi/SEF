@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use DateTime;
 use DateInterval;
 use App\User;
+use Session;
 
 use App\CustomClasses\Calculator;
 
@@ -35,11 +36,9 @@ class AddSavingController extends Controller
             'category_id' => 'required|numeric',
             'repeat_id' => 'required|numeric|in:3,4',
             'start_date' => 'required|date',
-            'end_date' => 'nullable|date|after:start_date',
+            // 'end_date' => 'nullable|date|after:start_date',
         ]);
 
-        $isValid = true;
-        
         $goal_amount_tr = $request->goal_amount;
         $amount_tr = $request->amount;
         $currency_id = $request->currency_id;
@@ -52,26 +51,21 @@ class AddSavingController extends Controller
         $amount = $calculate->defaultAmount($amount_tr,$currency_id);
         $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
 
-
-
-        $goalValid = $this->goalValid($goal_amount,$due_date);
+        $isValid_goal = $this->goalValid($goal_amount,$due_date);
         $isValid_fequently = $this->frequentlyValid($amount,$start_date,$due_date,$repeat_id);
 
-        if($goalValid && $isValid_fequently){
-            return 'this saving is valid';
+
+        if($isValid_goal && $isValid_fequently){
+
+            $user->saving_validation = "valid"; 
+            $session_data = $request->all();
+            $session_data['end_date'] = $due_date;
+            Session::put('saving_valid', $session_data);
         }else{
-            return 'this saving is not valid';
+           $user->saving_validation = "invalid"; 
         }
 
-            
-            
-        $_SESSION['saving_valid'] = $request->all(); 
-        
-        if($_SESSION['saving_valid']){
-            unset($_SESSION['saving_valid']); 
-        }
-
-        return view('saving_add')->with('user',$user);
+        return view('saving_confirm')->with('user',$user);
     }
 
     public function goalValid($goal_amount,$due_date)
@@ -100,9 +94,14 @@ class AddSavingController extends Controller
             if($repeat_id == 3){
 
                 $week_overall_before_savings = $calculate->weekOverallCalculation($recurrent_save_date->format('Y-m-d'));
-                $week_overall_after_savings = $week_overall_before_savings - ($saving_number*$amount);
+                $amount_saved = $saving_number*$amount;
+                $week_overall_after_savings = $week_overall_before_savings - $amount_saved;
                 
-                if($amount > $week_overall_after_savings){
+                // echo "week_overall_before_savings: ". $week_overall_before_savings . "<br>";
+                // echo "week_overall_after_savings: ". $week_overall_after_savings . "<br>";
+                // echo "amount_saved: ". $amount_saved . "<br>";
+
+                if($amount > ($week_overall_after_savings+$amount)){
                     // echo "You can't afford it on week: ".$saving_number." <br>";
                     return false;
                 }else{
@@ -114,9 +113,14 @@ class AddSavingController extends Controller
             }else if($repeat_id == 4){
 
                 $month_overall_before_savings = $calculate->monthOverallCalculation($recurrent_save_date->format('Y-m-d'));
-                $month_overall_after_savings = $month_overall_before_savings - ($saving_number*$amount);
+                $amount_saved = $saving_number*$amount;
+                $month_overall_after_savings = $month_overall_before_savings - $amount_saved;
 
-                if($amount > $month_overall_after_savings){
+                // echo "month_overall_before_savings: ". $month_overall_before_savings . "<br>";
+                // echo "month_overall_after_savings: ". $month_overall_after_savings . "<br>";
+                // echo "amount_saved: ". $amount_saved . "<br>";
+
+                if($amount > ($month_overall_after_savings+$amount)){
                     // echo "You can't afford it on month: ".++$saving_number." <br>";
                     return false;
                 }else{
@@ -129,60 +133,38 @@ class AddSavingController extends Controller
         return true;
     }
 
-    public function cancelled()
+    
+    public function confirm(Request $request)
     {
-
-    }
-    public function confirmed(Request $request)
-    {
-        $calculate = new Calculator;
-        $goal_amount = $request->goal_amount;
-        $due_date = $request->end_date; 
-        $overall_balance = $calculate->overallCalculationUntil($due_date);
-        echo $overall_balance;
-
-        
-        if($overall_balance >= $goal_amount){
-            return 'valid Calculator';
-        }else{
-            return 'not valid Calculator';
-        }
-
         $user = Auth::user();
-        $transaction = new Transaction;
-        // $transaction->profile_id = $user->profile->id;
-        $transaction->amount = $request->amount;
-        // $transaction->type = "saving";
-        // $transaction->title = $request->title;
-        // $transaction->description = $request->description;
-        // $transaction->currency_id = $request->currency_id;
-        // $transaction->category_id = $request->category_id;
-        $transaction->repeat_id = $request->repeat_id;
-        $transaction->start_date = $request->start_date;
-        $transaction->end_date = $request->end_date;
-        
+        if(isset($request->confirm)){
+            if(Session::get('saving_valid')){
 
+                $session_data = Session::get('saving_valid');
+                $transaction = new Transaction;
+                $transaction->profile_id = $user->profile->id;
+                $transaction->amount = $session_data['amount'];
+                $transaction->type = "saving";
+                $transaction->title = $session_data['title'];
+                $transaction->description = $session_data['description'];
+                $transaction->currency_id = $session_data['currency_id'];
+                $transaction->category_id = $session_data['category_id'];
+                $transaction->repeat_id = $session_data['repeat_id'];
+                $transaction->start_date = $session_data['start_date'];
+                $transaction->end_date = $session_data['end_date'];
+                $transaction->save();
 
-        //test
-        //loop over all weeks or months 
-        $t_start_date = new DateTime($transaction->start_date);
-        $t_end_date = new DateTime($transaction->end_date);
-        $goal_amount = $transaction->amount;
-        $frequency_id = $request->repeat_id;
-        $overall_balance = $this->overallCalculation();
+                Session::forget('saving_valid');
 
-        echo $t_end_date->format('Y-m-d');
-
-        if($overall_balance >= $goal_amount){
-            return 'valid';
+            }
+        }else if(isset($request->cancel)){
+            return view('saving_add')->with('user',$user);
         }else{
-            return 'not valid';
+            return "Some Error Happened";
         }
-
-        // $transaction->save();
-
         
-        // return redirect('/dashboard/incomes/monthly');
+
+        return redirect('/dashboard/savings/monthly');
     }
 
     

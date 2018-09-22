@@ -3,9 +3,6 @@
 @section('content')
 
 <h3>Add Saving</h3>
-@if(isset($_SESSION['saving_valid']))
-    {{var_dump($_SESSION['saving_valid'])}}
-@endif
 
 <form action="{{config('app.url')}}/add/saving/validate" method="POST">
     @csrf
