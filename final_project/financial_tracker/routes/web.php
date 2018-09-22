@@ -39,7 +39,7 @@ Route::group(['middleware' => 'auth'], function()
 
     //Adding savings Pages
     Route::get('/add/saving', 'AddSavingController@index' );
-    Route::post('/add/saving/create', 'AddSavingController@create');
+    Route::post('/add/saving/validate', 'AddSavingController@validateSaving');
 
     Route::get('/add/expense', function() {
         return 'Adding an expense transaction ' ;

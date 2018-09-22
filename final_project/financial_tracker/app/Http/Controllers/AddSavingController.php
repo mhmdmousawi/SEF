@@ -23,30 +23,117 @@ class AddSavingController extends Controller
 
     public function validateSaving(Request $request)
     {
-        // $validatedData = $request->validate([
-        //     'amount' => 'required|max:255',
-        //     'title' => 'required|max:255',
-        //     'description' => 'required|max:255',
-        //     'currency_id' => 'required|numeric',
-        //     'category_id' => 'required|numeric',
-        //     'repeat_id' => 'required|numeric|in:3,4',
-        //     'start_date' => 'required|date|after:yesterday',
-        //     'end_date' => 'nullable|date|after:start_date',
-        // ]);
-
+        $user = Auth::user();
         $calculate = new Calculator;
-        $goal_amount = $request->goal_amount;
+
+        $validatedData = $request->validate([
+            'goal_amount' => 'required|max:255',
+            'amount' => 'required|max:255',
+            'title' => 'required|max:255',
+            'description' => 'required|max:255',
+            'currency_id' => 'required|numeric',
+            'category_id' => 'required|numeric',
+            'repeat_id' => 'required|numeric|in:3,4',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after:start_date',
+        ]);
+
+        $isValid = true;
+        
+        $goal_amount_tr = $request->goal_amount;
+        $amount_tr = $request->amount;
+        $currency_id = $request->currency_id;
+
+        $start_date = $request->start_date;
         $due_date = $request->end_date; 
+        $repeat_id = $request->repeat_id;
+        
+
+        //test due date calculation
+        $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
+
+        echo $due_date;
+        return;
+        
+        $goal_amount = $calculate->defaultAmount($goal_amount_tr,$currency_id);
+        $amount = $calculate->defaultAmount($amount_tr,$currency_id);
+
         $overall_balance = $calculate->overallCalculationUntil($due_date);
 
-        if($overall_balance >= $goal_amount){
-            return 'valid';
-        }else{
-            return 'not valid';
+        //$goal_amount should be positive 
+        $dif = $overall_balance - $goal_amount;
+
+        if($dif<0){
+            $isValid = false;
         }
+        
+        $isValid_fequently = $this->frequentlyValid($amount,$start_date,$due_date,$repeat_id);
+
+        if($isValid && $isValid_fequently){
+            return 'this saving is valid';
+        }else{
+            return 'this saving is not valid';
+        }
+
+            
+            
+        $_SESSION['saving_valid'] = $request->all(); 
+        
+        if($_SESSION['saving_valid']){
+            unset($_SESSION['saving_valid']); 
+        }
+
+        return view('saving_add')->with('user',$user);
     }
 
-    public function create(Request $request)
+    public function frequentlyValid($amount,$start_date,$end_date,$repeat_id)
+    {
+        $calculate = new Calculator;
+        $start_date = new DateTime($start_date);
+        $end_date = new DateTime($end_date);
+
+        $recurrent_save_date = $start_date;
+        $saving_number = 1;
+
+        while($recurrent_save_date <= $end_date){
+            //if weekly
+            if($repeat_id == 3){
+
+                $week_overall_before_savings = $calculate->weekOverallCalculation($recurrent_save_date->format('Y-m-d'));
+                $week_overall_after_savings = $week_overall_before_savings - ($saving_number*$amount);
+                
+                if($amount > $week_overall_after_savings){
+                    // echo "You can't afford it on week: ".$saving_number." <br>";
+                    return false;
+                }else{
+                    $saving_number++;
+                }
+                $recurrent_save_date = $recurrent_save_date->add(new DateInterval('P1W'));
+
+            //if monthly
+            }else if($repeat_id == 4){
+
+                $month_overall_before_savings = $calculate->monthOverallCalculation($recurrent_save_date->format('Y-m-d'));
+                $month_overall_after_savings = $month_overall_before_savings - ($saving_number*$amount);
+
+                if($amount > $month_overall_after_savings){
+                    // echo "You can't afford it on month: ".++$saving_number." <br>";
+                    return false;
+                }else{
+                    $saving_number++;
+                }
+                $recurrent_save_date = $recurrent_save_date->add(new DateInterval('P1M'));
+            } 
+        }
+        // echo "You can afford this saving <br>";
+        return true;
+    }
+
+    public function cancelled()
+    {
+
+    }
+    public function confirmed(Request $request)
     {
         $calculate = new Calculator;
         $goal_amount = $request->goal_amount;

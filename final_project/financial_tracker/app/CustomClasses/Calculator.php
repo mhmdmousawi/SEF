@@ -4,18 +4,31 @@ namespace App\CustomClasses;
 
 use Illuminate\Support\Facades\Auth;
 use App\Transaction;
+use App\Currency;
 use Carbon\Carbon;
 use DateTime;
 use DateInterval;
 
 class Calculator 
 {
+    public function defaultAmount($amount,$currency_id)
+    {
+        $user = Auth::user();
+        $currency = Currency::find($currency_id);
+        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
+        $amount_in_default_curr = ($amount*$default_currency_rate)
+                                        /($currency->amount_per_dollar);
+        return $amount_in_default_curr;
+    }
+
     public function weekOverallCalculation($week_start_date)
     {
         $carbon_date = Carbon::createFromFormat('Y-m-d',$week_start_date);
         $start_current_week = clone $carbon_date->startOfWeek();
         $end_current_week = clone $carbon_date->endOfWeek();
-        $overall_amount = $this->overallCalculationWithin($start_current_week,$end_current_week);
+        $week_overall = $this->overallCalculationWithin($start_current_week,$end_current_week);
+        $balance_until_week_start = $this->overallCalculationUntil($start_current_week->subDays(1));
+        $overall_amount = $balance_until_week_start + $week_overall;
 
         return $overall_amount;
     }
@@ -25,7 +38,9 @@ class Calculator
         $carbon_date = Carbon::createFromFormat('Y-m-d',$month_start_date);
         $start_current_month = clone $carbon_date->startOfMonth();
         $end_current_month = clone $carbon_date->endOfMonth();
-        $overall_amount = $this->overallCalculationWithin($start_current_month,$end_current_month);
+        $month_overall = $this->overallCalculationWithin($start_current_month,$end_current_month);
+        $balance_until_month_start = $this->overallCalculationUntil($start_current_month->subDays(1));
+        $overall_amount = $balance_until_month_start + $month_overall;
 
         return $overall_amount;
         
@@ -61,11 +76,11 @@ class Calculator
         $transactions_income = json_decode($transactions_income);
         $total_amount_income = $this->getTotalAmount($transactions_income);
 
-        $transactions_expense = $profile->transactionsWithTypeAndRepeat($date,"expense");
+        $transactions_expense = $profile->transactionsWithTypeAndRepeatUntil($date,"expense");
         $transactions_expense = json_decode($transactions_expense);
         $total_amount_expense = $this->getTotalAmount($transactions_expense);
 
-        $transactions_saving = $profile->transactionsWithTypeAndRepeat($date,"saving");
+        $transactions_saving = $profile->transactionsWithTypeAndRepeatUntil($date,"saving");
         $transactions_saving = json_decode($transactions_saving);
         $total_amount_saving = $this->getTotalAmount($transactions_saving);
 
@@ -119,5 +134,24 @@ class Calculator
             $total_amount+=$amount_in_default_curr;
         }
         return $total_amount;
+    }
+
+    public function dueDate($goal_amount,$amount,$start_date,$repeat_id)
+    {
+        $reccurent_date = Carbon::createFromFormat('Y-m-d',$start_date);
+        $added_amouunt = $amount;
+
+        while($added_amouunt < $goal_amount){
+
+            $reccurent_date = $reccurent_date->addDayes(7);
+            $added_amouunt += $amount;
+            if($repeat_id == 3){
+
+            }else if($repeat_id == 4){
+
+            }
+        }
+        
+
     }
 }

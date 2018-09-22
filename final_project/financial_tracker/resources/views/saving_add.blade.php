@@ -3,8 +3,11 @@
 @section('content')
 
 <h3>Add Saving</h3>
+@if(isset($_SESSION['saving_valid']))
+    {{var_dump($_SESSION['saving_valid'])}}
+@endif
 
-<form action="{{config('app.url')}}/add/saving/create" method="POST">
+<form action="{{config('app.url')}}/add/saving/validate" method="POST">
     @csrf
     <input name='goal_amount' placeholder="Goal Amount"/>
     <input name='amount' placeholder="Amount"/>
