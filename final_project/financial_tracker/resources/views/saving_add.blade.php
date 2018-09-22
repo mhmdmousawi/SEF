@@ -18,7 +18,6 @@
         <input type='text' name='description' placeholder="description"/>
         <input type='date' name='start_date'/>
         Saving Fequency:<input type='text' name='repeat_id' placeholder="repeat_id"/>
-        <input type='date' name='end_date'/>
     </div>
 
     {{-- On Clicking 'Next' we submit form   --}}

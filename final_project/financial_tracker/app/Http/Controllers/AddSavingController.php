@@ -42,10 +42,8 @@ class AddSavingController extends Controller
         $goal_amount_tr = $request->goal_amount;
         $amount_tr = $request->amount;
         $currency_id = $request->currency_id;
-
-        $start_date = $request->start_date;
-        // $due_date = $request->end_date; 
         $repeat_id = $request->repeat_id;
+        $start_date = $request->start_date;
 
         $goal_amount = $calculate->defaultAmount($goal_amount_tr,$currency_id);
         $amount = $calculate->defaultAmount($amount_tr,$currency_id);

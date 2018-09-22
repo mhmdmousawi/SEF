@@ -42,14 +42,7 @@ Route::group(['middleware' => 'auth'], function()
     Route::post('/add/saving/validate', 'AddSavingController@validateSaving');
     Route::post('/add/saving/confirm', 'AddSavingController@confirm');
 
-    Route::get('/add/expense', function() {
-        return 'Adding an expense transaction ' ;
-    } );
-
-
-    // Route::get('/add/saving/validate', function() {
-    //     return 'Saving Validation ' ;
-    // } );
+    
 
     //Adding Category
     Route::get('/add/category', function() {
