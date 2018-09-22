@@ -142,16 +142,13 @@ class Calculator
         $added_amouunt = $amount;
 
         while($added_amouunt < $goal_amount){
-
-            $reccurent_date = $reccurent_date->addDayes(7);
             $added_amouunt += $amount;
             if($repeat_id == 3){
-
+                $reccurent_date = $reccurent_date->addWeeks(1);
             }else if($repeat_id == 4){
-
+                $reccurent_date = $reccurent_date->addMonths(1);
             }
         }
-        
-
+        return $reccurent_date->format('Y-m-d');
     }
 }

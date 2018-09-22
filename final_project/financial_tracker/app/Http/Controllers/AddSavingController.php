@@ -45,31 +45,19 @@ class AddSavingController extends Controller
         $currency_id = $request->currency_id;
 
         $start_date = $request->start_date;
-        $due_date = $request->end_date; 
+        // $due_date = $request->end_date; 
         $repeat_id = $request->repeat_id;
-        
 
-        //test due date calculation
-        $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
-
-        echo $due_date;
-        return;
-        
         $goal_amount = $calculate->defaultAmount($goal_amount_tr,$currency_id);
         $amount = $calculate->defaultAmount($amount_tr,$currency_id);
+        $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
 
-        $overall_balance = $calculate->overallCalculationUntil($due_date);
 
-        //$goal_amount should be positive 
-        $dif = $overall_balance - $goal_amount;
 
-        if($dif<0){
-            $isValid = false;
-        }
-        
+        $goalValid = $this->goalValid($goal_amount,$due_date);
         $isValid_fequently = $this->frequentlyValid($amount,$start_date,$due_date,$repeat_id);
 
-        if($isValid && $isValid_fequently){
+        if($goalValid && $isValid_fequently){
             return 'this saving is valid';
         }else{
             return 'this saving is not valid';
@@ -84,6 +72,18 @@ class AddSavingController extends Controller
         }
 
         return view('saving_add')->with('user',$user);
+    }
+
+    public function goalValid($goal_amount,$due_date)
+    {
+        $calculate = new Calculator;
+        $overall_balance = $calculate->overallCalculationUntil($due_date);
+        $dif = $overall_balance - $goal_amount;
+
+        if($dif<0){
+            return false;
+        }
+        return true;
     }
 
     public function frequentlyValid($amount,$start_date,$end_date,$repeat_id)
