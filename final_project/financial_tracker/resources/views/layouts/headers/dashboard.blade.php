@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/charts.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="https://fonts.gstatic.com">
@@ -23,6 +24,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    {{-- Chat.js --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
     
 
 </head>
@@ -39,7 +43,7 @@
                 <li class="nav-item dropdown show ">
                     <a class="nav-link dropdown-toggle navbar-brand" href="https://example.com" 
                         data-toggle="dropdown" aria-expanded="true">
-                        <span class="glyphicon glyphicon-plus-sign"></span> 
+                        {{-- <span class="glyphicon glyphicon-plus-sign"></span>--}}Add
                     </a>
                     <div class="dropdown-menu" >
                         <a class="dropdown-item" href="{{config('app.url')}}/add/transaction">Transaction</a>

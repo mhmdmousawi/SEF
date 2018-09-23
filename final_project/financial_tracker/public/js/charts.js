@@ -1,0 +1,84 @@
+var COLORS = {
+    colors : [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)'
+    ],
+    border_colors : [
+        'rgba(255,99,132,1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)'
+    ],
+}
+
+var ELEMENTS = {
+    no_data : document.getElementById('no_data'),
+    stat_chart : document.getElementById('stat_chart'),
+    stat_lables : document.getElementById('stat_lables'),
+    stat_data : document.getElementById('stat_data'),
+    chart_type : document.getElementById('chart_type'),
+}
+
+var CHART = {
+    ctx : ELEMENTS.stat_chart.getContext('2d'),
+    my_labels : ELEMENTS.stat_lables.value,
+    my_data : ELEMENTS.stat_data.value,
+    my_labels_array : [],
+    my_data_array : [],
+    my_chart_type : ELEMENTS.chart_type.value,
+    my_chart_data : {},
+    my_char_options: {},
+
+    setUp : function (){
+        this.my_labels_array = this.my_labels.split(",");
+        this.my_data_array = this.my_data.split(",");
+        this.my_chart_data = {
+            labels: this.my_labels_array,
+            datasets: [{
+                label: '# of Votes',
+                data: this.my_data_array,
+                backgroundColor: COLORS.colors,
+                borderColor: COLORS.border_colors,
+                borderWidth: 1
+            }]
+        };
+        if(this.my_chart_type == "bar"){
+            this.my_char_options = {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                }
+            };
+        }
+    },
+    init : function(){
+        this.setUp();
+        
+
+        if(this.my_labels_array === undefined || this.my_labels_array.length == 0){
+            ELEMENTS.stat_chart.style.display="none";
+            ELEMENTS.no_data.setAttribute('type','text');
+        }else{
+            var myChart = new Chart(this.ctx, {
+                type: this.my_chart_type,
+                data: this.my_chart_data,
+                options: this.my_char_options,
+            });
+        }
+        
+        
+    }
+}
+window.addEventListener('load',function(){
+    chart = Object.create(CHART);
+    chart.init();   
+});

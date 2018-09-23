@@ -16,6 +16,7 @@ class IncomeController extends Controller
         $end_current_month = Carbon::now()->endOfMonth();
 
         $user = $this->customDuration($user,$start_current_month,$end_current_month);
+
         return view('dashboard.incomes')->with('user',$user);
     }
 
@@ -37,6 +38,24 @@ class IncomeController extends Controller
                                             $end_duration,
                                             "income");
         $transactions =  json_decode($transactions);
+
+        // add categories calculation
+        $grouped_categories = array();
+        $category_title = array();
+        $category_counts = array();
+        $category_info = array();
+
+        foreach ($transactions as $transaction) {
+            $grouped_categories[$transaction->category->title][] = $transaction->category;
+        }
+        foreach($grouped_categories as $key => $category){
+            array_push($category_title,$key);
+            array_push($category_counts,count($grouped_categories[$key]));
+        }
+        array_push($category_info,$category_title);
+        array_push($category_info,$category_counts);
+        $user->stat_categories_info = $category_info;
+
         $user->expanded_incomes = $transactions;
 
         $total_amount = $this->getTotalAmount($transactions);
@@ -50,7 +69,7 @@ class IncomeController extends Controller
                                     $end_duration,
                                     $total_amount);
         $user->daily_average = $daily_average;
-        
+
         return $user;
     }
 

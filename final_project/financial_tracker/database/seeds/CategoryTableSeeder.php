@@ -16,11 +16,12 @@ class CategoryTableSeeder extends Seeder
             $category->profile_id = 1;
             if($i <5){
                 $category->type = 'income';
+                $category->logo_id = 1;
             }else{
                 $category->type = 'expense';
+                $category->logo_id = 2;
             }
             $category->title = 'Category Title';
-            $category->logo_id = 1;
             $category->save();  
         }
     }

@@ -17,13 +17,14 @@ class TransactionTableSeeder extends Seeder
             $transaction->title = "Title Test"; 
             if($i <5){
                 $transaction->type = 'income';
+                $transaction->category_id = 1;
             }else{
                 $transaction->type = 'expense';
+                $transaction->category_id = 2;
             }
             $transaction->description = "This is an example on income description";
             $transaction->amount = 200;
             $transaction->currency_id = 1;
-            $transaction->category_id = 1;
             $transaction->repeat_id = 1;
             $transaction->start_date = date_create("2018-9-13");
             $transaction->end_date = date_create("2018-10-13");
