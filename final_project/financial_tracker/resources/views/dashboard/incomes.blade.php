@@ -4,12 +4,17 @@
 
 <h3>Incomes</h3>
 
-<canvas type="hidden" id="stat_chart"></canvas>
+<input type='button' name="pie" id="chart_pie" value="Pie"/>
+<input type='button' name="bar" id="chart_bar" value="Bar"/>
+<div id="chart_div">
+    <canvas id="stat_chart"></canvas>
+</div>
+
 <p type="hidden" id="no_data" value="No Data to Display">No Data to Display</p>
 <input type="hidden" id="stat_lables" value="{{ implode(',', $user->stat_categories_info[0] )}}"/>
 <input type="hidden" id="stat_data" value="{{ implode(',', $user->stat_categories_info[1] )}}"/>
 
-<input type="hidden" id= "chart_type" value="pie"/>
+<input type="hidden" id= "chart_type" value="bar"/>
 
 
 </br>

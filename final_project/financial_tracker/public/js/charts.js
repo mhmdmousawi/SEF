@@ -23,6 +23,9 @@ var ELEMENTS = {
     stat_lables : document.getElementById('stat_lables'),
     stat_data : document.getElementById('stat_data'),
     chart_type : document.getElementById('chart_type'),
+    chart_pie : document.getElementById('chart_pie'),
+    chart_bar : document.getElementById('chart_bar'),
+    chart_div : document.getElementById('chart_div'),
 }
 
 var CHART = {
@@ -34,6 +37,8 @@ var CHART = {
     my_chart_type : ELEMENTS.chart_type.value,
     my_chart_data : {},
     my_char_options: {},
+    my_chart_attr : {},
+    my_chart : {},
 
     setUp : function (){
         this.my_labels_array = this.my_labels.split(",");
@@ -41,7 +46,7 @@ var CHART = {
         this.my_chart_data = {
             labels: this.my_labels_array,
             datasets: [{
-                label: '# of Votes',
+                label: '# of Transactions',
                 data: this.my_data_array,
                 backgroundColor: COLORS.colors,
                 borderColor: COLORS.border_colors,
@@ -58,27 +63,54 @@ var CHART = {
                     }]
                 }
             };
+        }else{
+            this.my_char_options = {};
         }
+    },
+    changeTo : function(type){
+        ELEMENTS.chart_div.innerHTML = "";
+        let new_canvas = document.createElement("canvas");
+        new_canvas.setAttribute('id', "stat_chart");
+        ELEMENTS.chart_div.appendChild(new_canvas);
+        this.ctx = new_canvas.getContext('2d');
+        this.my_chart_type = type;
+        this.init();
+    },
+    changeType : function(btn){
+        if(btn.name == "bar"){
+            this.changeTo("bar");
+        }else if(btn.name == "pie"){
+            this.changeTo("pie");
+        }else{
+            console.log("Don't mess with html elements..");
+        }
+    },
+    addEvents(){
+        ELEMENTS.chart_bar.addEventListener('click',this.changeType.bind(this,ELEMENTS.chart_bar));
+        ELEMENTS.chart_pie.addEventListener('click',this.changeType.bind(this,ELEMENTS.chart_pie));
     },
     init : function(){
         this.setUp();
         
-
         if(this.my_labels_array === undefined || this.my_labels_array.length == 0){
             ELEMENTS.stat_chart.style.display="none";
-            ELEMENTS.no_data.setAttribute('type','text');
         }else{
-            var myChart = new Chart(this.ctx, {
+
+            ELEMENTS.no_data.style.display="none";
+            this.my_chart_attr = {
                 type: this.my_chart_type,
                 data: this.my_chart_data,
                 options: this.my_char_options,
-            });
+            };
+            this.my_chart = new Chart(this.ctx, this.my_chart_attr);
+            
         }
-        
-        
     }
 }
+
 window.addEventListener('load',function(){
     chart = Object.create(CHART);
+    chart.addEvents();
     chart.init();   
+ 
 });
