@@ -34,7 +34,7 @@ var CHART = {
     my_data : ELEMENTS.stat_data.value,
     my_labels_array : [],
     my_data_array : [],
-    my_chart_type : ELEMENTS.chart_type.value,
+    my_chart_type : "bar",
     my_chart_data : {},
     my_char_options: {},
     my_chart_attr : {},
