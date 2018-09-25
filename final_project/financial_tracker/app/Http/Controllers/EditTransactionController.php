@@ -50,7 +50,6 @@ class EditTransactionController extends Controller
         }
 
         if($edit_type == "future"){
-
             $new_transaction = new Transaction;
             $new_transaction->profile_id = $transaction->profile_id; //same
             $new_transaction->amount = $request->amount;
@@ -72,19 +71,15 @@ class EditTransactionController extends Controller
             return $this->redirection($transaction);
 
         }else if($edit_type == "all"){
-
             $transaction->amount = $request->amount;
             $transaction->title = $request->title;
             $transaction->description = $request->description;
             $transaction->currency_id = $request->currency_id;
             $transaction->save();
-
             return $this->redirection($transaction);
-
         }else{
             return "404 page";
         }
-
     }
 
     public function redirection($transaction)

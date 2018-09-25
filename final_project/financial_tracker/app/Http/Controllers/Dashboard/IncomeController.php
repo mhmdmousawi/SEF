@@ -6,28 +6,72 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Session;
 
 class IncomeController extends Controller
 {
-    public function monthly()
+    public function index()
+    {
+        // Session::forget('time_filter');
+        if(!Session::get('time_filter')){
+            $now = date("Y-m-d");
+            $this->setTimeFilter($now);
+            // $this->setTimeFilter("2018-10-1");
+        }
+
+        $time_filter = Session::get('time_filter');
+        $type_filter = $time_filter['type_filter'];
+        $date_filter = $time_filter['date_filter'];
+
+        if($type_filter == 'weekly'){
+            return $this->weekly($date_filter)->with('dashboard_type','incomes');
+        }else if($type_filter == 'monthly'){
+            return $this->monthly($date_filter)->with('dashboard_type','incomes');
+        }else if( $type_filter == 'yearly'){
+            return $this->yearly($date_filter)->with('dashboard_type','incomes');
+            // return "Page under construction";
+        }
+    }
+    private function setTimeFilter($date)
+    {
+        $type_filter = "monthly";
+        $date_filter = $date;
+
+        $time_filter = [
+            'type_filter' => $type_filter,
+            'date_filter' => $date_filter
+        ];
+        Session::put('time_filter', $time_filter);
+    }
+
+    public function weekly($date)
     {
         $user = Auth::user();
-        $start_current_month = Carbon::now()->startOfMonth();
-        $end_current_month = Carbon::now()->endOfMonth();
-
-        $user = $this->customDuration($user,$start_current_month,$end_current_month);
-
+        $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
+        $start_current_week = clone $carbon_date->startOfWeek();
+        $end_current_week = clone $carbon_date->endOfWeek();
+        $user = $this->customDuration($user,$start_current_week,$end_current_week);
         return view('dashboard.incomes')->with('user',$user);
     }
 
-    public function weekly()
+    public function monthly($date)
     {
         $user = Auth::user();
-        $start_current_week = Carbon::now()->startOfWeek();
-        $end_current_week = Carbon::now()->endOfWeek();
-
-        $user = $this->customDuration($user,$start_current_week,$end_current_week);
+        $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
+        $start_current_month = clone $carbon_date->startOfMonth();
+        $end_current_month = clone $carbon_date->endOfMonth();
+        $user = $this->customDuration($user,$start_current_month,$end_current_month);
         return view('dashboard.incomes')->with('user',$user);
+    }
+
+    public function yearly($date)
+    {
+        $user = Auth::user();
+        $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
+        $start_current_year = clone $carbon_date->startOfYear();
+        $end_current_year = clone $carbon_date->endOfYear();
+        $user = $this->customDuration($user,$start_current_year,$end_current_year);
+        return view('dashboard.incomes')->with('user',$user);   
     }
 
     private function customDuration($user,$start_duration,$end_duration)
@@ -39,7 +83,29 @@ class IncomeController extends Controller
                                             "income");
         $transactions =  json_decode($transactions);
 
-        // add categories calculation
+        $user->stat_categories_info = $this->getCategoriesInfo($user,$transactions);
+        
+
+        $user->expanded_incomes = $transactions;
+
+        $total_amount = $this->getTotalAmount($user,$transactions);
+        $user->total_amount = $total_amount;
+
+        $this->addPercentages(
+                    $user,
+                    $user->expanded_incomes,
+                    $total_amount);
+        $daily_average = $this->getDailyAverage(
+                                    $start_duration,
+                                    $end_duration,
+                                    $total_amount);
+        $user->daily_average = $daily_average;
+
+        return $user;
+    }
+
+    private function getCategoriesInfo($user,$transactions)
+    {
         $grouped_categories = array();
         $category_title = array();
         $category_counts = array();
@@ -54,23 +120,8 @@ class IncomeController extends Controller
         }
         array_push($category_info,$category_title);
         array_push($category_info,$category_counts);
-        $user->stat_categories_info = $category_info;
 
-        $user->expanded_incomes = $transactions;
-
-        $total_amount = $this->getTotalAmount($transactions);
-        $user->total_amount = $total_amount;
-
-        $this->addPercentages(
-                    $user->expanded_incomes,
-                    $total_amount);
-        $daily_average = $this->getDailyAverage(
-                                    $start_duration,
-                                    $end_duration,
-                                    $total_amount);
-        $user->daily_average = $daily_average;
-
-        return $user;
+        return $category_info;
     }
 
     private function getDailyAverage($start_date,$end_date,$amount)
@@ -80,9 +131,9 @@ class IncomeController extends Controller
         return $average;
     }
 
-    private function addPercentages($transactions,$total_amount)
+    private function addPercentages($user,$transactions,$total_amount)
     {
-        $default_currency_rate = Auth::user()->profile->defaultCurrency->amount_per_dollar;
+        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
 
         foreach($transactions as $transaction){
             //need edit
@@ -93,9 +144,8 @@ class IncomeController extends Controller
         }
     }
 
-    private function getTotalAmount($transactions)
+    private function getTotalAmount($user ,$transactions)
     {
-        $user = Auth::user();
         $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
         $total_amount = 0 ;
         foreach($transactions as $transaction){

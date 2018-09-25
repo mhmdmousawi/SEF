@@ -43,12 +43,12 @@ class AddTransactionController extends Controller
         $transaction->save();
 
         if($request->type == "income"){
-            return redirect('/dashboard/incomes/monthly');
+            return redirect('/dashboard/incomes');
         }else if ($request->type == "expense"){
-            return redirect('/dashboard/expenses/monthly');
+            return redirect('/dashboard/expenses');
         }
 
-        return redirect('/dashboard/overview/monthly');
+        return redirect('/dashboard/overview');
 
     }
 }

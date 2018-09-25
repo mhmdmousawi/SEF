@@ -1,65 +1,50 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/charts.js') }}" defer></script>
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet" type="text/css">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    {{-- Chat.js --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    
-
-</head>
-<body>
         
-    <nav class="navbar navbar-inverse fixed-top navbar-expand-lg">
-        <div class="container">
-            <div class="nav navbar-nav navbar-left">
-                <a class="navbar-brand" href="{{config('app.url')}}/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+@extends('layouts.headers.main_header')
+
+@section('content')
+<!-- Modal -->
+<div class="modal fade" id="time_filter_modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title"> Dashboard Type: {{ $dashboard_type }}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
-            <ul class="nav navbar-nav navbar-center">
-                <li class= "active"><a class="navbar-brand" href="{{config('app.url')}}/dashboard/overview">Dashboard</a></li>&nbsp;&nbsp;&nbsp;
-                <li class="nav-item dropdown show ">
-                    <a class="nav-link dropdown-toggle navbar-brand" href="https://example.com" 
-                        data-toggle="dropdown" aria-expanded="true">
-                        {{-- <span class="glyphicon glyphicon-plus-sign"></span>--}}Add
-                    </a>
-                    <div class="dropdown-menu" >
-                        <a class="dropdown-item" href="{{config('app.url')}}/add/transaction">Transaction</a>
-                        <a class="dropdown-item" href="{{config('app.url')}}/add/saving">Saving Plan</a>
-                        <a class="dropdown-item" href="#">Smart Plan</a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a class="navbar-brand"  href="#"><span class="glyphicon glyphicon-calendar"></span> Calender</a></li>
-            </ul>
-        </div>
-    </nav> 
 
-    <div class="container">
-        @yield('content')
+            <form action="{{config('app.url')}}/dashboard/change/filter" method="POST">
+                @csrf
+
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                    <input type="text" name="type_filter" value="{{Session::get('time_filter')['type_filter']}}"/>
+                    <input type="text" name="date_filter" value="{{Session::get('time_filter')['date_filter']}}"/>
+                    <input type="hidden" name="dashboard_type" value="{{ $dashboard_type }}"/>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Ok</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
     </div>
-</body>
-</html>
+</div>
+
+<div class="dashboard_nav">
+    <a href="{{config('app.url')}}/dashboard/overview" >Overview </a> |
+    <a href="{{config('app.url')}}/dashboard/incomes" >Incomes </a> |
+    <a href="{{config('app.url')}}/dashboard/expenses" >Expenses </a> |
+    <a href="{{config('app.url')}}/dashboard/savings" >Savings </a> 
+</div>
+<div class="time_filter_info">
+    <p>This is a {{Session::get('time_filter')['type_filter']}} representation</p>
+</div>
+    
+    {{-- <div class="container"> --}}
+        @yield('content_dashboard')
+    {{-- </div> --}}
+
+@endsection
+

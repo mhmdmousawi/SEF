@@ -1,6 +1,6 @@
 @extends('layouts.headers.dashboard')
 
-@section('content')
+@section('content_dashboard')
 
 <h3>Incomes</h3>
 
