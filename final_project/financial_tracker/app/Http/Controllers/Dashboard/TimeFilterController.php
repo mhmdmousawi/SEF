@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Session;
 
 class TimeFilterController extends Controller
@@ -16,7 +15,7 @@ class TimeFilterController extends Controller
         $validatedData = $request->validate([
             'type_filter' => 'required|in:weekly,monthly,yearly',
             'date_filter' => 'required|date',
-            'dashboard_type' => 'required|in:overview,incomes,expenses,savings'
+            'dashboard_type' => 'required|in:overview,income,expense,saving'
         ]);
 
         $type_filter = $request->type_filter;
@@ -31,11 +30,11 @@ class TimeFilterController extends Controller
     {
         if($dashboard_type == "overview"){
             return redirect('/dashboard/overview');
-        }else if($dashboard_type == "incomes"){
+        }else if($dashboard_type == "income"){
             return redirect('/dashboard/incomes');
-        }else if($dashboard_type == "expenses"){
+        }else if($dashboard_type == "expense"){
             return redirect('/dashboard/expenses');
-        }else if($dashboard_type == "savings"){
+        }else if($dashboard_type == "saving"){
             return redirect('/dashboard/savings');
         }else{
             return "404 page not found";

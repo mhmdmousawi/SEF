@@ -167,7 +167,7 @@ class Profile extends Model
                 $recurrent_start = $ts_date;
                 $recurrent_end = $te_date;
 
-                while($recurrent_start < $recurrent_end){
+                while($recurrent_start <= $recurrent_end){
 
                     if(($recurrent_start >= $ss_date) && ($recurrent_start <= $se_date)){
                         $transaction->start_date = $recurrent_start->format('Y-m-d');

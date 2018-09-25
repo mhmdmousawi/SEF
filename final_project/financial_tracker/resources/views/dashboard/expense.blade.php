@@ -2,7 +2,7 @@
 
 @section('content_dashboard')
 
-<h3>Incomes</h3>
+<h3>Expenses</h3>
 
 <input type='button' name="pie" id="chart_pie" value="Pie"/>
 <input type='button' name="bar" id="chart_bar" value="Bar"/>
@@ -19,18 +19,18 @@
 
 </br>
 
-Number of Transactions: {{count($user->expanded_incomes)}}</br>
+Number of Transactions: {{count($user->expanded_transactions)}}</br>
 
 total amount: {{$user->profile->defaultCurrency->code}} {{$user->total_amount}}</br>
 daily average: {{$user->profile->defaultCurrency->code}} {{$user->daily_average}}</br>
 </br></br> 
-{{-- {{$user->incomes}} --}}
-@foreach(($user->expanded_incomes) as $income)
+
+@foreach(($user->expanded_transactions) as $income)
 
     <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
         <h5>transaction here of id: {{$income->id}}</h5>
     </a>
-    Income Title: {{$income->title}}</br>
+    Expense Title: {{$income->title}}</br>
     Category: {{$income->category->title}}</br>
     Logo: {{$income->category->logo->class_name}}</br>
     repeat type:{{$income->repeat->type}}</br>
@@ -42,6 +42,6 @@ daily average: {{$user->profile->defaultCurrency->code}} {{$user->daily_average}
     </br></br> 
 
 @endforeach
-{{-- {{$user->profile->incomes}} --}}
 
 @endsection
+

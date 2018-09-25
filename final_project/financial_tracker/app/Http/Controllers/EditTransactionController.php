@@ -17,6 +17,10 @@ class EditTransactionController extends Controller
         if(!$transaction){
            return '404 page';
         }
+        if($transaction->type == "saving"){
+            return "Please don't try injections .. :) ";
+        }
+        
         return view('transaction_edit')->with('transaction',$transaction);
     }
 
@@ -36,6 +40,9 @@ class EditTransactionController extends Controller
 
         if(!$transaction){
             return '404 page';
+        }
+        if($transaction->type == "saving"){
+            return "Please don't try injections .. :) ";
         }
 
         $t_end_date = new DateTime($transaction->end_date);

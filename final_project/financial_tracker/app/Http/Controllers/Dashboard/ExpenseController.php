@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Dashboard;
 
-use App\Http\Controllers\Controller;
+use App\Http\Controllers\Dashboard\DashboardController;
 use Illuminate\Http\Request;
 
-class ExpenseController extends Controller
+class ExpenseController extends DashboardController
 {
-    public function index()
-    {
-        return view('dashboard.expenses');
+    public function index(){
+        parent::setDashboardType('expense');
+        return parent::viewfilteredBySessionTime();
     }
 }
