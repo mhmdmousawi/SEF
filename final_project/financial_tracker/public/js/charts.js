@@ -46,7 +46,7 @@ var CHART = {
         this.my_chart_data = {
             labels: this.my_labels_array,
             datasets: [{
-                label: '# of Transactions',
+                label: 'Amount per Category',
                 data: this.my_data_array,
                 backgroundColor: COLORS.colors,
                 borderColor: COLORS.border_colors,

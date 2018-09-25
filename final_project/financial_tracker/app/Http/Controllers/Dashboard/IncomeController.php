@@ -108,18 +108,24 @@ class IncomeController extends Controller
     {
         $grouped_categories = array();
         $category_title = array();
-        $category_counts = array();
+        $category_amounts = array();
         $category_info = array();
 
         foreach ($transactions as $transaction) {
-            $grouped_categories[$transaction->category->title][] = $transaction->category;
+            $grouped_categories[$transaction->category->title][] = $transaction->amount;
         }
+
         foreach($grouped_categories as $key => $category){
+
+            $cat_total_amount = 0;
+            foreach($grouped_categories[$key] as $key1 => $amount){
+                $cat_total_amount += $amount;
+            }
             array_push($category_title,$key);
-            array_push($category_counts,count($grouped_categories[$key]));
+            array_push($category_amounts,$cat_total_amount);
         }
         array_push($category_info,$category_title);
-        array_push($category_info,$category_counts);
+        array_push($category_info,$category_amounts);
 
         return $category_info;
     }

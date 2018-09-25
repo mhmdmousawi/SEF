@@ -13,12 +13,11 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
 
-
             <form action="{{config('app.url')}}/dashboard/change/filter" method="POST">
                 @csrf
 
                 <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                    <p>Choose the date you would like to represent the date in, and the type of presentation: </p>
                     <input type="text" name="type_filter" value="{{Session::get('time_filter')['type_filter']}}"/>
                     <input type="text" name="date_filter" value="{{Session::get('time_filter')['date_filter']}}"/>
                     <input type="hidden" name="dashboard_type" value="{{ $dashboard_type }}"/>
