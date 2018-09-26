@@ -1,4 +1,5 @@
 @extends('layouts.headers.dashboard')
+<script src="{{ asset('js/charts.js') }}" defer></script>
 
 @section('content_dashboard')
 
@@ -8,7 +9,7 @@
 <input type='button' name="bar" id="chart_bar" value="Bar"/>
 <div class="statistics">
     <div id="chart_div">
-        <canvas id="stat_chart"></canvas>
+        <canvas id="chart_canvas"></canvas>
     </div>
     <p type="hidden" id="no_data" value="No Data to Display">No Data to Display</p>
     <input type="hidden" id="stat_lables" value="{{ implode(',', $user->stat_categories_info[0] )}}"/>

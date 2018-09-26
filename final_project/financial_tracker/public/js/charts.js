@@ -19,17 +19,28 @@ var COLORS = {
 
 var ELEMENTS = {
     no_data : document.getElementById('no_data'),
-    stat_chart : document.getElementById('stat_chart'),
+    chart_canvas : document.getElementById('chart_canvas'),
     stat_lables : document.getElementById('stat_lables'),
     stat_data : document.getElementById('stat_data'),
     chart_type : document.getElementById('chart_type'),
     chart_pie : document.getElementById('chart_pie'),
     chart_bar : document.getElementById('chart_bar'),
     chart_div : document.getElementById('chart_div'),
+
+    //for overview
+    chart_canvas_income : document.getElementById('chart_canvas_income'),
+    stat_lables_income : document.getElementById('stat_lables_income'),
+    stat_data_income : document.getElementById('stat_data_income'),
+    chart_type_income : document.getElementById('chart_type_income'),
+    chart_pie_income : document.getElementById('chart_pie_income'),
+    chart_bar_income : document.getElementById('chart_bar_income'),
+    chart_div_income : document.getElementById('chart_div_income'),
+
+    
 }
 
 var CHART = {
-    ctx : ELEMENTS.stat_chart.getContext('2d'),
+    ctx : ELEMENTS.chart_canvas.getContext('2d'),
     my_labels : ELEMENTS.stat_lables.value,
     my_data : ELEMENTS.stat_data.value,
     my_labels_array : [],
@@ -70,7 +81,7 @@ var CHART = {
     changeTo : function(type){
         ELEMENTS.chart_div.innerHTML = "";
         let new_canvas = document.createElement("canvas");
-        new_canvas.setAttribute('id', "stat_chart");
+        new_canvas.setAttribute('id', "chart_canvas");
         ELEMENTS.chart_div.appendChild(new_canvas);
         this.ctx = new_canvas.getContext('2d');
         this.my_chart_type = type;
@@ -93,7 +104,7 @@ var CHART = {
         this.setUp();
         
         if(this.my_labels_array === undefined || this.my_labels_array.length == 0){
-            ELEMENTS.stat_chart.style.display="none";
+            ELEMENTS.chart_canvas.style.display="none";
         }else{
 
             ELEMENTS.no_data.style.display="none";
@@ -108,9 +119,15 @@ var CHART = {
     }
 }
 
+
+
 window.addEventListener('load',function(){
     chart = Object.create(CHART);
     chart.addEvents();
-    chart.init();   
+    chart.init();
+
+    // chart_income = Object.create(CHART_INCOME);
+    // chart_income.addEvents();
+    // chart_income.init();  
  
 });

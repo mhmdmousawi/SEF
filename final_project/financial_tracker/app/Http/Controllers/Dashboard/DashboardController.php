@@ -12,6 +12,7 @@ use App\CustomClasses\Calculator;
 class DashboardController extends Controller
 {
     private $dashboard_type; 
+    private $top_number = 3;
 
     public function setDashboardType($type)
     {
@@ -30,6 +31,20 @@ class DashboardController extends Controller
         $date_filter = $time_filter['date_filter'];
 
         return $this->redirection($type_filter,$date_filter);
+    }
+
+    private function getTopAll($type_filter,$date_filter)
+    {
+        $top_incomes =  $this->getTopIncomes($type_filter,$date_filter);
+        $top_expenses =  $this->getTopExpenses($type_filter,$date_filter);
+        $top_savings =  $this->getTopSavings($type_filter,$date_filter);
+
+        $top_all = [
+            $top_incomes,
+            $top_expenses,
+            $top_savings,
+        ];
+        return $top_all;
     }
 
     private function setTimeFilter($date)
@@ -63,7 +78,13 @@ class DashboardController extends Controller
         $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
         $start_current_week = clone $carbon_date->startOfWeek();
         $end_current_week = clone $carbon_date->endOfWeek();
-        $user = $this->getUserInfoCustomDuration($user,$start_current_week,$end_current_week);
+
+        if($this->dashboard_type == "overview"){
+            $user = $this->getUserTopInfoCustomDuration($user,$start_current_week,$end_current_week);
+        }else{
+            $user = $this->getUserInfoCustomDuration($user,$start_current_week,$end_current_week);
+        }
+
         return view('dashboard.'.$this->dashboard_type)->with('user',$user);
     }
 
@@ -73,7 +94,13 @@ class DashboardController extends Controller
         $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
         $start_current_month = clone $carbon_date->startOfMonth();
         $end_current_month = clone $carbon_date->endOfMonth();
-        $user = $this->getUserInfoCustomDuration($user,$start_current_month,$end_current_month);
+
+        if($this->dashboard_type == "overview"){
+            $user = $this->getUserTopInfoCustomDuration($user,$start_current_month,$end_current_month);
+        }else{
+            $user = $this->getUserInfoCustomDuration($user,$start_current_month,$end_current_month);
+        }
+
         return view('dashboard.'.$this->dashboard_type)->with('user',$user);
     }
 
@@ -83,7 +110,13 @@ class DashboardController extends Controller
         $carbon_date = Carbon::createFromFormat('Y-m-d', $date);
         $start_current_year = clone $carbon_date->startOfYear();
         $end_current_year = clone $carbon_date->endOfYear();
-        $user = $this->getUserInfoCustomDuration($user,$start_current_year,$end_current_year);
+
+        if($this->dashboard_type == "overview"){
+            $user = $this->getUserTopInfoCustomDuration($user,$start_current_year,$end_current_year);
+        }else{
+            $user = $this->getUserInfoCustomDuration($user,$start_current_year,$end_current_year);
+        }
+
         return view('dashboard.'.$this->dashboard_type)->with('user',$user);   
     }
 
@@ -114,6 +147,65 @@ class DashboardController extends Controller
         $user->daily_average = $daily_average;
 
         return $user;
+    }
+    
+    private function getUserTopInfoCustomDuration($user,$start_duration,$end_duration)
+    {
+        $income_transactions = $user->profile->transactionsInTimeFrame(
+                                            $start_duration,
+                                            $end_duration,
+                                            "income",
+                                            $this->top_number);
+        $income_transactions =  json_decode($income_transactions);
+        usort($income_transactions, array($this, "sortByAmount"));
+        $user->income_transactions = $this->getTopTransactions($income_transactions);
+        $user->stat_categories_info_income = $this->getCategoriesInfo($user,$user->income_transactions);
+
+        $expense_transactions = $user->profile->transactionsInTimeFrame(
+                                            $start_duration,
+                                            $end_duration,
+                                            "expense");
+        $expense_transactions =  json_decode($expense_transactions);
+        usort($expense_transactions, array($this, "sortByAmount"));
+        $user->expense_transactions = $this->getTopTransactions($expense_transactions);
+        $user->stat_categories_info_expense = $this->getCategoriesInfo($user,$user->expense_transactions);
+        
+        $saving_transactions = $user->profile->transactionsInTimeFrame(
+                                            $start_duration,
+                                            $end_duration,
+                                            "saving");
+        $saving_transactions =  json_decode($saving_transactions);
+        usort($saving_transactions, array($this, "sortByAmount"));
+        $user->saving_transactions = $this->getTopTransactions($saving_transactions);
+        $user->stat_categories_info_saving = $this->getCategoriesInfo($user,$user->saving_transactions);
+
+        $user->money_in = $this->getTotalAmount($user,$income_transactions);
+        $user->money_out = $this->getTotalAmount($user,$expense_transactions);
+        $user->saving = $this->getTotalAmount($user,$saving_transactions);
+
+        $user->balance= ($user->money_in) - ($user->money_out + $user->saving );
+        
+
+        return $user;
+    }
+
+    private function getTopTransactions($transactions)
+    {
+        $top_income_array = array();
+        for( $i=0 ; $i < $this->top_number && $i < count($transactions); $i++ ){
+            array_push($top_income_array,$transactions[$i]);
+        }
+        return $top_income_array;
+    }
+
+    private function sortByAmount($a, $b)
+    {
+        $calculate = new Calculator;
+    
+        $amount_a = $calculate->defaultAmount($a->amount,$a->currency_id);
+        $amount_b = $calculate->defaultAmount($b->amount,$b->currency_id);
+        if($amount_a == $amount_b){ return 0 ; }
+	    return ($amount_a > $amount_a) ? -1 : 1;
     }
 
     private function getCategoriesInfo($user,$transactions)
@@ -157,7 +249,6 @@ class DashboardController extends Controller
         $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
 
         foreach($transactions as $transaction){
-            //need edit
             $amount_in_default_curr = ($transaction->amount*$default_currency_rate)
                                         /($transaction->currency->amount_per_dollar);
             
@@ -176,4 +267,6 @@ class DashboardController extends Controller
         }
         return $total_amount;
     }
+
+
 }

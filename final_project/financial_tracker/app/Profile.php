@@ -135,13 +135,27 @@ class Profile extends Model
     
     }
 
-    public function transactionsInTimeFrame($ss_date,$se_date,$type = null)
+    private function transactionsWithTypeTop($type,$top)
+    {
+        $transactions = $this->transactions()
+                             ->where("type",$type)
+                            //  ->orderBy("amount",'DESC')
+                             ->limit($top)
+                             ->get();
+        return $transactions;
+    }
+
+    public function transactionsInTimeFrame($ss_date,$se_date,$type = null,$top = null)
     {
 
         if($type === null){
             $transactions = $this->transactions()->get();
         }else{
-            $transactions = $this->transactionsWithType($type);
+            if($top === null){
+                $transactions = $this->transactionsWithType($type);
+            }else{
+                $transactions = $this->transactionsWithTypeTop($type,$top);                   
+            }
         }
         $ss_date = new DateTime($ss_date);
         $se_date = new DateTime($se_date);
