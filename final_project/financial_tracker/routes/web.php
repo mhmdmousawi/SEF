@@ -29,9 +29,8 @@ Route::group(['middleware' => 'auth'], function()
     Route::post('/dashboard/change/filter', 'Dashboard\TimeFilterController@change');
 
     //Page Configuration Pages
-    Route::get('/profile', function() {
-        return 'Profile Configuration Page' ;
-    } );
+    Route::get('/profile', 'ProfileController@index');
+    Route::post('/profile/edit', 'ProfileController@edit');
 
     //Adding transactions Pages
     Route::get('/add/transaction', 'AddTransactionController@index' );

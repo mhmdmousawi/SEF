@@ -124,10 +124,6 @@ var CHART = {
 window.addEventListener('load',function(){
     chart = Object.create(CHART);
     chart.addEvents();
-    chart.init();
-
-    // chart_income = Object.create(CHART_INCOME);
-    // chart_income.addEvents();
-    // chart_income.init();  
+    chart.init(); 
  
 });
