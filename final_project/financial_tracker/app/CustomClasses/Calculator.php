@@ -8,12 +8,24 @@ use App\Currency;
 use Carbon\Carbon;
 use DateTime;
 use DateInterval;
+use App\User;
 
 class Calculator 
 {
+    private $user;
+
+    public function __construct(User $user = null)
+    {
+        if($user == null ){
+            $this->user = Auth::user();
+        }else{
+            $this->user = $user;
+        }
+    }
+
     public function defaultAmount($amount,$currency_id)
     {
-        $user = Auth::user();
+        $user = $this->user;
         $currency = Currency::find($currency_id);
         $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
         $amount_in_default_curr = ($amount*$default_currency_rate)
@@ -48,7 +60,7 @@ class Calculator
 
     public function overallCalculation()
     {
-        $user = Auth::user();
+        $user = $this->user;
         $profile = $user->profile;
 
         $transactions_income = $profile->transactionsWithTypeAndRepeat("income");
@@ -69,7 +81,7 @@ class Calculator
 
     public function overallCalculationUntil($date)
     {
-        $user = Auth::user();
+        $user = $this->user;
         $profile = $user->profile;
 
         $transactions_income = $profile->transactionsWithTypeAndRepeatUntil($date,"income");
@@ -114,7 +126,7 @@ class Calculator
 
     private function getTransactionsInTimeFrame($type,$start_date,$end_date)
     {
-        $user = Auth::user();
+        $user = $this->user;
         $transactions = $user->profile->transactionsInTimeFrame(
                                                 $start_date,
                                                 $end_date,
@@ -125,7 +137,7 @@ class Calculator
 
     private function getTotalAmount($transactions)
     {
-        $user = Auth::user();
+        $user = $this->user;
         $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
         $total_amount = 0 ;
         foreach($transactions as $transaction){

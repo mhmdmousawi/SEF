@@ -17,6 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+// Route::post('/add/saving/validate', 'AddSavingController@validateSaving');
 
 Route::group(['middleware' => 'auth'], function()
 {
@@ -38,7 +39,7 @@ Route::group(['middleware' => 'auth'], function()
 
     //Adding savings Pages
     Route::get('/add/saving', 'AddSavingController@index' );
-    Route::post('/add/saving/validate', 'AddSavingController@validateSaving');
+    // Route::post('/add/saving/validate', 'AddSavingController@validateSaving');
     Route::post('/add/saving/confirm', 'AddSavingController@confirm');
 
     //Edit Transaction

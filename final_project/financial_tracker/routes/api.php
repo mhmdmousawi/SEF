@@ -13,11 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-// Route::group(['middleware' => 'auth'], function()
-// {
-    Route::get('saving/validation','API\SavingController@validateSaving');
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
 // });
+
+// Route::group(['middleware' => 'auth:api'], function(){
+    Route::post('/add/saving/validate', 'API\Validation@validateSaving');
+// });
+
