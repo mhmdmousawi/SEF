@@ -20,15 +20,13 @@ class ProfileController extends Controller
     public function edit(Request $request)
     {
         $validatedData = $request->validate([
-            'currency_select' => 'exists:currencies,id',
+            'currency_select' => 'required|exists:currencies,id',
         ]);
 
-        
         $user = Auth::user();
         $profile = Profile::find($user->profile->id);
         $profile->default_currency_id = $request->currency_select;
         $profile->save();
-
 
         return redirect("/profile");
     }

@@ -19,7 +19,7 @@ class AddSavingController extends Controller
     public function index()
     {
         $user = Auth::user();
-        return view('saving_add')->with('user',$user);
+        return view('saving.add')->with('user',$user);
     }
 
     public function validateSaving(Request $request)
@@ -36,7 +36,6 @@ class AddSavingController extends Controller
             'category_id' => 'required|numeric',
             'repeat_id' => 'required|numeric|in:3,4',
             'start_date' => 'required|date',
-            // 'end_date' => 'nullable|date|after:start_date',
         ]);
 
         $goal_amount_tr = $request->goal_amount;

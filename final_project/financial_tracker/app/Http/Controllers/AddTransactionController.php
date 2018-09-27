@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Transaction;
+use App\Currency;
+use App\Repeat;
 
 class AddTransactionController extends Controller
 {
+
     public function index(){
 
         $user = Auth::user();
-        return view('transaction_add')->with('user',$user);
+        $currencies = Currency::all();
+        $repeats = Repeat::all();
+        return view('transaction.add')->with('user',$user)
+                                      ->with('currencies',$currencies)
+                                      ->with('repeats',$repeats);
     }
 
     public function create(Request $request)
@@ -20,8 +27,8 @@ class AddTransactionController extends Controller
             'amount' => 'required|max:255',
             'type' => 'required|in:income,expense,saving',
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
-            'currency_id' => 'required|numeric',
+            'description' => 'max:255',
+            'currency_id' => 'required|exists:currencies,id',
             'category_id' => 'required|numeric',
             'repeat_id' => 'required|numeric|in:1,2,3,4',
             'start_date' => 'required|date|before:tomorrow',

@@ -3,10 +3,11 @@
 
 @section('content_profile')
 
-<h1>Profile Configuration of user {{$user->profile->username}}</h1>
+<h1>Profile Configuration for User: {{$user->profile->username}}</h1>
+<br>
 
-Username: {{$user->profile->username}} <br>
-Password: ******* <br>
-Default Currency: {{$user->profile->defaultCurrency->code}} <br>
+<h3>Username: {{$user->profile->username}}</h3> 
+<h3>Password: *******</h3>
+<h3>Default Currency: {{$user->profile->defaultCurrency->code}}</h3> 
 
 @endsection

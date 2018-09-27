@@ -42,5 +42,6 @@ daily average: {{$user->profile->defaultCurrency->code}} {{$user->daily_average}
     </br></br> 
 
 @endforeach
+{{-- {{ $user->expanded_transactions->links() }} --}}
 
 @endsection
