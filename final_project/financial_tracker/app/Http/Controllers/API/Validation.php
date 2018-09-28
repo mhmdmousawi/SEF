@@ -12,6 +12,7 @@ use App\Transaction;
 use Carbon\Carbon;
 use DateTime;
 use DateInterval;
+use Validator;
 
 
 class Validation extends Controller
@@ -20,17 +21,22 @@ class Validation extends Controller
 
     public function validateSaving(Request $request)
     {
-        $validatedData = $request->validate([
-            'user_id' => 'required',
-            'goal_amount' => 'required|max:255',
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|numeric',
+            'goal_amount' => 'required|numeric',
             'amount' => 'required|max:255',
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'max:255',
             'currency_id' => 'required|numeric',
             'category_id' => 'required|numeric',
             'repeat_id' => 'required|numeric|in:3,4',
             'start_date' => 'required|date',
         ]);
+
+        if ($validator->fails()) {    
+            return response()->json($validator->messages(), 401);
+        }
 
         $user_id = $request->user_id;
         $user = User::find($user_id);
@@ -59,11 +65,12 @@ class Validation extends Controller
         }
 
         $array = [
-            'request attr' => $request->all(),
-            'verification' => $valid_response
+            'request_params' => $request->all(),
+            'end_date' => $due_date,
+            'verified' => $valid_response,
         ];
 
-        return response()->json($array);
+        return response()->json($array,200);
     }
     public function goalValid($goal_amount,$due_date)
     {
