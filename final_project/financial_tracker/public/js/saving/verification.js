@@ -42,7 +42,17 @@ var VERIFICATION = {
         ELEMENTS_VERIFICATION.modal_footer.innerHTML="";
 
         if( data.verified == true ){
+            verifiedConfig();
+            
+        }else{
+            notVerifiedConfig();
+        }
 
+        ELEMENTS_VERIFICATION.show_verification_modal.click();
+        
+
+
+        function verifiedConfig(){
             ELEMENTS_VERIFICATION.validation_result.innerHTML = ''
                 +'Fortunately this plan is <strong>Valid</strong> !';
             ELEMENTS_VERIFICATION.validation_question.innerHTML = 
@@ -52,12 +62,16 @@ var VERIFICATION = {
             newConfirmBtn.id = 'confirm_btn';
             newConfirmBtn.className="btn btn-default";
             newConfirmBtn.innerHTML = "Confirm";
+
             newConfirmBtn.addEventListener('click',function(){
+                ELEMENTS_VERIFICATION.submit_btn.setAttribute('type','submit');
                 ELEMENTS_VERIFICATION.submit_btn.click();
             });
+            
             ELEMENTS_VERIFICATION.modal_footer.appendChild(newConfirmBtn);
 
-        }else{
+        }
+        function notVerifiedConfig(){
             ELEMENTS_VERIFICATION.validation_result.innerHTML = ''
                 +'Unfortunately this plan is <strong>Not Valid</strong> !';
             ELEMENTS_VERIFICATION.validation_question.innerHTML = 
@@ -74,8 +88,6 @@ var VERIFICATION = {
 
             ELEMENTS_VERIFICATION.modal_footer.appendChild(newCancelBtn);
         }
-
-        ELEMENTS_VERIFICATION.show_verification_modal.click();
     },
     
     varify : function(){

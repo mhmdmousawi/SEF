@@ -7,6 +7,7 @@ var ELEMENTS_TYPE = {
 var TYPE = {
 
     showOnly: function(type){
+        
         ELEMENTS_CAT.category_divs.forEach(category_div => {
             if(category_div.dataset.categoryType == type){
                 category_div.style.display = "block";
@@ -17,16 +18,16 @@ var TYPE = {
     },
     resetChosenCategory : function(){
         ELEMENTS_CAT.category_chosen_div.innerHTML = ''
-        +'<div id="category_chosen_div" data-toggle="modal" data-target="#category_choosing_modal">'
-        +'    <input type="hidden" name="ategory_id" value="1"/>'
-        +'    <p id="category_chosen_id">Category: CT'
-        +'    <span class="glyphicon glyphicon-calendar"></span></p>'
+        +'<div class="col-xs-4">'
+        +'    <p class="col-xs-10" id="category_chosen_id">Click to choose your category  &nbsp;&nbsp;</p>'
+        +'    <span class="col-xs-2 glyphicon glyphicon-piggy-bank" style="font-size:30px"></span>'
+        +'    <input type="hidden" name="category_id" value=""/>'
         +'</div>';
     },
     changeToIncome : function(title_income){
 
-        title_income.style.color = "green";
-        ELEMENTS_TYPE.title_expense.style.color = "red";
+        title_income.className += " active";
+        ELEMENTS_TYPE.title_expense.classList.remove("active");
         ELEMENTS_TYPE.type_input.value = "income";
         this.showOnly("income");
         this.resetChosenCategory();
@@ -34,10 +35,11 @@ var TYPE = {
     },
     changeToExpense :function(title_expense){
 
-        title_expense.style.color = "green";
-        ELEMENTS_TYPE.title_income.style.color = "red";
+        title_expense.className += " active";
+        ELEMENTS_TYPE.title_income.classList.remove("active");
         ELEMENTS_TYPE.type_input.value = "expense";
         this.showOnly("expense");
+        this.resetChosenCategory();
 
     },
     addEvents : function(){

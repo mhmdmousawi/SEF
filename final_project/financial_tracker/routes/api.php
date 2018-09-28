@@ -18,6 +18,6 @@ use Illuminate\Http\Request;
 // });
 
 // Route::group(['middleware' => 'auth:api'], function(){
-    Route::post('/add/saving/validate', 'API\Validation@validateSaving');
+    Route::post('/saving/validate', 'API\Validation@validateSaving');
 // });
 

@@ -9,13 +9,21 @@
 @include('saving.verification_modal')
 
 <h3>Add Saving</h3>
-
-<form id="add_saving_form" action="{{config('app.url')}}/add/saving/validate" method="POST">
+<form id="add_saving_form" action="{{config('app.url')}}/add/saving/confirmed" method="POST">
     @csrf
-    <input id="request_url" type="hidden" value="{{config('app.url')}}/api/add/saving/validate">
+    <input id="action_url" type="hidden" value="{{config('app.url')}}/api/saving/validate">
+    <input id="request_url" type="hidden" value="{{config('app.url')}}/api/saving/validate">
     <input id="user_id" name="user_id" type='hidden' value="{{ $user->id }}">
 
-    Goal Amount: <input id='goal_amount' name='goal_amount' placeholder="Goal Amount"/>
+    
+    Goal Amount: 
+    <input id='goal_amount' name='goal_amount'  class="form-control{{ $errors->has('goal_amount') ? ' is-invalid' : '' }}" value="{{ old('goal_amount') }}" placeholder="Goal Amount"/>
+    @if ($errors->has('goal_amount'))
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $errors->first('goal_amount') }}</strong>
+        </span>
+    @endif
+
     Amount per fequency: <input class="test" id='amount' name='amount' placeholder="Amount"/>
 
     <div class="basic_info">
@@ -30,9 +38,12 @@
     </div>
 
     {{-- On Clicking 'Next' we submit form   --}}
-    <input id="verify_bnt" type="button" value="Verify">
-    <input id="submit_btn" type="hidden">
-    <input id="show_verification_modal" type="hidden" data-toggle="modal" data-target="#saving_varification_modal" value="Verify">
+    <input id="verify_bnt" type="button" value="Verify"/>
+    {{-- <input id="submit_btn" type="submit" value"test" /> --}}
+    <button id="submit_btn" name= "submit_btn" type="hidden" style="display:none;"></button>
+
+
+    <input id="show_verification_modal" type="hidden" data-toggle="modal" data-target="#saving_varification_modal" value="Verify"/>
 </form>
 
 

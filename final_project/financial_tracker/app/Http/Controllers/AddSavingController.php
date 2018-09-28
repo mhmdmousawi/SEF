@@ -10,6 +10,7 @@ use DateTime;
 use DateInterval;
 use App\User;
 use Session;
+use Validator;
 
 use App\CustomClasses\Calculator;
 
@@ -22,22 +23,24 @@ class AddSavingController extends Controller
         return view('saving.add')->with('user',$user);
     }
 
-    public function validateSaving(Request $request)
+    public function validateAndAdd(Request $request)
     {
 
         $user = Auth::user();
         $calculate = new Calculator;
 
         $validatedData = $request->validate([
-            'goal_amount' => 'required|max:255',
+            'goal_amount' => 'required|numeric',
             'amount' => 'required|max:255',
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
+            'description' => 'max:255',
             'currency_id' => 'required|numeric',
             'category_id' => 'required|numeric',
             'repeat_id' => 'required|numeric|in:3,4',
             'start_date' => 'required|date',
         ]);
+
+
 
         $goal_amount_tr = $request->goal_amount;
         $amount_tr = $request->amount;
@@ -54,16 +57,30 @@ class AddSavingController extends Controller
 
 
         if($isValid_goal && $isValid_fequently){
-
-            $user->saving_validation = "valid"; 
-            $session_data = $request->all();
-            $session_data['end_date'] = $due_date;
-            Session::put('saving_valid', $session_data);
-        }else{
-           $user->saving_validation = "invalid"; 
+            $this->adding($request,$due_date);
+            return redirect('/dashboard/savings');
         }
 
-        return view('saving_confirm')->with('user',$user);
+        return "404 page not found .. don't play around";
+        
+
+    }
+
+    public function adding(Request $request,$due_date)
+    {
+        $user = Auth::user();
+        $transaction = new Transaction;
+        $transaction->profile_id = $user->profile->id;
+        $transaction->amount = $request->amount;
+        $transaction->type = "saving";
+        $transaction->title = $request->title;
+        $transaction->description = $request->description;
+        $transaction->currency_id = $request->currency_id;
+        $transaction->category_id = $request->category_id;
+        $transaction->repeat_id = $request->repeat_id;
+        $transaction->start_date = $request->start_date;
+        $transaction->end_date = $due_date;
+        $transaction->save();
 
     }
 
