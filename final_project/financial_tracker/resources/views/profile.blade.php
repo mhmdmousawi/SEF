@@ -3,11 +3,22 @@
 
 @section('content_profile')
 
-<h1>Profile Configuration for User: {{$user->profile->username}}</h1>
-<br>
+<p class="text-center text-muter">To configure your profile, simply click on the edit button above!</p>
+<hr>
 
-<h3>Username: {{$user->profile->username}}</h3> 
-<h3>Password: *******</h3>
-<h3>Default Currency: {{$user->profile->defaultCurrency->code}}</h3> 
+<form class="form-virtical ">
+    <div class="form-group text-center">
+        <label class="control-label col-xs-4 text-info" for="username">Username</label><vr>
+        <label class="control-label col-xs-4 text-info" for="password">Password</label><vr>
+        <label class="control-label col-xs-4 text-info" for="defaultCurrency">Base Currency</label>
+    </div>
+    
+    <div class="form-group text-center">
+        <p class="col-xs-4 text-secondary" for="username">{{$user->profile->username}}</p>
+        <p class="col-xs-4 text-secondary" for="passwword">********</p>
+        <p class="col-xs-4 text-secondary" for="">{{$user->profile->defaultCurrency->code}}</p>
+    </div>
+    
+</form>
 
 @endsection

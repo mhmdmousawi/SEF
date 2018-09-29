@@ -22,6 +22,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function()
 {
     // Dashboard Pages
+    Route::get('/dashboard', 'Dashboard\OverviewController@index');
     Route::get('/dashboard/overview', 'Dashboard\OverviewController@index');
     Route::get('/dashboard/incomes', 'Dashboard\IncomeController@index');
     Route::get('/dashboard/expenses', 'Dashboard\ExpenseController@index');
