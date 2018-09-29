@@ -1,45 +1,28 @@
 
 
 <h3 class="text-center">Top 10 Incomes</h3>
-<hr size="30">
+<hr>
 
 
 <div class="topten_div col-xs-12">
+
      <div class="transactions col-xs-5">
          <p class="col-xs-5 text-info">Transactions:</p>
          @foreach(($user->income_transactions) as $income)
-             {{-- <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
-                 <h5>Transaction here of id: {{$income->id}}</h5>
-             </a> --}}
-
-
-             
-
-             {{-- Income Title: {{$income->title}}</br>
-             Category: {{$income->category->title}}</br>
-             Logo: {{$income->category->logo->class_name}}</br>
-             repeat type:{{$income->repeat->type}}</br>
-             Amount: {{$income->currency->code}} {{$income->amount}}</br>  --}}
-
-
-             <div class="col-xs-12 transaction_card">
-                <div class="card-counter primary">
-                    {{-- <i class="fa fa-code-fork"></i> --}}
-                    <span class="col-xs-2 logo {{$income->category->logo->class_name}}"></span>
-                    <span class="col-xs-5 count-name">{{$income->title}}</span>
-                    <span class="col-xs-5 count-numbers">{{$income->currency->code}} {{$income->amount}}</span>
+             <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
+                <div class="col-xs-12 transaction_card">
+                    <div class="card-counter primary">
+                        {{-- <i class="fa fa-code-fork"></i> --}}
+                        <span class="col-xs-2 logo {{$income->category->logo->class_name}}"></span>
+                        <span class="col-xs-5 count-name">{{$income->title}}</span>
+                        <span class="col-xs-5 count-numbers">{{$income->currency->code}} {{$income->amount}}</span>
+                    </div>
                 </div>
-            </div>
-
-
-             
+            </a>
          @endforeach
      </div>
      
-    
-     
-     
-     
+
      <div class="statistics_income statistics_div col-xs-7 ">
         <div class="btn-group titles titles-dashboard" role="group" aria-label="...">
         <input class="btn btn-default" type='button' name="doughnut" id="chart_pie_income" value="Doughnut"/>
@@ -53,5 +36,6 @@
         <input type="hidden" id="stat_data_income" value="{{ implode(',', $user->stat_categories_info_income[1] )}}"/>
     </div>
     
-    <hr>
 </div>
+
+<hr>

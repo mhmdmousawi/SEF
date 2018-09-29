@@ -4,17 +4,19 @@
 
 @section('content')
 
-<nav class="navbar navbar-inverse fixed-top navbar-expand-lg">
+<nav class="navbar fixed-top navbar-expand-lg app_color_default">
     <div class="container">
         <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand" href="{{config('app.url')}}/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
+            <a class="navbar-brand text-light" href="{{config('app.url')}}/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
         </div>
 
         <ul class="nav navbar-nav navbar-center">
                 {{-- class= "active" --}}
-            <li ><a class="navbar-brand" href="{{config('app.url')}}/dashboard/overview">Dashboard</a></li>&nbsp;&nbsp;&nbsp;
-            <li class="nav-item dropdown show ">
-                <a class="nav-link dropdown-toggle navbar-brand" href="https://example.com" 
+            {{-- <li > --}}
+                <a class="navbar-brand text-light" href="{{config('app.url')}}/dashboard/overview">Dashboard</a>
+            {{-- </li>&nbsp;&nbsp;&nbsp; --}}
+            <li class="nav-item dropdown show">
+                <a class="nav-link  dropdown-toggle navbar-brand text-light"
                     data-toggle="dropdown" aria-expanded="true">
                     {{-- <span class="glyphicon glyphicon-plus-sign"></span>--}}Add
                 </a>
@@ -26,11 +28,11 @@
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a class="navbar-brand"  href="#" data-toggle="modal" data-target="#time_filter_modal">
+            {{-- <li> --}}
+                <a class="navbar-brand text-light"  href="#" data-toggle="modal" data-target="#time_filter_modal">
                 <span class="glyphicon glyphicon-calendar"></span> Calender
                 </a>
-            </li>
+            {{-- </li> --}}
         </ul>
     </div>
 </nav>
