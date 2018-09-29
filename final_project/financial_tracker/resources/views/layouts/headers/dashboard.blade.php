@@ -42,17 +42,38 @@
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title"> Dashboard Type: {{ $dashboard_type }}</h4>
+                    <h4 class="modal-title"> Dashboard Filter:</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
-                <form action="{{config('app.url')}}/dashboard/change/filter" method="POST">
+                <form class="form-horizontal" action="{{config('app.url')}}/dashboard/change/filter" method="POST">
                     @csrf
 
                     <div class="modal-body">
-                        <p>Choose the date you would like to represent the date in, and the type of presentation: </p>
-                        <input type="text" name="type_filter" value="{{Session::get('time_filter')['type_filter']}}"/>
-                        <input type="text" name="date_filter" value="{{Session::get('time_filter')['date_filter']}}"/>
+                        <p>Choose the date you would like to represent your data in, and the type of presentation: </p>
+
+                        <div class="form-group">
+                            <div class="col-xs-3">
+                                <select name="type_filter"  class="custom-select form-control form-control-lg" style="height:35px" >
+                                    @if(Session::get('time_filter')['type_filter'] == "weekly")
+                                        <option value="weekly" selected>Weekly</option>
+                                        <option value="monthly" >Monthly</option>
+                                        <option value="yearly" >Yearly</option>
+                                    @elseif(Session::get('time_filter')['type_filter'] == "monthly")
+                                        <option value="weekly" >Weekly</option>
+                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="yearly" >Yearly</option>
+                                    @elseif(Session::get('time_filter')['type_filter'] == "yearly")
+                                        <option value="weekly" >Weekly</option>
+                                        <option value="monthly" >Monthly</option>
+                                        <option value="yearly" selected>Yearly</option>
+                                    @endif
+                                </select>
+                            </div>
+                            <div class="col-xs-6">
+                                <input type="date" class=" form-control" name="date_filter" value="{{Session::get('time_filter')['date_filter']}}"/>                        
+                            </div>
+                        </div>
                         <input type="hidden" name="dashboard_type" value="{{ $dashboard_type }}"/>
                     </div>
                     <div class="modal-footer">
@@ -64,13 +85,25 @@
         </div>
     </div>
 
-    <div class="dashboard_nav">
-        <a href="{{config('app.url')}}/dashboard/overview" >Overview </a> |
-        <a href="{{config('app.url')}}/dashboard/incomes" >Incomes </a> |
-        <a href="{{config('app.url')}}/dashboard/expenses" >Expenses </a> |
-        <a href="{{config('app.url')}}/dashboard/savings" >Savings </a> 
+    <div class="row" >
+        <div class="btn-group titles titles-dashboard" role="group" aria-label="...">
+            <a href="{{config('app.url')}}/dashboard/overview" >
+                <button type="button" id="title_income" class="btn btn-default  {{ $dashboard_type == "overview" ? ' active' : '' }}" >Overview</button>
+            </a>
+            <a href="{{config('app.url')}}/dashboard/incomes" >
+                <button type="button" id="title_expense" class="btn btn-default {{ $dashboard_type == "income" ? ' active' : '' }}">Incomes</button>
+            </a>
+            <a href="{{config('app.url')}}/dashboard/expenses" >
+                <button type="button" id="title_expense" class="btn btn-default {{ $dashboard_type == "expense" ? ' active' : '' }}">Expenses</button>
+            </a>
+            <a href="{{config('app.url')}}/dashboard/savings" >
+                <button type="button" id="title_expense" class="btn btn-default {{ $dashboard_type == "saving" ? ' active' : '' }}">Savings</button>
+            </a>
+        </div>
     </div>
-    <div class="time_filter_info">
+
+    <hr>
+    <div class="text-center text-info ">
         <p>This is a {{Session::get('time_filter')['type_filter']}} representation</p>
     </div>
     

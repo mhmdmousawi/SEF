@@ -8,8 +8,8 @@
 
 <form class="form-virtical ">
     <div class="form-group text-center">
-        <label class="control-label col-xs-4 text-info" for="username">Username</label><vr>
-        <label class="control-label col-xs-4 text-info" for="password">Password</label><vr>
+        <label class="control-label col-xs-4 text-info" for="username">Username</label>
+        <label class="control-label col-xs-4 text-info" for="password">Password</label>
         <label class="control-label col-xs-4 text-info" for="defaultCurrency">Base Currency</label>
     </div>
     
@@ -17,8 +17,7 @@
         <p class="col-xs-4 text-secondary" for="username">{{$user->profile->username}}</p>
         <p class="col-xs-4 text-secondary" for="passwword">********</p>
         <p class="col-xs-4 text-secondary" for="">{{$user->profile->defaultCurrency->code}}</p>
-    </div>
-    
+    </div>  
 </form>
 
 @endsection

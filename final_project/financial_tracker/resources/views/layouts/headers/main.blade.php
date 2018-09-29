@@ -20,6 +20,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/transaction/category.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/transaction/card.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
     <!-- Latest compiled and minified CSS -->
