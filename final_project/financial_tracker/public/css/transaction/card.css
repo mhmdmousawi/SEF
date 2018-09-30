@@ -4,10 +4,12 @@
 }
 
 .transaction_card{
-    /* border: 1px solid #000; */
     height: 35px;
     margin: 2px;
-    /* float: left; */
+}
+.transaction_card_big{
+  height: 80px;
+  margin: 4px;
 }
 
 .card-counter{
@@ -48,6 +50,12 @@
   .card-counter .logo{
     opacity: 0.5;
     font-size: 50px;
+    float: left;
+  }
+
+  .card-counter .logo-big{
+    opacity: 0.5;
+    font-size: 130px;
     float: left;
   }
 

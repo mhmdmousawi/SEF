@@ -12,7 +12,6 @@
              <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
                 <div class="col-xs-12 transaction_card">
                     <div class="card-counter primary">
-                        {{-- <i class="fa fa-code-fork"></i> --}}
                         <span class="col-xs-2 logo {{$income->category->logo->class_name}}"></span>
                         <span class="col-xs-5 count-name">{{$income->title}}</span>
                         <span class="col-xs-5 count-numbers">{{$income->currency->code}} {{$income->amount}}</span>
