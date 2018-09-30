@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-
 use App\CustomClasses\Calculator;
 use App\Transaction;
 use Carbon\Carbon;
@@ -21,9 +20,7 @@ class Validation extends Controller
 
     public function validateSaving(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|numeric',
             'goal_amount' => 'required|numeric',
             'amount' => 'required|max:255',
             'title' => 'required|max:255',
@@ -38,9 +35,7 @@ class Validation extends Controller
             return response()->json($validator->messages(), 401);
         }
 
-        $user_id = $request->user_id;
-        $user = User::find($user_id);
-
+        $user = Auth::user();
         $this->calculate = new Calculator($user);
         $calculate = $this->calculate;
 

@@ -41,6 +41,7 @@ Route::group(['middleware' => 'auth'], function()
     //Adding savings Pages
     Route::get('/add/saving', 'AddSavingController@index' );
     Route::post('/add/saving/confirmed', 'AddSavingController@validateAndAdd');
+    Route::post('saving/validate','Validation@validateSaving');
     // Route::post('/add/saving/confirm', 'AddSavingController@confirm');
 
     //Edit Transaction

@@ -23,7 +23,7 @@
     <hr>
     
     <div class="form-group">
-        <label class="control-label col-xs-4" for="amount">Amount:</label>
+        <label class="control-label col-xs-4 text-primary" for="amount">Amount:</label>
         <div class="col-xs-3">
             <input type="number" name='amount' placeholder="0.00" class=" form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" value="{{ old('amount') }}"required/>
         </div>
@@ -40,7 +40,7 @@
         </div>
     </div>
     <div class="form-group" data-toggle="modal" data-target="#category_choosing_modal">
-        <label class="control-label col-xs-4" for="category">Category:</label>
+        <label class="control-label col-xs-4 text-primary" for="category">Category:</label>
         <div id="category_chosen_div">
             <div class="col-xs-4">
                 <p class="col-xs-10" id="category_chosen_id">Click to choose your category  &nbsp;&nbsp;</p>
@@ -52,13 +52,13 @@
         
     <hr>
     <div class="form-group">
-    <label class="control-label col-xs-4" for="title">Title:</label>
+    <label class="control-label col-xs-4 text-primary" for="title">Title:</label>
         <div class="col-xs-4">
             <input type='text' name='title' placeholder="Title" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title') }}" required/>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label col-xs-4" for="description">Description:</label>
+        <label class="control-label col-xs-4 text-primary" for="description">Description:</label>
         <div class="col-xs-4">
             <textarea rows="2" name='description' placeholder="Description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" value="{{ old('description') }}">
             </textarea>
@@ -66,16 +66,16 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label col-xs-4" for="start_date">Start Date:</label>
+        <label class="control-label col-xs-4 text-primary" for="start_date">Start Date:</label>
         <div class="col-xs-4">
             <input type='date' name='start_date' class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" value="{{ old('start_date') }}" required/>
         </div>
     </div>
     <hr>
     <div class="form-group">
-        <label class="control-label col-xs-4" for="repeat">Repeat:</label>
+        <label class="control-label col-xs-4 text-primary" for="repeat">Repeat:</label>
         <div class="col-xs-4">
-            <select class="form-control" style="height: 35px" id="repeat_select" name="repeat_id" >
+            <select class="custom-select form-control" style="height: 35px" id="repeat_select" name="repeat_id" >
                 @foreach($repeats as $repeat)
                     @if($repeat->type == "fixed")
                         <option value="{{ $repeat->id }}" >Off</option>
@@ -87,7 +87,7 @@
         </div>
     </div>
     <div id="end_date_div" class="form-group" style='display:none'>
-        <label class="control-label col-xs-4" for="end_date">End Date:</label>
+        <label class="control-label col-xs-4 text-primary" for="end_date">End Date:</label>
         <div class="col-xs-4">
             <input type='date' name='end_date' class="form-control{{ $errors->has('end_date') ? ' is-invalid' : '' }}" value="{{ old('end_date') }}"/><br>
         </div>

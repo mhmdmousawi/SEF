@@ -10,10 +10,11 @@
 
             <div class="modal-body">
                 <h5>Choose your category: </h5>
+                <hr>
 
                 @foreach($user->profile->categories as $category)
                     @if($category->type == "income")
-                        <div name="category_div" data-dismiss="modal" data-category-type = "income">
+                        <div class="text-center" name="category_div" data-dismiss="modal" data-category-type = "income">
                             <div class="col-xs-4">
                                 <p class="col-xs-10">{{$category->title}} &nbsp;&nbsp;</p>
                                 <span class="col-xs-2 {{$category->logo->class_name}}" style="font-size:30px"></span>

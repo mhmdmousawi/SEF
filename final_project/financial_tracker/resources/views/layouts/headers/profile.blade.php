@@ -4,21 +4,17 @@
 
 @section('content')
 
-<nav class="navbar navbar-inverse fixed-top navbar-expand-lg" >
+<nav class="navbar app_color_default fixed-top navbar-expand-lg" >
     <div class="container">
         <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand" href="{{config('app.url')}}/dashboard/overview">Cancel</a>
+            <a class="navbar-brand text-light" href="{{config('app.url')}}/dashboard/overview">Cancel</a>
         </div>
 
         <div class="nav navbar-nav navbar-center">
-            <li>
-                <a class="navbar-brand">Profile Configuration</a>
-            </li>
+            <a class="navbar-brand text-light">Profile Configuration</a>
         </div>
         <ul class="nav navbar-nav navbar-right">
-            <li>
-                <a class="navbar-brand"  data-toggle="modal" data-target="#edit_profile_modal">Edit</a>
-            </li>
+            <a class="navbar-brand text-light"  data-toggle="modal" data-target="#edit_profile_modal">Edit</a>
         </ul>
     </div>
 </nav>

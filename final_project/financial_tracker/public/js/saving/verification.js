@@ -32,16 +32,17 @@ var VERIFICATION = {
     
     showVarificationModal : function(response){
         
-        let data = response.data;
+        // let data = response;//.data;
+        // alert(response);
 
         ELEMENTS_VERIFICATION.validation_attr_div.innerHTML = ' '
-            + '<p> This Saving Plan of title <b>' + response.data.request_params.title +'</b>'
-            +' would take up to <b>' + response.data.end_date +'</b> to achieve it\'s  '
-            +' <b>' + response.data.request_params.goal_amount +'</b> goal ..</p> '
+            + '<p> This Saving Plan of title <b>' + response.request_params.title +'</b>'
+            +' would take up to <b>' + response.end_date +'</b> to achieve it\'s  '
+            +' <b>' + response.request_params.goal_amount +'</b> goal ..</p> '
             + '<br>';
         ELEMENTS_VERIFICATION.modal_footer.innerHTML="";
 
-        if( data.verified == true ){
+        if( response.verified == true ){
             verifiedConfig();
             
         }else{
@@ -94,12 +95,25 @@ var VERIFICATION = {
 
         const URL = ELEMENTS_VERIFICATION.request_url.value;
         let that = this;
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
 
-        axios({
-            method: 'POST',
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': ELEMENTS_VERIFICATION.csrf_token.value
+            }
+        });
+        
+        $.ajax({
+            type: "POST",
             url: URL,
-            data: {
-                'user_id' : ELEMENTS_VERIFICATION.user_id.value,
+            data: {     
+                '_token': ELEMENTS_VERIFICATION.csrf_token.value,
+                '_token' : ELEMENTS_VERIFICATION.csrf_token.value,
                 'goal_amount' : ELEMENTS_VERIFICATION.goal_amount.value,
                 'amount' : ELEMENTS_VERIFICATION.amount.value,
                 'currency_id' :ELEMENTS_VERIFICATION.currency_id.value,
@@ -108,20 +122,19 @@ var VERIFICATION = {
                 'description':ELEMENTS_VERIFICATION.description.value,
                 'start_date':ELEMENTS_VERIFICATION.start_date.value,
                 'repeat_id':ELEMENTS_VERIFICATION.repeat_id.value,
+            },
+            dataType: 'JSON',
+            success: function (data) { 
+                that.showVarificationModal(data);      
+            },
+            error: function (request, status, error) {
+
+                if ( request.status == 401 ) {
+                    let error_msgs = JSON.parse(request.responseText);
+                    inputErrorHandler(error_msgs);
+                }
             }
-        })
-        .then(function (response) {
-            that.showVarificationModal(response);
-            console.log(response);
-        })
-        .catch(function (error) {
-            if (error.response.status == 401 ) {
-                let error_msgs = error.response.data;
-                inputErrorHandler(error_msgs);
-                console.log(error.response);
-            }
-            console.log(error);
-          });
+        });
 
         function inputErrorHandler (error_msgs){
 

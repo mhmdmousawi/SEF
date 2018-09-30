@@ -11,8 +11,11 @@
 <h3>Add Saving</h3>
 <form id="add_saving_form" action="{{config('app.url')}}/add/saving/confirmed" method="POST">
     @csrf
-    <input id="action_url" type="hidden" value="{{config('app.url')}}/api/saving/validate">
-    <input id="request_url" type="hidden" value="{{config('app.url')}}/api/saving/validate">
+    
+    <input id="csrf_token" type="hidden" value="{{csrf_token()}}">
+    {{-- <input id="action_url" type="hidden" value="{{config('app.url')}}/api/saving/validate"> --}}
+    {{-- <input id="request_url" type="hidden" value="{{config('app.url')}}/api/saving/validate"> --}}
+    <input id="request_url" type="hidden" value="{{config('app.url')}}/saving/validate">
     <input id="user_id" name="user_id" type='hidden' value="{{ $user->id }}">
 
     
