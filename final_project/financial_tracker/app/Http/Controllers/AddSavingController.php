@@ -11,6 +11,8 @@ use DateInterval;
 use App\User;
 use Session;
 use Validator;
+use App\Currency;
+use App\Repeat;
 
 use App\CustomClasses\Calculator;
 
@@ -19,8 +21,13 @@ class AddSavingController extends Controller
 
     public function index()
     {
+
         $user = Auth::user();
-        return view('saving.add')->with('user',$user);
+        $currencies = Currency::all();
+        $repeats = Repeat::all();
+        return view('saving.add')->with('user',$user)
+                                      ->with('currencies',$currencies)
+                                      ->with('repeats',$repeats);
     }
 
     public function validateAndAdd(Request $request)
