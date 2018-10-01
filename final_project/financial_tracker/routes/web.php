@@ -22,6 +22,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function()
 {
     // Dashboard Pages
+    Route::get('/', 'Dashboard\OverviewController@index');
     Route::get('/dashboard', 'Dashboard\OverviewController@index');
     Route::get('/dashboard/overview', 'Dashboard\OverviewController@index');
     Route::get('/dashboard/incomes', 'Dashboard\IncomeController@index');
@@ -48,16 +49,9 @@ Route::group(['middleware' => 'auth'], function()
     Route::get('/edit/transaction/{transaction_id}', 'EditTransactionController@index' );
     Route::post('/edit/transaction', 'EditTransactionController@edit' );
 
-
     //Adding Category
     Route::get('/add/category', 'AddCategoryController@index');
     Route::post('/add/category', 'AddCategoryController@add');
-
-    //Adding Currency
-    Route::get('/add/currency', function() {
-        return 'Adding a new currency';
-    } );
-
 
     Route::get('/home', 'HomeController@index')->name('home');
 });

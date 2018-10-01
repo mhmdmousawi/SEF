@@ -11,12 +11,10 @@ class RepeatTableSeeder extends Seeder
      */
     public function run()
     {
-        $types = ['fixed', 'daily','weekly','monthly'];
+        DB::table('repeats')->insert(['type' => 'fixed']);
+        DB::table('repeats')->insert(['type' => 'daily']);
+        DB::table('repeats')->insert(['type' => 'weekly']);
+        DB::table('repeats')->insert(['type' => 'monthly']);
         
-        for( $i = 0 ; $i < 4 ; $i++ ){
-            DB::table('repeats')->insert([
-                'type' => $types[$i],
-            ]);
-        }
     }
 }

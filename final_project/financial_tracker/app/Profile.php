@@ -121,6 +121,7 @@ class Profile extends Model
                         array_push($filtered_transactions, clone $transaction);
                     }
 
+                    var_dump($recurrent_start);
                     if($transaction->repeat->type == 'daily'){
                         $recurrent_start = $recurrent_start->add(new DateInterval('P1D'));
                     }else if($transaction->repeat->type = 'weekly'){

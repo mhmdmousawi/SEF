@@ -10,7 +10,7 @@
             <label class="control-label col-xs-12 text-info text-lg" for="">Total</label>
         </div>
         <div class="form-group text-center">
-            <p class="col-xs-12 text-secondary" for="">{{$user->money_in}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-12 text-secondary" for="">{{$user->balance}} {{$user->profile->defaultCurrency->code}}</p>
         </div>  
     </form>
     
@@ -24,7 +24,7 @@
         </div>
         
         <div class="form-group text-center">
-            <p class="col-xs-4 text-secondary" for="">{{$user->balance}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-4 text-secondary" for="">{{$user->money_in}} {{$user->profile->defaultCurrency->code}}</p>
             <p class="col-xs-4 text-secondary" for=""> -{{$user->money_out}} {{$user->profile->defaultCurrency->code}}</p>
             <p class="col-xs-4 text-secondary" for="">{{$user->saving}} {{$user->profile->defaultCurrency->code}}</p>
         </div>  

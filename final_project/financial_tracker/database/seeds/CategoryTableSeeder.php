@@ -11,18 +11,48 @@ class CategoryTableSeeder extends Seeder
      */
     public function run()
     {
-        for($i=0; $i<10;$i++){
-            $category = new App\Category;
-            $category->profile_id = 1;
-            if($i <5){
-                $category->type = 'income';
-                $category->logo_id = 1;
-            }else{
-                $category->type = 'expense';
-                $category->logo_id = 2;
-            }
-            $category->title = 'Category Title';
-            $category->save();  
-        }
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'income';
+        $category->title = 'Salary';
+        $category->logo_id = 11;
+        $category->save();  
+
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'income';
+        $category->title = 'Gift';
+        $category->logo_id = 3;
+        $category->save(); 
+
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'expense';
+        $category->title = 'Shopping';
+        $category->logo_id = 4;
+        $category->save(); 
+
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'expense';
+        $category->title = 'Traveling';
+        $category->logo_id = 2;
+        $category->save(); 
+
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'saving';
+        $category->title = 'IPhone';
+        $category->logo_id = 7;
+        $category->save(); 
+
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'saving';
+        $category->title = 'Valentines';
+        $category->logo_id = 6;
+        $category->save(); 
+
+        
     }
 }

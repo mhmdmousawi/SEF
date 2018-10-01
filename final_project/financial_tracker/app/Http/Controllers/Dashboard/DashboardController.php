@@ -12,7 +12,7 @@ use App\CustomClasses\Calculator;
 class DashboardController extends Controller
 {
     private $dashboard_type; 
-    private $top_number = 3;
+    private $top_number = 10;
 
     public function setDashboardType($type)
     {
@@ -145,7 +145,7 @@ class DashboardController extends Controller
         $income_transactions =  json_decode($income_transactions);
         usort($income_transactions, array($this, "sortByAmount"));
         $user->income_transactions = $this->getTopTransactions($income_transactions);
-
+        var_dump($user->income_transactions);
         $user->stat_categories_info_income = $this->getCategoriesInfo($user,$user->income_transactions);
 
         $expense_transactions = $user->profile->transactionsInTimeFrame(
