@@ -6,15 +6,15 @@
 <div class="topten_div col-xs-12">
 
      <div class="transactions col-xs-5">
-         <p class="col-xs-5 text-info">Transactions:</p>
+         <p class="col-xs-5 text-info">Expenses:</p>
          @foreach(($user->expense_transactions) as $expense)
-             <a href="{{config('app.url')}}/edit/transaction?id={{$expense->id}}">
+             <a href="{{config('app.url')}}/edit/transaction/{{$expense->id}}">
                 <div class="col-xs-12 transaction_card">
                     <div class="card-counter primary">
                         {{-- <i class="fa fa-code-fork"></i> --}}
                         <span class="col-xs-2 logo {{$expense->category->logo->class_name}}"></span>
-                        <span class="col-xs-5 count-name">{{$expense->title}}</span>
-                        <span class="col-xs-5 count-numbers">{{$expense->currency->code}} {{$expense->amount}}</span>
+                        <span class="col-xs-6 count-name">{{$expense->title}}</span>
+                        <span class="col-xs-4 count-numbers">{{$expense->currency->code}} {{$expense->amount}}</span>
                     </div>
                 </div>
             </a>

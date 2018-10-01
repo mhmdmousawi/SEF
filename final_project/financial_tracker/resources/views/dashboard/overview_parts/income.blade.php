@@ -7,14 +7,14 @@
 <div class="topten_div col-xs-12">
 
      <div class="transactions col-xs-5">
-         <p class="col-xs-5 text-info">Transactions:</p>
+         <p class="col-xs-5 text-info">Incomes:</p>
          @foreach(($user->income_transactions) as $income)
-             <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
+             <a href="{{config('app.url')}}/edit/transaction/{{$income->id}}">
                 <div class="col-xs-12 transaction_card">
                     <div class="card-counter primary">
                         <span class="col-xs-2 logo {{$income->category->logo->class_name}}"></span>
-                        <span class="col-xs-5 count-name">{{$income->title}}</span>
-                        <span class="col-xs-5 count-numbers">{{$income->currency->code}} {{$income->amount}}</span>
+                        <span class="col-xs-6 count-name">{{$income->title}}</span>
+                        <span class="col-xs-4 count-numbers">{{$income->currency->code}} {{$income->amount}}</span>
                     </div>
                 </div>
             </a>

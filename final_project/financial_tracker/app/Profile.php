@@ -139,7 +139,7 @@ class Profile extends Model
     {
         $transactions = $this->transactions()
                              ->where("type",$type)
-                            //  ->orderBy("amount",'DESC')
+                             ->orderBy("amount",'DESC')
                              ->limit($top)
                              ->get();
         return $transactions;

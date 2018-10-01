@@ -4,17 +4,15 @@
 <div class="topten_div col-xs-12">
 
      <div class="transactions col-xs-5">
-         <p class="col-xs-5 text-info">Transactions:</p>
+         <p class="col-xs-5 text-info">Savings:</p>
          @foreach(($user->saving_transactions) as $saving)
-             {{-- <a href="{{config('app.url')}}/edit/transaction?id={{$saving->id}}"> --}}
                 <div class="col-xs-12 transaction_card">
                     <div class="card-counter primary">
                         <span class="col-xs-2 logo {{$saving->category->logo->class_name}}"></span>
-                        <span class="col-xs-5 count-name">{{$saving->title}}</span>
-                        <span class="col-xs-5 count-numbers">{{$saving->currency->code}} {{$saving->amount}}</span>
+                        <span class="col-xs-6 count-name">{{$saving->title}}</span>
+                        <span class="col-xs-4 count-numbers">{{$saving->currency->code}} {{$saving->amount}}</span>
                     </div>
                 </div>
-            {{-- </a> --}}
          @endforeach
      </div>
      

@@ -36,7 +36,7 @@
 <div class="transactions col-xs-8 col-xs-offset-2">
     <p class="col-xs-5 text-info">Transactions:</p>
     @foreach(($user->expanded_transactions) as $income)
-        <a href="{{config('app.url')}}/edit/transaction?id={{$income->id}}">
+        <a href="{{config('app.url')}}/edit/transaction/{{$income->id}}">
             <div class="col-xs-12 transaction_card_big">
                 <div class="card-counter primary">
                     <div class="col-xs-5">

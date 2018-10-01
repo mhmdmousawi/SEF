@@ -33,20 +33,6 @@ class DashboardController extends Controller
         return $this->redirection($type_filter,$date_filter);
     }
 
-    private function getTopAll($type_filter,$date_filter)
-    {
-        $top_incomes =  $this->getTopIncomes($type_filter,$date_filter);
-        $top_expenses =  $this->getTopExpenses($type_filter,$date_filter);
-        $top_savings =  $this->getTopSavings($type_filter,$date_filter);
-
-        $top_all = [
-            $top_incomes,
-            $top_expenses,
-            $top_savings,
-        ];
-        return $top_all;
-    }
-
     private function setTimeFilter($date)
     {
         $type_filter = "monthly";
@@ -159,12 +145,14 @@ class DashboardController extends Controller
         $income_transactions =  json_decode($income_transactions);
         usort($income_transactions, array($this, "sortByAmount"));
         $user->income_transactions = $this->getTopTransactions($income_transactions);
+
         $user->stat_categories_info_income = $this->getCategoriesInfo($user,$user->income_transactions);
 
         $expense_transactions = $user->profile->transactionsInTimeFrame(
                                             $start_duration,
                                             $end_duration,
-                                            "expense");
+                                            "expense",
+                                            $this->top_number);
         $expense_transactions =  json_decode($expense_transactions);
         usort($expense_transactions, array($this, "sortByAmount"));
         $user->expense_transactions = $this->getTopTransactions($expense_transactions);
@@ -173,7 +161,8 @@ class DashboardController extends Controller
         $saving_transactions = $user->profile->transactionsInTimeFrame(
                                             $start_duration,
                                             $end_duration,
-                                            "saving");
+                                            "saving",
+                                            $this->top_number);
         $saving_transactions =  json_decode($saving_transactions);
         usort($saving_transactions, array($this, "sortByAmount"));
         $user->saving_transactions = $this->getTopTransactions($saving_transactions);
@@ -205,7 +194,7 @@ class DashboardController extends Controller
         $amount_a = $calculate->defaultAmount($a->amount,$a->currency_id);
         $amount_b = $calculate->defaultAmount($b->amount,$b->currency_id);
         if($amount_a == $amount_b){ return 0 ; }
-	    return ($amount_a > $amount_a) ? -1 : 1;
+	    return ($amount_a > $amount_b) ? -1 : 1;
     }
 
     private function getCategoriesInfo($user,$transactions)

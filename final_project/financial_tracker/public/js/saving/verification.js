@@ -9,7 +9,8 @@ var ELEMENTS_VERIFICATION = {
     goal_amount : document.getElementById('goal_amount'),
     amount : document.getElementById('amount'),
     currency_id : document.getElementById('currency_id'),
-    category_id : document.getElementById('category_id'),
+    category_id : $("#add_saving_form input[name=category_id]"),
+    // category_id : document.getElementById('category_id'),
     title : document.getElementById('title'),
     description : document.getElementById('description'),
     start_date : document.getElementById('start_date'),
@@ -117,7 +118,7 @@ var VERIFICATION = {
                 'goal_amount' : ELEMENTS_VERIFICATION.goal_amount.value,
                 'amount' : ELEMENTS_VERIFICATION.amount.value,
                 'currency_id' :ELEMENTS_VERIFICATION.currency_id.value,
-                'category_id':ELEMENTS_VERIFICATION.category_id.value,
+                'category_id':$("#add_saving_form input[name=category_id]").val(),
                 'title':ELEMENTS_VERIFICATION.title.value,
                 'description':ELEMENTS_VERIFICATION.description.value,
                 'start_date':ELEMENTS_VERIFICATION.start_date.value,
@@ -128,7 +129,7 @@ var VERIFICATION = {
                 that.showVarificationModal(data);      
             },
             error: function (request, status, error) {
-
+                // console.log(error_msgs);
                 if ( request.status == 401 ) {
                     let error_msgs = JSON.parse(request.responseText);
                     inputErrorHandler(error_msgs);
@@ -200,7 +201,6 @@ var VERIFICATION = {
         }
     },
     init : function (){
-        
         ELEMENTS_VERIFICATION.verify_bnt.addEventListener('click',this.varify.bind(this));
         
     }

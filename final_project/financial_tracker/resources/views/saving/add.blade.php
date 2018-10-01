@@ -1,11 +1,12 @@
 @extends('layouts.headers.saving.add')
 
 <script src="{{ asset('js/saving/verification.js') }}" defer></script>
+<script src="{{ asset('js/transaction/adding/category.js') }}" defer></script>
 
 @section('content_add')
 
-@include('saving.verification_modal')
-@include('transaction.inc.category_modal')
+@include('saving.inc.verification_modal')
+@include('saving.inc.category_modal')
 
 <hr>
 <form id="add_saving_form"  class="form-horizontal" action="{{config('app.url')}}/add/saving/confirmed" method="POST">
@@ -25,7 +26,7 @@
         </div>
 
         <div class="col-xs-1">
-            <select class="custom-select form-control form-control-lg" style="height:35px"  name="currency_id" >
+            <select class="custom-select form-control form-control-lg" style="height:35px"  id="currency_id" name="currency_id" >
                 @foreach($currencies as $currency)
                     @if($currency->id == $user->profile->defaultCurrency->id )
                         <option value="{{ $currency->id }}" selected>{{$currency->code}}</option>
@@ -55,7 +56,7 @@
             <div class="col-xs-4">
                 <p class="col-xs-10" id="category_chosen_id">Click to choose your category  &nbsp;&nbsp;</p>
                 <span class="col-xs-2 glyphicon glyphicon-piggy-bank" style="font-size:30px"></span>
-                <input type='hidden' name='category_id' value=""/>
+                <input type='hidden' id="category_id" name='category_id' value=""/>
             </div>
         </div>
     </div>
@@ -88,7 +89,7 @@
     <div class="form-group">
         <label class="control-label col-xs-4 text-primary" for="start_date">Start Date:</label>
         <div class="col-xs-4">
-            <input type='date' name='start_date' class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" value="{{ old('start_date') }}" required/>
+            <input type='date' id='start_date' name='start_date' class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" value="{{ old('start_date') }}" required/>
         </div>
         @if ($errors->has('title'))
             <span class="invalid-feedback" role="alert">
@@ -99,7 +100,7 @@
     <div class="form-group">
         <label class="control-label col-xs-4 text-primary" for="repeat">Saving Frequency:</label>
         <div class="col-xs-4">
-            <select class="custom-select form-control" style="height: 35px" id="repeat_select" name="repeat_id" >
+            <select class="custom-select form-control" style="height: 35px" id="repeat_id" name="repeat_id" >
                 @foreach($repeats as $repeat)
                     @if($repeat->type == "weekly" || $repeat->type == "monthly")
                         <option value="{{ $repeat->id }}" >{{$repeat->type}}</option>
