@@ -19,6 +19,7 @@
     @csrf
     
     <input type="hidden" id="type_input" name="type" value="income"/>
+    
 
     <hr>
     
@@ -27,6 +28,12 @@
         <div class="col-xs-3">
             <input type="number" name='amount' placeholder="0.00" class=" form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" value="{{ old('amount') }}"required/>
         </div>
+        @if ($errors->has('amount'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('amount') }}</strong>
+            </span>
+        @endif
+
         <div class="col-xs-1">
             <select class="custom-select form-control form-control-lg" style="height:35px"  name="currency_id" >
                 @foreach($currencies as $currency)
@@ -48,6 +55,11 @@
                 <input type='hidden' name='category_id' value=""/>
             </div>
         </div>
+        @if ($errors->has('category_id'))
+            <span class="invalid-feedback" role="alert">
+                <strong>Please choose a category</strong>
+            </span>
+        @endif
     </div>
         
     <hr>
@@ -56,12 +68,22 @@
         <div class="col-xs-4">
             <input type='text' name='title' placeholder="Title" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title') }}" required/>
         </div>
+        @if ($errors->has('title'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('title') }}</strong>
+            </span>
+        @endif
     </div>
     <div class="form-group">
         <label class="control-label col-xs-4 text-primary" for="description">Description:</label>
         <div class="col-xs-4">
             <textarea rows="2" name='description' placeholder="Description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" value="{{ old('description') }}">
             </textarea>
+            @if ($errors->has('description'))
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $errors->first('description') }}</strong>
+                </span>
+            @endif
         </div>
     </div>
 
@@ -70,6 +92,11 @@
         <div class="col-xs-4">
             <input type='date' name='start_date' class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" value="{{ old('start_date') }}" required/>
         </div>
+        @if ($errors->has('start_date'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('start_date') }}</strong>
+            </span>
+        @endif
     </div>
     <hr>
     <div class="form-group">
@@ -91,6 +118,11 @@
         <div class="col-xs-4">
             <input type='date' name='end_date' class="form-control{{ $errors->has('end_date') ? ' is-invalid' : '' }}" value="{{ old('end_date') }}"/><br>
         </div>
+        @if ($errors->has('end_date'))
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $errors->first('end_date') }}</strong>
+            </span>
+        @endif
     </div>
     
    <hr>

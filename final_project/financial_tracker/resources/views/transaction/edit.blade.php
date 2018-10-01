@@ -8,8 +8,8 @@
 
 <div class="row" >
     <div class="btn-group titles" role="group" aria-label="...">
-        <button type="button"  class="btn btn-default {{ $transaction->type == "income" ? ' active' : '' }} " >Income</button>
-        <button type="button"  class="btn btn-default {{ $transaction->type == "expense" ? ' active' : '' }}">Expense</button>
+        <button type="button" id="title_income" class="btn btn-default {{ $transaction->type == "income" ? ' active' : '' }} " >Income</button>
+        <button type="button" id="title_expense" class="btn btn-default {{ $transaction->type == "expense" ? ' active' : '' }}">Expense</button>
     </div>
 </div>
 
@@ -17,8 +17,8 @@
     @csrf
     
     
-    <input type = "hidden" name='id' placeholder="id" value = "{{$transaction->id}}"/>
-    <input type="hidden" id="type_input" name="type" value="{{$transaction->type}}"/>
+    <input type = "hidden" name='id' value = "{{$transaction->id}}"/>
+    {{-- <input type="hidden" id="type_input" name="type" value="{{$transaction->type}}"/> --}}
     
     <hr>
     
@@ -101,11 +101,11 @@
                     <label class="custom-control-label" for="defaultChecked">All transaction</label>
                 </div>
             </div>
-        @else
-            <div class="edit_info">
-                <input type="hidden" name="edit_type" value="all" checked>
-            </div>
         @endif
+    @else
+        <div class="edit_info">
+            <input type="hidden" name="edit_type" value="all" checked>
+        </div>
     @endif
 
     

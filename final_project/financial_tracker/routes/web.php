@@ -50,9 +50,8 @@ Route::group(['middleware' => 'auth'], function()
 
 
     //Adding Category
-    Route::get('/add/category', function() {
-        return 'Adding a new category' ;
-    } );
+    Route::get('/add/category', 'AddCategoryController@index');
+    Route::post('/add/category', 'AddCategoryController@add');
 
     //Adding Currency
     Route::get('/add/currency', function() {

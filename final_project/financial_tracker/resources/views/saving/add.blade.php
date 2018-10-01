@@ -44,7 +44,7 @@
             <input id='amount' type="number" name='amount' placeholder="Amount" class="form-control{{ $errors->has('amount') ? ' is-invalid' : '' }}" value="{{ old('amount') }}"/>
             @if ($errors->has('amount'))
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('goal_amount') }}</strong>
+                    <strong>{{ $errors->first('amount') }}</strong>
                 </span>
             @endif
         </div>
@@ -69,7 +69,7 @@
             <input id='title' name='title' placeholder="Title" class="form-control{{ $errors->has('title') ? ' is-invalid' : '' }}" value="{{ old('title') }}"/>
             @if ($errors->has('title'))
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('goal_amount') }}</strong>
+                    <strong>{{ $errors->first('title') }}</strong>
                 </span>
             @endif
         </div>
@@ -78,9 +78,9 @@
         <label class="control-label col-xs-4 text-primary" for="description">Description:</label>
         <div class="col-xs-4">
             <input id='description' name='description' placeholder="Description" class="form-control{{ $errors->has('description') ? ' is-invalid' : '' }}" value="{{ old('description') }}"/>
-            @if ($errors->has('title'))
+            @if ($errors->has('description'))
                 <span class="invalid-feedback" role="alert">
-                    <strong>{{ $errors->first('goal_amount') }}</strong>
+                    <strong>{{ $errors->first('description') }}</strong>
                 </span>
             @endif
         </div>
@@ -91,7 +91,7 @@
         <div class="col-xs-4">
             <input type='date' id='start_date' name='start_date' class="form-control{{ $errors->has('start_date') ? ' is-invalid' : '' }}" value="{{ old('start_date') }}" required/>
         </div>
-        @if ($errors->has('title'))
+        @if ($errors->has('start_date'))
             <span class="invalid-feedback" role="alert">
                 <strong>{{ $errors->first('start_date') }}</strong>
             </span>

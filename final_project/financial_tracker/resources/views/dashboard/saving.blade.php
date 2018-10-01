@@ -37,24 +37,22 @@
 <div class="transactions col-xs-8 col-xs-offset-2">
     <p class="col-xs-5 text-info">Transactions:</p>
     @foreach(($user->expanded_transactions) as $saving)
-        <a href="{{config('app.url')}}/edit/transaction?id={{$saving->id}}">
-            <div class="col-xs-12 transaction_card_big">
-                <div class="card-counter primary">
-                    <div class="col-xs-5">
-                        <span class="col-xs-12 count-name"><b>Title:</b> {{$saving->title}}</span>
-                        <span class="col-xs-12 count-name"><b>Category:</b> {{$saving->category->title}}</span>                        
-                        <span class="col-xs-12 count-name"><b>Date:</b> {{$saving->start_date}}</span>
-                    </div>
-                    <div class="col-xs-3">
-                        <span class="col-xs-12 logo-big {{$saving->category->logo->class_name}}"></span>
-                    </div>
-                    <div class="col-xs-4">
-                        <span class="col-xs-12 count-numbers">{{$saving->currency->code}} <strong>{{$saving->amount}}</strong></span>
-                        <span class="col-xs-12 count-numbers"> % {{$saving->percentage}}</span>
-                    </div>
+        <div class="col-xs-12 transaction_card_big">
+            <div class="card-counter primary">
+                <div class="col-xs-5">
+                    <span class="col-xs-12 count-name"><b>Title:</b> {{$saving->title}}</span>
+                    <span class="col-xs-12 count-name"><b>Category:</b> {{$saving->category->title}}</span>                        
+                    <span class="col-xs-12 count-name"><b>Date:</b> {{$saving->start_date}}</span>
+                </div>
+                <div class="col-xs-3">
+                    <span class="col-xs-12 logo-big {{$saving->category->logo->class_name}}"></span>
+                </div>
+                <div class="col-xs-4">
+                    <span class="col-xs-12 count-numbers">{{$saving->currency->code}} <strong>{{$saving->amount}}</strong></span>
+                    <span class="col-xs-12 count-numbers"> % {{$saving->percentage}}</span>
                 </div>
             </div>
-        </a>
+        </div>
     @endforeach
 </div>
 

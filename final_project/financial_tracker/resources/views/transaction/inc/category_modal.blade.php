@@ -29,14 +29,6 @@
                                 <input type='hidden' name='category_id' value="{{$category->id}}"/>
                             </div>
                         </div>
-                    @elseif($category->type == "saving")
-                        <div name="category_div" data-dismiss="modal" data-category-type = "saving" style='display:none'>
-                            <div class="col-xs-4">
-                                <p class="col-xs-10">{{$category->title}} &nbsp;&nbsp;</p>
-                                <span class="col-xs-2 {{$category->logo->class_name}}" style="font-size:30px"></span>
-                                <input type='hidden' name='category_id' value="{{$category->id}}"/>
-                            </div>
-                        </div>
                     @endif
                 @endforeach
                 

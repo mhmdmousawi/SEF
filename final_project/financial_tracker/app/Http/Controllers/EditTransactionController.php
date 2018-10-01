@@ -63,8 +63,10 @@ class EditTransactionController extends Controller
 
         if($t_end_date <= $today){
             //send error 
-            return redirect('/edit/transaction/'.$transaction->id)->with('done','yes');
-        }else if($t_start_date == $today){
+            // return redirect('/edit/transaction/'.$transaction->id)->with('done','yes');
+            $edit_type = "all";
+        }
+        if($t_start_date == $today){
             $edit_type = "all";
         }
 
