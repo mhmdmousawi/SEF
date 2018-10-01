@@ -3,33 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Transaction;
 use DateTime;
 use DateInterval;
+use Illuminate\Support\Facades\Auth;
+use App\Transaction;
+use App\Currency;
+use App\Repeat;
+
 
 class EditTransactionController extends Controller
 {
-    public function index(Request $request)
+    public function index($transaction_id)
     {
-        $transaction_id = $request->id;
-        $transaction = Transaction::find($transaction_id);
-
+        $user = Auth::user();
+        $transaction = Transaction::where('id',$transaction_id)
+                                    ->where('profile_id',$user->profile->id)
+                                    ->first();
+        $currencies = Currency::all();
+        $repeats = Repeat::all();
+        
         if(!$transaction){
-           return '404 page';
+            return '404 page';
         }
         if($transaction->type == "saving"){
-            return "Please don't try injections .. :) ";
+            return "Don't Even try .. :) ";
         }
         
-        return view('transaction_edit')->with('transaction',$transaction);
+        return view('transaction.edit')->with('user',$user)
+                                      ->with('transaction',$transaction)
+                                      ->with('currencies',$currencies)
+                                      ->with('repeats',$repeats);
     }
 
     public function edit(Request $request)
     {
         $validatedData = $request->validate([
+            'id' => 'required',
             'amount' => 'required|max:255',
             'title' => 'required|max:255',
-            'description' => 'required|max:255',
+            // 'description' => 'required|max:255',
             'currency_id' => 'required|numeric',
             'edit_type' => 'required',
         ]);
@@ -51,7 +63,7 @@ class EditTransactionController extends Controller
 
         if($t_end_date <= $today){
             //send error 
-            return redirect('/edit/transaction?id='.$transaction->id);
+            return redirect('/edit/transaction/'.$transaction->id)->with('done','yes');
         }else if($t_start_date == $today){
             $edit_type = "all";
         }
@@ -72,7 +84,8 @@ class EditTransactionController extends Controller
             $new_transaction->end_date = $transaction->end_date; //same
             $new_transaction->save();
 
-            $transaction->end_date = $next_start_date;
+            $last_end_date = $this->getLastEndDate($transaction,$next_start_date);
+            $transaction->end_date = $last_end_date;
             $transaction->save();
 
             return $this->redirection($transaction);
@@ -92,12 +105,26 @@ class EditTransactionController extends Controller
     public function redirection($transaction)
     {
         if($transaction->type == "income"){
-            return redirect('/dashboard/incomes/monthly');
+            return redirect('/dashboard/incomes');
         }else if ($transaction->type == "expense"){
-            return redirect('/dashboard/expenses/monthly');
-        }else{
-            return "404 page";
+            return redirect('/dashboard/expenses');
         }
+       
+        return "404 page";
+       
+    }
+
+    public function getLastEndDate($transaction,$next_start_date)
+    {
+        $next_start_date = new DateTime($next_start_date);
+        if($transaction->repeat->type == 'daily'){
+            $last_end_date = $next_start_date->sub(new DateInterval('P1D'));
+        }else if($transaction->repeat->type = 'weekly'){
+            $last_end_date = $next_start_date->sub(new DateInterval('P1W'));
+        }else if($transaction->repeat->type = 'monthly'){
+            $last_end_date = $next_start_date->sub(new DateInterval('P1M'));
+        }
+        return $last_end_date->format("Y-m-d");
     }
 
     public function getNextStartDate($transaction){

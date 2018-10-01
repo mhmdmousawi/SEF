@@ -40,12 +40,12 @@ Route::group(['middleware' => 'auth'], function()
 
     //Adding savings Pages
     Route::get('/add/saving', 'AddSavingController@index' );
-    Route::post('/add/saving/confirmed', 'AddSavingController@validateAndAdd');
     Route::post('saving/validate','Validation@validateSaving');
+    Route::post('/add/saving/confirmed', 'AddSavingController@validateAndAdd');
     // Route::post('/add/saving/confirm', 'AddSavingController@confirm');
 
     //Edit Transaction
-    Route::get('/edit/transaction', 'EditTransactionController@index' );
+    Route::get('/edit/transaction/{transaction_id}', 'EditTransactionController@index' );
     Route::post('/edit/transaction', 'EditTransactionController@edit' );
 
 
