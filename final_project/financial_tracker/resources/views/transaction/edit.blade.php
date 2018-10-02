@@ -8,8 +8,8 @@
 
 <div class="row" >
     <div class="btn-group titles" role="group" aria-label="...">
-        <button type="button" id="title_income" class="btn btn-default {{ $transaction->type == "income" ? ' active' : '' }} " >Income</button>
-        <button type="button" id="title_expense" class="btn btn-default {{ $transaction->type == "expense" ? ' active' : '' }}">Expense</button>
+        <button type="button"  class="btn btn-default {{ $transaction->type == "income" ? ' active' : '' }} " >Income</button>
+        <button type="button"  class="btn btn-default {{ $transaction->type == "expense" ? ' active' : '' }}">Expense</button>
     </div>
 </div>
 

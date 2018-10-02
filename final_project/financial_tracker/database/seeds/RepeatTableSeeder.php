@@ -15,6 +15,5 @@ class RepeatTableSeeder extends Seeder
         DB::table('repeats')->insert(['type' => 'daily']);
         DB::table('repeats')->insert(['type' => 'weekly']);
         DB::table('repeats')->insert(['type' => 'monthly']);
-        
     }
 }

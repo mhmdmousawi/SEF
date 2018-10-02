@@ -119,8 +119,8 @@
         </div>
     </div>
 
-    <button id="submit_btn" name= "submit_btn" type="hidden" style="display:none;"></button>
     <input id="show_verification_modal" type="hidden" data-toggle="modal" data-target="#saving_varification_modal" value="Verify"/>
+    <button id="submit_btn" name= "submit_btn" type="hidden" style="display:none;"></button>
 </form>
 
 

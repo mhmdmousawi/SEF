@@ -126,11 +126,14 @@ var VERIFICATION = {
             },
             dataType: 'JSON',
             success: function (data) { 
+                console.log("success of request");
                 that.showVarificationModal(data);      
             },
             error: function (request, status, error) {
-                // console.log(error_msgs);
+                console.log("error in request");
+                console.log(JSON.parse(request.responseText));
                 if ( request.status == 401 ) {
+                    console.log("error in request 401");
                     let error_msgs = JSON.parse(request.responseText);
                     inputErrorHandler(error_msgs);
                 }

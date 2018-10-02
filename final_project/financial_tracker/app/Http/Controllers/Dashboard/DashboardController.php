@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use Session;
 use App\CustomClasses\Calculator;
+use App\Repeat;
 
 class DashboardController extends Controller
 {
@@ -145,7 +146,6 @@ class DashboardController extends Controller
         $income_transactions =  json_decode($income_transactions);
         usort($income_transactions, array($this, "sortByAmount"));
         $user->income_transactions = $this->getTopTransactions($income_transactions);
-        var_dump($user->income_transactions);
         $user->stat_categories_info_income = $this->getCategoriesInfo($user,$user->income_transactions);
 
         $expense_transactions = $user->profile->transactionsInTimeFrame(

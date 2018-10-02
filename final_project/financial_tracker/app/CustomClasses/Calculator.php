@@ -83,7 +83,7 @@ class Calculator
     {
         $user = $this->user;
         $profile = $user->profile;
-
+        
         $transactions_income = $profile->transactionsWithTypeAndRepeatUntil($date,"income");
         $transactions_income = json_decode($transactions_income);
         $total_amount_income = $this->getTotalAmount($transactions_income);

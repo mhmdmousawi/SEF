@@ -36,23 +36,23 @@ class Validation extends Controller
         }
 
         $user = Auth::user();
-        $this->calculate = new Calculator($user);
-        $calculate = $this->calculate;
-
+        $this->calculator = new Calculator($user);
+        $calculate = $this->calculator;
+        
         $goal_amount_tr = $request->goal_amount;
         $amount_tr = $request->amount;
         $currency_id = $request->currency_id;
         $repeat_id = $request->repeat_id;
         $start_date = $request->start_date;
-
+        
+        
         $goal_amount = $calculate->defaultAmount($goal_amount_tr,$currency_id);
         $amount = $calculate->defaultAmount($amount_tr,$currency_id);
         $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
-
         $isValid_goal = $this->goalValid($goal_amount,$due_date);
         $isValid_fequently = $this->frequentlyValid($amount,$start_date,$due_date,$repeat_id);
-
-
+        
+        
         $valid_response = false;
 
         if($isValid_goal && $isValid_fequently){
@@ -69,7 +69,7 @@ class Validation extends Controller
     }
     public function goalValid($goal_amount,$due_date)
     {
-        $calculate = $this->calculate ;
+        $calculate = $this->calculator;
         $overall_balance = $calculate->overallCalculationUntil($due_date);
         $dif = $overall_balance - $goal_amount;
 
@@ -81,7 +81,7 @@ class Validation extends Controller
 
     public function frequentlyValid($amount,$start_date,$end_date,$repeat_id)
     {
-        $calculate = $this->calculate ;
+        $calculate = $this->calculator ;
         $start_date = new DateTime($start_date);
         $end_date = new DateTime($end_date);
 
