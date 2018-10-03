@@ -21,7 +21,7 @@ class TransactionTableSeeder extends Seeder
         $transaction->currency_id = 1;
         $transaction->repeat_id = 4;
         $transaction->start_date = date("2018-10-5");
-        $transaction->end_date = date_create("2019-10-5");
+        $transaction->end_date = date_create("2019-1-5");
         $transaction->save();
 
         $transaction = new App\Transaction;

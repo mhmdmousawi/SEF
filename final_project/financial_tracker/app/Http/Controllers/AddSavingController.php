@@ -21,7 +21,6 @@ class AddSavingController extends Controller
 
     public function index()
     {
-
         $user = Auth::user();
         $currencies = Currency::all();
         $repeats = Repeat::all();

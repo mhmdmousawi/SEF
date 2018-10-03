@@ -41,9 +41,14 @@ Route::group(['middleware' => 'auth'], function()
 
     //Adding savings Pages
     Route::get('/add/saving', 'AddSavingController@index' );
-    Route::post('saving/validate','Validation@validateSaving');
+    Route::post('/saving/validate','Validation@validateSaving');
     Route::post('/add/saving/confirmed', 'AddSavingController@validateAndAdd');
     // Route::post('/add/saving/confirm', 'AddSavingController@confirm');
+
+    //Adding smart saving pages
+    Route::get('/add/saving/smart', 'AddSmartSavingController@index'); 
+    Route::post('/saving/smart/validate','Validation@validateSmartSaving');
+    Route::get('/add/saving/smart/confirmed', 'AddSmartSavingController@confirmed'); 
 
     //Edit Transaction
     Route::get('/edit/transaction/{transaction_id}', 'EditTransactionController@index' );

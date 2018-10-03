@@ -33,6 +33,16 @@ class Calculator
         return $amount_in_default_curr;
     }
 
+    public function exchangeFromDefault($amount,$currency_id)
+    {
+        $user = $this->user;
+        $currency = Currency::find($currency_id);
+        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
+        $amount_in_this_curr = ($amount*$currency->amount_per_dollar)
+                                    /$default_currency_rate;
+        return $amount_in_this_curr;
+    }
+
     public function weekOverallCalculation($week_start_date)
     {
         $carbon_date = Carbon::createFromFormat('Y-m-d',$week_start_date);
@@ -162,5 +172,44 @@ class Calculator
             }
         }
         return $reccurent_date->format('Y-m-d');
+    }
+
+    public function numberOfWeeks($start_date,$end_date)
+    {
+        $start_date = Carbon::createFromFormat('Y-m-d', $start_date);
+        $end_date = Carbon::createFromFormat('Y-m-d', $end_date);
+        $number_of_weeks = $start_date->diffInWeeks($end_date);
+        return $number_of_weeks;
+    }
+
+    public function numberOfMonths($start_date,$end_date)
+    {
+        $start_date = Carbon::createFromFormat('Y-m-d', $start_date);
+        $end_date = Carbon::createFromFormat('Y-m-d', $end_date);
+        $number_of_months = $start_date->diffInMonths($end_date);
+        return $number_of_months;
+    }
+
+    //weekly least common balance in a specific duration
+    //start_date and end_date should have at leat a week between
+
+    public function weeklyLCB($start_date,$end_date)
+    {
+        $user = $this->user;
+        $start_date = new DateTime($start_date);
+        $end_date = new DateTime($end_date);
+
+        $week_numbers = 1;
+        $least_common_balance = 1000000000;
+        $recurrent_start_date = $start_date;
+
+        while($recurrent_start_date <= $end_date){
+            $temp_week_balance = $this->weekOverallCalculation($recurrent_start_date->format('Y-m-d'));
+            if($temp_week_balance < $least_common_balance){
+                $least_common_balance = $temp_week_balance;
+            }
+            $recurrent_start_date = $recurrent_start_date->add(new DateInterval('P1W'));
+        }
+        return $least_common_balance;
     }
 }

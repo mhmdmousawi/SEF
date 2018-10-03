@@ -24,7 +24,7 @@
                     <a class="dropdown-item" href="{{config('app.url')}}/add/category">Category</a>
                     <a class="dropdown-item" href="{{config('app.url')}}/add/transaction">Transaction</a>
                     <a class="dropdown-item" href="{{config('app.url')}}/add/saving">Saving Plan</a>
-                    <a class="dropdown-item" href="#">Smart Plan</a>
+                    <a class="dropdown-item" href="{{config('app.url')}}/add/saving/smart">Smart Plan</a>
                 </div>
             </li>
         </ul>

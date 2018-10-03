@@ -53,6 +53,13 @@ class CategoryTableSeeder extends Seeder
         $category->logo_id = 6;
         $category->save(); 
 
+        $category = new App\Category;
+        $category->profile_id = 1;
+        $category->type = 'saving';
+        $category->title = 'Smart Saving';
+        $category->logo_id = 8;
+        $category->save(); 
+
         
     }
 }
