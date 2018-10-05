@@ -2,20 +2,27 @@
 
 @section('content')
 
-<nav class="navbar app_color_default fixed-top navbar-expand-lg">
-        <div class="container">
-            <div class="nav navbar-nav navbar-left">
-                <a class="navbar-brand"></a>
-            </div>
-    
-            <ul class="nav navbar-nav navbar-center">
-                <li class="navbar-brand text-light">Adding Category</li>&nbsp;&nbsp;&nbsp;
+<nav class="navbar navbar-expand-md app_color_default navbar-laravel">
+    <div class="container">
+        <a class="navbar-brand text-light text-uppercase" href="#">Adding Category</a>
+        <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav mr-auto">
+                
             </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <a class="navbar-brand text-light"  href="{{config('app.url')}}/dashboard/overview">Cancel</a>
+            
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+                <li>
+                    <a class="nav-link text-light" href="{{config('app.url')}}/dashboard/overview">Back</a>
+                </li>
             </ul>
         </div>
-    </nav>
+    </div>
+</nav>
 
 <div class="container">
     @yield('content_add')

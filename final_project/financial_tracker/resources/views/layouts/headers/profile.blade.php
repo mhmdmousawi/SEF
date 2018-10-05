@@ -4,20 +4,42 @@
 
 @section('content')
 
-<nav class="navbar app_color_default fixed-top navbar-expand-lg" >
+<nav class="navbar navbar-expand-md app_color_default navbar-laravel">
     <div class="container">
-        <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand text-light" href="{{config('app.url')}}/dashboard/overview">Cancel</a>
+        <a class="navbar-brand text-light text-uppercase" href="{{config('app.url')}}/profile">Profile Configuration</a>
+        <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav mr-auto">
+                
+            </ul>
+            
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-light"  data-toggle="modal" data-target="#edit_profile_modal">Edit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+        
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link text-light" href="{{config('app.url')}}/dashboard/overview">Back</a>
+                    </li>
+            </ul>
         </div>
-
-        <div class="nav navbar-nav navbar-center">
-            <a class="navbar-brand text-light">Profile Configuration</a>
-        </div>
-        <ul class="nav navbar-nav navbar-right">
-            <a class="navbar-brand text-light"  data-toggle="modal" data-target="#edit_profile_modal">Edit</a>
-        </ul>
     </div>
 </nav>
+
 <!-- Modal -->
 <div class="modal fade" id="edit_profile_modal" role="dialog">
         <div class="modal-dialog">

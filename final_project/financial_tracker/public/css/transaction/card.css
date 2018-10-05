@@ -14,8 +14,8 @@
 
 .card-counter{
     box-shadow: 2px 2px 10px #DADADA;
-    margin: 5px;
-    padding: 8px 4px;
+    margin: 1px;
+    padding: 4px 4px;
     background-color: #fff;
     height: 100%;
     border-radius: 5px;
@@ -55,7 +55,7 @@
 
   .card-counter .logo-big{
     opacity: 0.5;
-    font-size: 130px;
+    /* font-size: 10vw; */
     float: left;
   }
 

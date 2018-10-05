@@ -15,17 +15,17 @@
                 @foreach($user->profile->categories as $category)
                     @if($category->type == "income")
                         <div class="text-center" name="category_div" data-dismiss="modal" data-category-type = "income">
-                            <div class="col-xs-4">
-                                <p class="col-xs-10">{{$category->title}} &nbsp;&nbsp;</p>
-                                <span class="col-xs-2 {{$category->logo->class_name}}" style="font-size:30px"></span>
+                            <div class="col-lg-4">
+                                <p class="col-xs-8 col-lg-10">{{$category->title}} &nbsp;&nbsp;</p>
+                                <span class="col-xs-4 col-lg-2 {{$category->logo->class_name}}" style="font-size:30px"></span>
                                 <input type='hidden' name='category_id' value="{{$category->id}}"/>
                             </div>
                         </div>
                     @elseif($category->type == "expense")
                         <div name="category_div" data-dismiss="modal" data-category-type = "expense" style='display:none'>
-                            <div class="col-xs-4">
-                                <p class="col-xs-10">{{$category->title}} &nbsp;&nbsp;</p>
-                                <span class="col-xs-2 {{$category->logo->class_name}}" style="font-size:30px"></span>
+                            <div class="col-lg-4">
+                                <p class="col-lg-10">{{$category->title}} &nbsp;&nbsp;</p>
+                                <span class="col-lg-2 {{$category->logo->class_name}}" style="font-size:30px"></span>
                                 <input type='hidden' name='category_id' value="{{$category->id}}"/>
                             </div>
                         </div>

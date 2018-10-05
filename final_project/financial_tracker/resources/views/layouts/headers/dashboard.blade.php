@@ -4,39 +4,58 @@
 
 @section('content')
 
-<nav class="navbar fixed-top navbar-expand-lg app_color_default">
+<nav class="navbar navbar-expand-md app_color_default navbar-laravel">
     <div class="container">
-        <div class="nav navbar-nav navbar-left">
-            <a class="navbar-brand text-light" href="{{config('app.url')}}/profile"><span class="glyphicon glyphicon-user"></span> Profile</a>
-        </div>
+        <a class="navbar-brand text-light text-uppercase" href="{{config('app.url')}}/dashboard">Dashboard</a>
+        <button class="navbar-toggler navbar-dark" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav mr-auto">
+            
+            </ul>
 
-        <ul class="nav navbar-nav navbar-center">
-                {{-- class= "active" --}}
-            {{-- <li > --}}
-                <a class="navbar-brand text-light" href="{{config('app.url')}}/dashboard/overview">Dashboard</a>
-            {{-- </li>&nbsp;&nbsp;&nbsp; --}}
-            <li class="nav-item dropdown show">
-                <a class="nav-link  dropdown-toggle navbar-brand text-light"
-                    data-toggle="dropdown" aria-expanded="true">
-                    {{-- <span class="glyphicon glyphicon-plus-sign"></span>--}}Add
-                </a>
-                <div class="dropdown-menu" >
-                    <a class="dropdown-item" href="{{config('app.url')}}/add/category">Category</a>
-                    <a class="dropdown-item" href="{{config('app.url')}}/add/transaction">Transaction</a>
-                    <a class="dropdown-item" href="{{config('app.url')}}/add/saving">Saving Plan</a>
-                    <a class="dropdown-item" href="{{config('app.url')}}/add/saving/smart">Smart Plan</a>
-                </div>
-            </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-            {{-- <li> --}}
-                <a class="navbar-brand text-light"  href="#" data-toggle="modal" data-target="#time_filter_modal">
-                <span class="glyphicon glyphicon-calendar"></span> Calender
-                </a>
-            {{-- </li> --}}
-        </ul>
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+                
+                <!-- Authentication Links -->
+                @guest
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link text-light " href="{{config('app.url')}}/profile">Profile</a>
+                    </li>
+                    <li>
+                        <a class="nav-link text-light "  href="#" data-toggle="modal" data-target="#time_filter_modal">Calender</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle text-light " href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            Add
+                        </a>
+    
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="{{config('app.url')}}/add/category">Category</a>
+                            <a class="dropdown-item" href="{{config('app.url')}}/add/transaction">Transaction</a>
+                            <a class="dropdown-item" href="{{config('app.url')}}/add/saving">Saving Plan</a>
+                            <a class="dropdown-item" href="{{config('app.url')}}/add/saving/smart">Smart Plan</a>
+    
+                        </div>
+                    </li>
+                    
+                @endguest
+            </ul>
+        </div>
     </div>
+    
 </nav>
+
+
 
 <div class="container">
     <!-- Modal -->

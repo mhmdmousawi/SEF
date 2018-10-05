@@ -10,7 +10,8 @@
     left: 0px;
 }
 .topten_div{
-    height: 420px;
+    max-height: 420px;
+    /* height: 420px; */
     display: block;
     float: left;
 }
@@ -18,3 +19,4 @@
     float: left;
     height: 100%;
 }
+
