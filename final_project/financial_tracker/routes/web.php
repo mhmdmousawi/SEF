@@ -54,6 +54,9 @@ Route::group(['middleware' => 'auth'], function()
     Route::get('/edit/transaction/{transaction_id}', 'EditTransactionController@index' );
     Route::post('/edit/transaction', 'EditTransactionController@edit' );
 
+    //delete transaction
+    Route::post('/delete/transaction', 'EditTransactionController@delete' );
+
     //Adding Category
     Route::get('/add/category', 'AddCategoryController@index');
     Route::post('/add/category', 'AddCategoryController@add');

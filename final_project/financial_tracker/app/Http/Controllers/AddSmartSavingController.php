@@ -9,6 +9,9 @@ use App\Repeat;
 use App\CustomClasses\Calculator;
 use Session;
 
+use DateTime;
+use DateInterval;
+
 class AddSmartSavingController extends Controller
 {
     public function index()
@@ -23,7 +26,6 @@ class AddSmartSavingController extends Controller
 
     public function confirmed(Request $request)
     {
-
         $user = Auth::user();
         $calculate = new Calculator;
 
@@ -35,13 +37,6 @@ class AddSmartSavingController extends Controller
         }else{
             return "no smart saving plan to confirm..";
         }
-        // if(Session::has('valid_transaction')){
-        //     $transaction = Session::get('valid_transaction');
-        //     $transaction->save();
-        //     Session::forget('valid_transaction');
-        // }else{
-        //     return "404 page not found..";
-        // }
-        // return redirect('/dashboard/savings');
     }
+
 }

@@ -35,15 +35,28 @@ class EditTransactionController extends Controller
                                       ->with('repeats',$repeats);
     }
 
+    public function delete(Request $request)
+    {
+        $validatedData = $request->validate([
+            'id' => 'required|exists:transactions,id',
+        ]);
+
+        $transaction_id = $request->id;
+        $transaction = Transaction::find($transaction_id);
+        $transaction->delete();
+        return $this->redirection($transaction);
+
+    }
+
     public function edit(Request $request)
     {
         $validatedData = $request->validate([
-            'id' => 'required',
+            'id' => 'required|exists:transactions,id',
             'amount' => 'required|max:255',
             'title' => 'required|max:255',
-            // 'description' => 'required|max:255',
-            'currency_id' => 'required|numeric',
-            'edit_type' => 'required',
+            'description' => 'max:255',
+            'currency_id' => 'required|exists:currencies,id',
+            'edit_type' => 'required|in:all,future',
         ]);
 
         $edit_type = $request->edit_type;

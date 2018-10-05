@@ -6,6 +6,8 @@
 
 @section('content_edit')
 
+@include('transaction.inc.delete_modal')
+
 <div class="row" >
     <div class="btn-group titles" role="group" aria-label="...">
         <button type="button"  class="btn btn-default {{ $transaction->type == "income" ? ' active' : '' }} " >Income</button>
@@ -110,12 +112,15 @@
 
     
     <hr>
-    <div class="form-group">  
-        <label class="control-label col-xs-5" for="empty"></label>      
-        <div class="col-xs-4" >
+    <div class="form-group">       
+        <div class="col-xs-1 col-xs-offset-4" >
             <input class="btn btn-default" type="submit" value="Update">
         </div>
+        <div class="col-xs-offset-1" >
+            <input class="btn btn-default" type="button" value="Delete" data-toggle="modal" data-target="#delete_modal">
+        </div>
     </div>
+  
 
 </form>
 

@@ -22,11 +22,11 @@ class Validation extends Controller
     public function validateSmartSaving(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'goal_amount' => 'required|numeric',
+            'goal_amount' => 'required|numeric|max:1000000000',
             'title' => 'required|max:255',
             'description' => 'max:255',
-            'currency_id' => 'required|numeric',
-            'start_date' => 'required|date',
+            'currency_id' => 'required|numeric|exists:currencies,id',
+            'start_date' => 'required|date|after:yesterday',
             'end_date' => 'required|date|after:start_date',
             'priority' => 'required|in:time,money',
         ]);
@@ -37,20 +37,24 @@ class Validation extends Controller
 
         $calculate = new Calculator;
         $this->calculator = $calculate;
+        $isValid_fequently = false;
         $valid_response = false;
         $priority = $request->priority;
         $goal_amount = $calculate->defaultAmount($request->goal_amount,$request->currency_id);
         $start_date = $request->start_date;
         $end_date = $request->end_date; 
+
+        $new_end_date = $end_date;
+        $monthly_valid_info = array();
         
         
         $isValid_goal = $this->goalValid($goal_amount,$end_date);
 
         if($priority == "money"){
-
-            $weekly_valid_info = $this->goalAmountFrequentlyValid($goal_amount,$start_date,$end_date,3);
-            $monthly_valid_info  = $this->goalAmountFrequentlyValid($goal_amount,$start_date,$end_date,4);
+            $weekly_valid_info = $this->goalAmountFrequentlyValidInfo($goal_amount,$start_date,$end_date,3);
+            $monthly_valid_info  = $this->goalAmountFrequentlyValidInfo($goal_amount,$start_date,$end_date,4);
             
+            $weekly_valid_info['valid'] = true;
             if($weekly_valid_info['valid']){
                 $repeat_id = 3;
                 $amount = $weekly_valid_info['amount'];
@@ -60,86 +64,118 @@ class Validation extends Controller
                 $repeat_id = 4;
                 $amount = $monthly_valid_info['amount'];
                 $isValid_fequently = true;
-            }
-            
-            if($isValid_goal && $isValid_fequently){
-
-                $valid_response = true;
-
-                $transaction = new Transaction;
-                $transaction->profile_id = Auth::user()->profile->id;
-                $transaction->amount = $calculate->exchangeFromDefault($amount,$request->currency_id); 
-                $transaction->type= "saving";
-                $transaction->title = $request->title;
-                $transaction->description = $request->description;
-                $transaction->currency_id = $request->currency_id;
-                $transaction->category_id = 7;
-                $transaction->start_date = $request->start_date;
-                $transaction->end_date = $request->end_date;
-                $transaction->repeat_id = $repeat_id;
-                // $transaction->repeat_type = $repeat_type;
-
-                $request->session()->put('valid_transaction', $transaction);
-            }
-            // // for testing
-            // $transaction = Transaction::find(1);
-            // $valid_response= true;
-            // $array = [
-            //     'transaction_details' => $transaction,
-            //     'verified' => $valid_response,
-            // ];        
-            // return response()->json($array,200);
-            
-
+            } 
         }else{
+            //if time is priority
+            $most_recent_valid_end_date_monthly = $this->getMostRecentValidEndDateMonthly(
+                                                            $goal_amount,
+                                                            $start_date,
+                                                            $end_date);
+            $monthly_valid_info  = $this->goalAmountFrequentlyValidInfo(
+                                            $goal_amount,
+                                            $start_date,
+                                            $most_recent_valid_end_date_monthly,
+                                            4
+                                        );                            
+            if($monthly_valid_info['valid']){
 
-            $number_of_months = $calculate->numberOfMonths($start_date,$end_date);
-            $amount_monthly = $goal_amount/$number_of_months;
+                $new_end_date = $most_recent_valid_end_date_monthly;
+                $repeat_id = 4;
+                $amount = $monthly_valid_info['amount'];
+                $isValid_fequently = true;
 
-            //weekly
-            while($start_date < $end_date){
-
-                $number_of_weeks = $calculate->numberOfWeeks($start_date,$end_date);
-                $amount_weekly = $goal_amount/$number_of_weeks;
-
-                $number_of_weeks = $calculate->numberOfWeeks($start_date,$end_date);
-                $amount = $goal_amount/$number_of_weeks;
-
-                //validate that amount 
-                //if valid subtract month from end_date
-                //else break
-                //else get the last amount and the end_date  
+                if($start_date == $most_recent_valid_end_date_monthly 
+                ){
+                    $repeat_id = 1;
+                }
             }
+
+            $most_recent_valid_end_date_weekly = $this->getMostRecentValidEndDateWeekly(
+                                                            $goal_amount,
+                                                            $start_date,
+                                                            $end_date);
+            $weekly_valid_info  = $this->goalAmountFrequentlyValidInfo(
+                                            $goal_amount,
+                                            $start_date,
+                                            $most_recent_valid_end_date_weekly,
+                                            3
+                                        );
+            if($weekly_valid_info['valid']){
+
+                $new_end_date = $most_recent_valid_end_date_weekly;
+                $repeat_id = 3;
+                $amount = $weekly_valid_info['amount'];
+                $isValid_fequently = true;
+
+                if($start_date == $most_recent_valid_end_date_weekly
+                ){
+                    $repeat_id = 1;
+                }
+            }
+            
         }
+            
+        if($isValid_goal && $isValid_fequently){
 
-        // $valid_response= false;
-        // $valid_response= true;
-        // $transaction = Transaction::find(1);
+            $valid_response = true;
 
-        if($valid_response){
+            $transaction = new Transaction;
+            $transaction->profile_id = Auth::user()->profile->id;
+            $transaction->amount = $calculate->exchangeFromDefault($amount,$request->currency_id); 
+            $transaction->type= "saving";
+            $transaction->title = $request->title;
+            $transaction->description = $request->description;
+            $transaction->currency_id = $request->currency_id;
+            $transaction->category_id = 7;
+            $transaction->start_date = $request->start_date;
+            $transaction->end_date = $new_end_date;
+            $transaction->repeat_id = $repeat_id;
+
+            $request->session()->put('valid_transaction', $transaction);
+
+            //testing
             $array = [
+                'verified' => true,
                 'transaction_details' => $transaction,
-                'verified' => $valid_response,
+                'monthly_valid_info' => $monthly_valid_info,
             ];
+            return response()->json($array,200);
         }else{
+
+            //testing
             $array = [
-                'verified' => $valid_response,
+                'verified' => false,
+                'monthly_valid_info' => $monthly_valid_info,
             ];
+            return response()->json($array,200);
         }
-        return response()->json($array,200);
+
+        // if($valid_response){
+        //     $array = [
+        //         'transaction_details' => $transaction,
+        //         'verified' => $valid_response,
+        //     ];
+        // }else{
+        //     $array = [
+        //         'verified' => $valid_response,
+        //         'test_end_date' => $most_recent_valid_end_date_monthly,
+        //         'monthly_valid_info' => $monthly_valid_info,
+        //     ];
+        // }
+        // return response()->json($array,200);
     }
 
     public function validateSaving(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'goal_amount' => 'required|numeric',
-            'amount' => 'required|max:255',
+            'goal_amount' => 'required|numeric|max:1000000000',
+            'amount' => 'required|max:1000000',
             'title' => 'required|max:255',
             'description' => 'max:255',
-            'currency_id' => 'required|numeric',
-            'category_id' => 'required|numeric',
+            'currency_id' => 'required|numeric|exists:currencies,id',
+            'category_id' => 'required|numeric|exists:categories,id',
             'repeat_id' => 'required|numeric|in:3,4',
-            'start_date' => 'required|date',
+            'start_date' => 'required|date|after:yesterday',
         ]);
 
         if ($validator->fails()) {    
@@ -200,10 +236,11 @@ class Validation extends Controller
         $recurrent_save_date = $start_date;
         $saving_number = 1;
 
+
         while($recurrent_save_date <= $end_date){
 
             if($repeat_id == 3){
-
+                
                 $week_overall_before_savings = $calculate->weekOverallCalculation($recurrent_save_date->format('Y-m-d'));
                 $amount_saved = $saving_number*$amount;
                 $week_overall_after_savings = $week_overall_before_savings - $amount_saved;
@@ -232,7 +269,8 @@ class Validation extends Controller
         return true;
     }
 
-    public function goalAmountFrequentlyValid($goal_amount,$start_date,$end_date,$repeat_id){
+    public function goalAmountFrequentlyValidInfo($goal_amount,$start_date,$end_date,$repeat_id)
+    {
 
         $calculate = new Calculator;
         $valid_info = array();
@@ -241,6 +279,9 @@ class Validation extends Controller
         if($repeat_id == 3){
             //weekly
             $number_of_weeks = $calculate->numberOfWeeks($start_date,$end_date);
+            if($number_of_weeks == 0){
+                $number_of_weeks = 1;
+            }
             $amount_weekly = $goal_amount/$number_of_weeks;
             $weekly_valid = $this->frequentlyValid($amount_weekly,$start_date,$end_date,3); 
 
@@ -249,16 +290,15 @@ class Validation extends Controller
             
         }else if($repeat_id == 4){
             //monthly
-            
             $number_of_months = $calculate->numberOfMonths($start_date,$end_date);
+            if($number_of_months == 0){
+                $number_of_months = 1;
+            }
             $amount_monthly = $goal_amount/$number_of_months;
             $monthly_valid  = $this->frequentlyValid($amount_monthly,$start_date,$end_date,4);
 
             $valid_info['valid'] = $monthly_valid;
             $valid_info['amount'] = $amount_monthly;
-        }else{
-            $valid_info['valid'] = false;
-            $valid_info['amount'] = 0;
         }
 
         return $valid_info; 
@@ -266,5 +306,51 @@ class Validation extends Controller
         // $valid_info['valid'] = false;
         // $valid_info['amount'] = 0;
         // return $valid_info;
+    }
+
+    public function getMostRecentValidEndDateMonthly($goal_amount,$start_date,$end_date)
+    {
+        $calculate = new Calculator;
+        $monthly_valid_info = array();
+        $start_date_dt = new DateTime($start_date);
+        $end_date_dt = new DateTime($end_date);
+        $recurrent_end_date_dt =  $start_date_dt->add(new DateInterval('P1M'));
+        
+        while($recurrent_end_date_dt <= $end_date_dt){
+
+            $number_of_months = $calculate->numberOfMonths($start_date,$recurrent_end_date_dt->format('Y-m-d'));
+            $amount_monthly = $goal_amount/$number_of_months;
+            $monthly_valid  = $this->frequentlyValid($amount_monthly,$start_date,$recurrent_end_date_dt->format('Y-m-d'),4);
+
+            if($monthly_valid){
+                break;
+            }else{
+                $recurrent_end_date_dt = $recurrent_end_date_dt->add(new DateInterval('P1M'));
+            }         
+        }
+        return $recurrent_end_date_dt->sub(new DateInterval('P1M'))->format('Y-m-d');
+    }
+
+    public function getMostRecentValidEndDateWeekly($goal_amount,$start_date,$end_date)
+    {
+        $calculate = new Calculator;
+        $monthly_valid_info = array();
+        $start_date_dt = new DateTime($start_date);
+        $end_date_dt = new DateTime($end_date);
+        $recurrent_end_date_dt =  $start_date_dt->add(new DateInterval('P1W'));
+        
+        while($recurrent_end_date_dt <= $end_date_dt){
+
+            $number_of_months = $calculate->numberOfWeeks($start_date,$recurrent_end_date_dt->format('Y-m-d'));
+            $amount_monthly = $goal_amount/$number_of_months;
+            $monthly_valid  = $this->frequentlyValid($amount_monthly,$start_date,$recurrent_end_date_dt->format('Y-m-d'),4);
+
+            if($monthly_valid){
+                break;
+            }else{
+                $recurrent_end_date_dt = $recurrent_end_date_dt->add(new DateInterval('P1W'));
+            }         
+        }
+        return $recurrent_end_date_dt->sub(new DateInterval('P1W'))->format('Y-m-d');
     }
 }

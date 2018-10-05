@@ -20,4 +20,5 @@
 <div class="container">
     @yield('content_add')
 </div>
+
 @endsection

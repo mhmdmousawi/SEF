@@ -41,6 +41,8 @@ var SMART_VERIF = {
         ELEMENTS_SMART_VERIF.show_verification_modal.click();
         
         function verifiedConfig(){
+        
+            ELEMENTS_SMART_VERIF.modal_footer.innerHTML = "";
             ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML = ''
             +'<b>The proposed smart planning is valid accourding to the following info:</b><br><br>'
             +'<b>Goal Amount:</b> ' + response.transaction_details.goal_amount+'<br>'
@@ -52,6 +54,9 @@ var SMART_VERIF = {
             +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>'
             +'<b>End Date:</b> '+ response.transaction_details.end_date+'<br>'
             +'';
+            // if(response.transaction_details.start_date == response.transaction_details.end_date){
+            //     ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ' Fixed  !!!! ';
+            // }
 
             ELEMENTS_SMART_VERIF.validation_question.innerHTML = 
                 'Would you like to confirm on adding the plan?!';
@@ -65,11 +70,11 @@ var SMART_VERIF = {
                 window.location.assign(ELEMENTS_SMART_VERIF.request_url_confirmed.value);
             });
             
-            ELEMENTS_SMART_VERIF.modal_footer.innerHTML = "";
             ELEMENTS_SMART_VERIF.modal_footer.appendChild(newConfirmBtn);
 
         }
         function notVerifiedConfig(){
+            ELEMENTS_SMART_VERIF.modal_footer.innerHTML = "";
             ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML = ''
                 +'Unfortunately this plan <strong>cannot be valid</strong>. '
                 +'It\'s either your goal amount is bigger than you balance, '

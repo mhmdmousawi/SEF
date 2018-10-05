@@ -24,12 +24,12 @@ class AddTransactionController extends Controller
     public function create(Request $request)
     {
         $validatedData = $request->validate([
-            'amount' => 'required|max:255',
+            'amount' => 'required|max:1000000',
             'type' => 'required|in:income,expense,saving',
             'title' => 'required|max:255',
             'description' => 'max:255',
             'currency_id' => 'required|exists:currencies,id',
-            'category_id' => 'required|numeric',
+            'category_id' => 'required|exists:categories,id',
             'repeat_id' => 'required|numeric|in:1,2,3,4',
             'start_date' => 'required|date|before:tomorrow',
             'end_date' => 'nullable|date|after:start_date',

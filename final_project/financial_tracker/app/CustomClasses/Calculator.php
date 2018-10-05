@@ -190,26 +190,5 @@ class Calculator
         return $number_of_months;
     }
 
-    //weekly least common balance in a specific duration
-    //start_date and end_date should have at leat a week between
 
-    public function weeklyLCB($start_date,$end_date)
-    {
-        $user = $this->user;
-        $start_date = new DateTime($start_date);
-        $end_date = new DateTime($end_date);
-
-        $week_numbers = 1;
-        $least_common_balance = 1000000000;
-        $recurrent_start_date = $start_date;
-
-        while($recurrent_start_date <= $end_date){
-            $temp_week_balance = $this->weekOverallCalculation($recurrent_start_date->format('Y-m-d'));
-            if($temp_week_balance < $least_common_balance){
-                $least_common_balance = $temp_week_balance;
-            }
-            $recurrent_start_date = $recurrent_start_date->add(new DateInterval('P1W'));
-        }
-        return $least_common_balance;
-    }
 }
