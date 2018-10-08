@@ -24,9 +24,9 @@
         </div>
         
         <div class="form-group text-center">
-            <p class="col-xs-4 text-secondary" for="">{{$user->money_in}} {{$user->profile->defaultCurrency->code}}</p>
-            <p class="col-xs-4 text-secondary" for=""> -{{$user->money_out}} {{$user->profile->defaultCurrency->code}}</p>
-            <p class="col-xs-4 text-secondary" for="">{{$user->saving}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-4 text-secondary" for="">{{round($user->money_in,2)}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-4 text-secondary" for=""> -{{round($user->money_out,2)}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-4 text-secondary" for="">{{round($user->saving,2)}} {{$user->profile->defaultCurrency->code}}</p>
         </div>  
     </form>
     <hr class="col-xs-12 col-lg-12">

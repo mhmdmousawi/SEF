@@ -40,7 +40,7 @@
             <div class="col-sm-12 col-lg-12 transaction_card_big">
                 <div class="card-counter primary">
                     <span class="col-xs-8 col-lg-6 text-light" style="padding:2px"><b>Title:</b> {{$income->title}}</span>
-                    <span class="col-xs-4 col-lg-6 text-right text-light" style="padding:2px">{{$income->currency->code}} <strong>{{$income->amount}}</strong></span>
+                    <span class="col-xs-4 col-lg-6 text-right text-light" style="padding:2px">{{$income->currency->code}} <strong>{{round($income->amount,2)}}</strong></span>
                     <span class="col-xs-8 col-lg-6 text-light"style="padding:2px"><b>Categ:</b> {{$income->category->title}}</span>                        
                     <span class="col-xs-4 col-lg-6 text-right text-light" style="padding:2px"> % {{round($income->percentage,0)}}</span>
                     <span class="col-xs-7 col-lg-6 text-light" style="padding:2px"><b>Date:</b> {{$income->start_date}}</span>

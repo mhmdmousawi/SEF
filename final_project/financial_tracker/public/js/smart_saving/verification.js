@@ -45,15 +45,35 @@ var SMART_VERIF = {
             ELEMENTS_SMART_VERIF.modal_footer.innerHTML = "";
             ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML = ''
             +'<b>The proposed smart planning is valid accourding to the following info:</b><br><br>'
-            +'<b>Goal Amount:</b> ' + response.transaction_details.goal_amount+'<br>'
-            +'<b>Currency:</b> '+ response.transaction_details.currency_id+'<br>'
-            +'<b>Title:</b> '+ response.transaction_details.title+'<br>'
-            +'<b>Description:</b> '+ response.transaction_details.description+'<br>'
-            +'<b>Frequency:</b> '+ response.transaction_details.repeat_type+'<br>'
-            +'<b>Amount/Frequency:</b> '+ response.transaction_details.amount+'<br>'
-            +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>'
-            +'<b>End Date:</b> '+ response.transaction_details.end_date+'<br>'
-            +'';
+            +'<b>Goal Amount:</b> ' + ELEMENTS_SMART_VERIF.goal_amount.value+'<br>'
+            +'<b>Currency:</b> '+ ELEMENTS_SMART_VERIF.currency_id.options[ELEMENTS_SMART_VERIF.currency_id.selectedIndex].text+'<br>'
+            +'<b>Title:</b> '+ response.transaction_details.title+'<br>';
+            // +'<b>Description:</b> '+ response.transaction_details.description+'<br>';
+
+            if(response.transaction_details.repeat_id == 1){
+                repeat_type = "One Time";
+
+                ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ''
+                +'<b>Frequency:</b> '+ repeat_type+'<br>'
+                +'<b>Amount/Frequency:</b> '+ response.transaction_details.amount+'<br>'
+                +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>';
+
+            }else if(response.transaction_details.repeat_id == 3){
+                repeat_type = "Weekly Basis";
+                ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ''
+                +'<b>Frequency:</b> '+ repeat_type+'<br>'
+                +'<b>Amount/Frequency:</b> '+ (Math.round(response.transaction_details.amount * 100) / 100)+'<br>'
+                +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>'
+                +'<b>End Date:</b> '+ response.transaction_details.end_date+'<br>';
+            }else if(response.transaction_details.repeat_id == 4){
+                repeat_type = "Monthly Basis";
+                ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ''
+                +'<b>Frequency:</b> '+ repeat_type+'<br>'
+                +'<b>Amount/Frequency:</b> '+ (Math.round(response.transaction_details.amount * 100) / 100)+'<br>'
+                +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>'
+                +'<b>End Date:</b> '+ response.transaction_details.end_date+'<br>'
+                +'';
+            }
             // if(response.transaction_details.start_date == response.transaction_details.end_date){
             //     ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ' Fixed  !!!! ';
             // }
