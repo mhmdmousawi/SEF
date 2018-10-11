@@ -11,10 +11,9 @@
             <label class="control-label col-xs-12 text-info text-lg" for="">Total</label>
         </div>
         <div class="form-group text-center">
-            <p class="col-xs-12 text-secondary" for="">{{$user->balance}} {{$user->profile->defaultCurrency->code}}</p>
+            <p class="col-xs-12 text-secondary" for="">{{round($user->balance,2)}} {{$user->profile->defaultCurrency->code}}</p>
         </div>  
     </form>
-    
     
     <form class="form-virtical ">
         <div class="form-group text-center">

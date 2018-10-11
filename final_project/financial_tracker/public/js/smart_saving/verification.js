@@ -1,8 +1,7 @@
 var ELEMENTS_SMART_VERIF = {
+
     request_url : document.getElementById('request_url'),
     request_url_confirmed : document.getElementById('request_url_confirmed'),
-
-    //info needed
     csrf_token : document.getElementById('csrf_token'),
     goal_amount : document.getElementById('goal_amount'),
     currency_id : document.getElementById('currency_id'),
@@ -11,26 +10,17 @@ var ELEMENTS_SMART_VERIF = {
     start_date : document.getElementById('start_date'),
     end_date : document.getElementById('end_date'),
     priority : document.getElementById('priority'),
-
-
-    //ma b3ref iza elon 3aze
     verify_bnt : document.getElementById('verify_bnt'),
-    
-
-    
-    // submit_btn : document.getElementById('submit_btn'),
-    // saving_varification_modal : document.getElementById('saving_varification_modal'),
     show_verification_modal : document.getElementById('show_verification_modal'),
-
     validation_attr_div : document.getElementById('validation_attr_div'),
     validation_question : document.getElementById('validation_question'),
     modal_footer : document.getElementById('modal_footer'),
-    // confirm_btn : document.getElementById('confirm_btn'),
 }
 
 var SMART_VERIF = {
-    showVarificationModal : function(response){
-        
+
+    showVarificationModal : function(response)
+    {    
         if( response.verified == true ){
             verifiedConfig();
             
@@ -48,16 +38,13 @@ var SMART_VERIF = {
             +'<b>Goal Amount:</b> ' + ELEMENTS_SMART_VERIF.goal_amount.value+'<br>'
             +'<b>Currency:</b> '+ ELEMENTS_SMART_VERIF.currency_id.options[ELEMENTS_SMART_VERIF.currency_id.selectedIndex].text+'<br>'
             +'<b>Title:</b> '+ response.transaction_details.title+'<br>';
-            // +'<b>Description:</b> '+ response.transaction_details.description+'<br>';
 
             if(response.transaction_details.repeat_id == 1){
                 repeat_type = "One Time";
-
                 ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ''
                 +'<b>Frequency:</b> '+ repeat_type+'<br>'
                 +'<b>Amount/Frequency:</b> '+ response.transaction_details.amount+'<br>'
                 +'<b>Start Date:</b> '+ response.transaction_details.start_date+'<br>';
-
             }else if(response.transaction_details.repeat_id == 3){
                 repeat_type = "Weekly Basis";
                 ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ''
@@ -74,9 +61,6 @@ var SMART_VERIF = {
                 +'<b>End Date:</b> '+ response.transaction_details.end_date+'<br>'
                 +'';
             }
-            // if(response.transaction_details.start_date == response.transaction_details.end_date){
-            //     ELEMENTS_SMART_VERIF.validation_attr_div.innerHTML += ' Fixed  !!!! ';
-            // }
 
             ELEMENTS_SMART_VERIF.validation_question.innerHTML = 
                 'Would you like to confirm on adding the plan?!';

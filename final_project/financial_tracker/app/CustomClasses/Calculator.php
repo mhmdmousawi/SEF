@@ -25,9 +25,11 @@ class Calculator
 
     public function defaultAmount($amount,$currency_id)
     {
-        $user = $this->user;
         $currency = Currency::find($currency_id);
-        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
+        $default_currency_rate = $this->user
+                                      ->profile
+                                      ->defaultCurrency
+                                      ->amount_per_dollar;
         $amount_in_default_curr = ($amount*$default_currency_rate)
                                         /($currency->amount_per_dollar);
         return $amount_in_default_curr;
@@ -35,9 +37,11 @@ class Calculator
 
     public function exchangeFromDefault($amount,$currency_id)
     {
-        $user = $this->user;
         $currency = Currency::find($currency_id);
-        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
+        $default_currency_rate = $this->user
+                                      ->profile
+                                      ->defaultCurrency
+                                      ->amount_per_dollar;
         $amount_in_this_curr = ($amount*$currency->amount_per_dollar)
                                     /$default_currency_rate;
         return $amount_in_this_curr;
@@ -48,8 +52,12 @@ class Calculator
         $carbon_date = Carbon::createFromFormat('Y-m-d',$week_start_date);
         $start_current_week = clone $carbon_date->startOfWeek();
         $end_current_week = clone $carbon_date->endOfWeek();
-        $week_overall = $this->overallCalculationWithin($start_current_week,$end_current_week);
-        $balance_until_week_start = $this->overallCalculationUntil($start_current_week->subDays(1));
+        $week_overall = $this->overallCalculationWithin(
+                                $start_current_week,
+                                $end_current_week
+                            );
+        $balance_until_week_start = $this->overallCalculationUntil(
+                                            $start_current_week->subDays(1));
         $overall_amount = $balance_until_week_start + $week_overall;
 
         return $overall_amount;
@@ -60,53 +68,68 @@ class Calculator
         $carbon_date = Carbon::createFromFormat('Y-m-d',$month_start_date);
         $start_current_month = clone $carbon_date->startOfMonth();
         $end_current_month = clone $carbon_date->endOfMonth();
-        $month_overall = $this->overallCalculationWithin($start_current_month,$end_current_month);
-        $balance_until_month_start = $this->overallCalculationUntil($start_current_month->subDays(1));
+        $month_overall = $this->overallCalculationWithin(
+                                    $start_current_month,
+                                    $end_current_month
+                                );
+        $balance_until_month_start = $this->overallCalculationUntil(
+                                            $start_current_month->subDays(1));
         $overall_amount = $balance_until_month_start + $month_overall;
 
-        return $overall_amount;
-        
+        return $overall_amount; 
     }
 
     public function overallCalculation()
     {
-        $user = $this->user;
-        $profile = $user->profile;
+        $profile = $this->user->profile;
 
-        $transactions_income = $profile->transactionsWithTypeAndRepeat("income");
+        $transactions_income = $profile
+                                ->transactionsWithTypeAndRepeat("income");
         $transactions_income = json_decode($transactions_income);
         $total_amount_income = $this->getTotalAmount($transactions_income);
 
-        $transactions_expense = $profile->transactionsWithTypeAndRepeat("expense");
+        $transactions_expense = $profile
+                                ->transactionsWithTypeAndRepeat("expense");
         $transactions_expense = json_decode($transactions_expense);
         $total_amount_expense = $this->getTotalAmount($transactions_expense);
 
-        $transactions_saving = $profile->transactionsWithTypeAndRepeat("saving");
+        $transactions_saving = $profile
+                                ->transactionsWithTypeAndRepeat("saving");
         $transactions_saving = json_decode($transactions_saving);
         $total_amount_saving = $this->getTotalAmount($transactions_saving);
 
-        $overall_amount = $total_amount_income - ($total_amount_expense + $total_amount_saving);
+        $overall_amount = $total_amount_income 
+                            - ($total_amount_expense + $total_amount_saving);
         return $overall_amount;
     }
 
     public function overallCalculationUntil($date)
     {
-        $user = $this->user;
-        $profile = $user->profile;
+        $profile = $this->user->profile;
         
-        $transactions_income = $profile->transactionsWithTypeAndRepeatUntil($date,"income");
+        $transactions_income = $profile->transactionsWithTypeAndRepeatUntil(
+                                            $date,
+                                            "income"
+                                        );
         $transactions_income = json_decode($transactions_income);
         $total_amount_income = $this->getTotalAmount($transactions_income);
 
-        $transactions_expense = $profile->transactionsWithTypeAndRepeatUntil($date,"expense");
+        $transactions_expense = $profile->transactionsWithTypeAndRepeatUntil(
+                                            $date,
+                                            "expense"
+                                        );
         $transactions_expense = json_decode($transactions_expense);
         $total_amount_expense = $this->getTotalAmount($transactions_expense);
 
-        $transactions_saving = $profile->transactionsWithTypeAndRepeatUntil($date,"saving");
+        $transactions_saving = $profile->transactionsWithTypeAndRepeatUntil(
+                                            $date,
+                                            "saving"
+                                        );
         $transactions_saving = json_decode($transactions_saving);
         $total_amount_saving = $this->getTotalAmount($transactions_saving);
 
-        $overall_amount = $total_amount_income - ($total_amount_expense + $total_amount_saving);
+        $overall_amount = $total_amount_income 
+                            - ($total_amount_expense + $total_amount_saving);
         return $overall_amount;
     }
 
@@ -130,7 +153,8 @@ class Calculator
                                             $end_date);
         $total_amount_saving = $this->getTotalAmount($transactions_saving);
 
-        $overall_amount = $total_amount_income - ($total_amount_expense + $total_amount_saving);
+        $overall_amount = $total_amount_income 
+                            - ($total_amount_expense + $total_amount_saving);
         return $overall_amount;
     }
 
@@ -147,12 +171,17 @@ class Calculator
 
     private function getTotalAmount($transactions)
     {
-        $user = $this->user;
-        $default_currency_rate = $user->profile->defaultCurrency->amount_per_dollar;
+        $default_currency_rate = $this->user
+                                      ->profile
+                                      ->defaultCurrency
+                                      ->amount_per_dollar;
         $total_amount = 0 ;
         foreach($transactions as $transaction){
-            $amount_in_default_curr = ($transaction->amount*$default_currency_rate)
-                                        /($transaction->currency->amount_per_dollar);
+            $amount_in_default_curr = ($transaction->amount*
+                                        $default_currency_rate)/
+                                        ($transaction
+                                            ->currency
+                                            ->amount_per_dollar);
             $total_amount+=$amount_in_default_curr;
         }
         return $total_amount;
@@ -189,6 +218,4 @@ class Calculator
         $number_of_months = $start_date->diffInMonths($end_date);
         return $number_of_months;
     }
-
-
 }

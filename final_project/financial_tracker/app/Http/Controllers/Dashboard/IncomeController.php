@@ -12,5 +12,4 @@ class IncomeController extends DashboardController
         parent::setDashboardType('income');
         return parent::viewfilteredBySessionTime();
     }
-
 }

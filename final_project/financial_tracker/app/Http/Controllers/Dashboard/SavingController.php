@@ -11,5 +11,4 @@ class SavingController extends DashboardController
         parent::setDashboardType('saving');
         return parent::viewfilteredBySessionTime();
     }
-
 }

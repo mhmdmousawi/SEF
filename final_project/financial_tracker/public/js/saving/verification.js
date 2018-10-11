@@ -1,30 +1,22 @@
 
 var ELEMENTS_VERIFICATION = {
     request_url : document.getElementById('request_url'),
-
-    add_saving_form : document.getElementById('add_saving_form'),
-    user_id : document.getElementById('user_id'),
-
     csrf_token : document.getElementById('csrf_token'),
     goal_amount : document.getElementById('goal_amount'),
     amount : document.getElementById('amount'),
     currency_id : document.getElementById('currency_id'),
     category_id : $("#add_saving_form input[name=category_id]"),
-    // category_id : document.getElementById('category_id'),
     title : document.getElementById('title'),
     description : document.getElementById('description'),
     start_date : document.getElementById('start_date'),
     repeat_id : document.getElementById('repeat_id'),
     verify_bnt : document.getElementById('verify_bnt'),
-    
     validation_result : document.getElementById('validation_result'),
     validation_attr_div : document.getElementById('validation_attr_div'),
     validation_question : document.getElementById('validation_question'),
     confirm_btn : document.getElementById('confirm_btn'),
     modal_footer : document.getElementById('modal_footer'),
-
     submit_btn : document.getElementById('submit_btn'),
-
     saving_varification_modal : document.getElementById('saving_varification_modal'),
     show_verification_modal : document.getElementById('show_verification_modal'),
 }
@@ -103,17 +95,11 @@ var VERIFICATION = {
             }
         });
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': ELEMENTS_VERIFICATION.csrf_token.value
-            }
-        });
         
         $.ajax({
             type: "POST",
             url: URL,
-            data: {     
-                '_token': ELEMENTS_VERIFICATION.csrf_token.value,
+            data: {    
                 '_token' : ELEMENTS_VERIFICATION.csrf_token.value,
                 'goal_amount' : ELEMENTS_VERIFICATION.goal_amount.value,
                 'amount' : ELEMENTS_VERIFICATION.amount.value,

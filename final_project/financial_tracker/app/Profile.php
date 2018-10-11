@@ -59,7 +59,8 @@ class Profile extends Model
 
                 while($recurrent_start < $recurrent_end){
 
-                    $transaction->start_date = $recurrent_start->format('Y-m-d');
+                    $transaction->start_date = $recurrent_start
+                                                    ->format('Y-m-d');
                     $transaction->category;
                     $transaction->currency;
                     $transaction->category->logo;
@@ -68,11 +69,14 @@ class Profile extends Model
                     
 
                     if($transaction->repeat->type == 'daily'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1D'));
+                        $recurrent_start = $recurrent_start
+                                            ->add(new DateInterval('P1D'));
                     }else if($transaction->repeat->type = 'weekly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1W'));
+                        $recurrent_start = $recurrent_start
+                                            ->add(new DateInterval('P1W'));
                     }else if($transaction->repeat->type = 'monthly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1M'));
+                        $recurrent_start = $recurrent_start
+                                            ->add(new DateInterval('P1M'));
                     }
                 }
             }
@@ -113,7 +117,8 @@ class Profile extends Model
                 while($recurrent_start < $recurrent_end){
 
                     if($recurrent_start <= $date){
-                        $transaction->start_date = $recurrent_start->format('Y-m-d');
+                        $transaction->start_date = $recurrent_start
+                                                    ->format('Y-m-d');
                         $transaction->category;
                         $transaction->currency;
                         $transaction->category->logo;
@@ -122,11 +127,14 @@ class Profile extends Model
                     }
 
                     if($transaction->repeat->type == 'daily'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1D'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1D'));
                     }else if($transaction->repeat->type == 'weekly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1W'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1W'));
                     }else if($transaction->repeat->type == 'monthly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1M'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1M'));
                     }
                 }
             }
@@ -145,8 +153,12 @@ class Profile extends Model
         return $transactions;
     }
 
-    public function transactionsInTimeFrame($ss_date,$se_date,$type = null,$top = null)
-    {
+    public function transactionsInTimeFrame(
+        $ss_date,
+        $se_date,
+        $type = null,
+        $top = null
+    ){
 
         if($type === null){
             $transactions = $this->transactions()->get();
@@ -182,8 +194,11 @@ class Profile extends Model
 
                 while($recurrent_start <= $recurrent_end){
 
-                    if(($recurrent_start >= $ss_date) && ($recurrent_start <= $se_date)){
-                        $transaction->start_date = $recurrent_start->format('Y-m-d');
+                    if(($recurrent_start >= $ss_date) && 
+                        ($recurrent_start <= $se_date)
+                    ){
+                        $transaction->start_date = $recurrent_start
+                                                    ->format('Y-m-d');
                         $transaction->category;
                         $transaction->currency;
                         $transaction->category->logo;
@@ -192,11 +207,14 @@ class Profile extends Model
                     }
 
                     if($transaction->repeat->type == 'daily'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1D'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1D'));
                     }else if($transaction->repeat->type == 'weekly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1W'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1W'));
                     }else if($transaction->repeat->type == 'monthly'){
-                        $recurrent_start = $recurrent_start->add(new DateInterval('P1M'));
+                        $recurrent_start = $recurrent_start
+                                                ->add(new DateInterval('P1M'));
                     }
                 }
             }

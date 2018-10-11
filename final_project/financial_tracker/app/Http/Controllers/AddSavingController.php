@@ -19,21 +19,30 @@ use App\CustomClasses\Calculator;
 class AddSavingController extends Controller
 {
 
+    private $user;
+    private $calculate;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            $this->calculate = new Calculator;
+            return $next($request);
+        });
+    }
+
     public function index()
     {
-        $user = Auth::user();
         $currencies = Currency::all();
         $repeats = Repeat::all();
-        return view('saving.add')->with('user',$user)
+        return view('saving.add')->with('user',$this->user)
                                       ->with('currencies',$currencies)
                                       ->with('repeats',$repeats);
     }
 
     public function validateAndAdd(Request $request)
     {
-
-        $user = Auth::user();
-        $calculate = new Calculator;
+        
 
         $validatedData = $request->validate([
             'goal_amount' => 'required|numeric',
@@ -46,21 +55,26 @@ class AddSavingController extends Controller
             'start_date' => 'required|date',
         ]);
 
-
-
         $goal_amount_tr = $request->goal_amount;
         $amount_tr = $request->amount;
         $currency_id = $request->currency_id;
         $repeat_id = $request->repeat_id;
         $start_date = $request->start_date;
 
-        $goal_amount = $calculate->defaultAmount($goal_amount_tr,$currency_id);
-        $amount = $calculate->defaultAmount($amount_tr,$currency_id);
-        $due_date = $calculate->dueDate($goal_amount,$amount,$start_date,$repeat_id);
+        $goal_amount = $this->calculate
+                            ->defaultAmount($goal_amount_tr,$currency_id);
+        $amount = $this->calculate
+                        ->defaultAmount($amount_tr,$currency_id);
+        $due_date = $this->calculate
+                        ->dueDate($goal_amount,$amount,$start_date,$repeat_id);
 
         $isValid_goal = $this->goalValid($goal_amount,$due_date);
-        $isValid_fequently = $this->frequentlyValid($amount,$start_date,$due_date,$repeat_id);
-
+        $isValid_fequently = $this->frequentlyValid(
+                                $amount,
+                                $start_date,
+                                $due_date,
+                                $repeat_id
+                            );
 
         if($isValid_goal && $isValid_fequently){
             $this->adding($request,$due_date);
@@ -68,15 +82,12 @@ class AddSavingController extends Controller
         }
 
         return "404 page not found .. don't play around";
-        
-
     }
 
     public function adding(Request $request,$due_date)
     {
-        $user = Auth::user();
         $transaction = new Transaction;
-        $transaction->profile_id = $user->profile->id;
+        $transaction->profile_id = $this->user->profile->id;
         $transaction->amount = $request->amount;
         $transaction->type = "saving";
         $transaction->title = $request->title;
@@ -87,13 +98,12 @@ class AddSavingController extends Controller
         $transaction->start_date = $request->start_date;
         $transaction->end_date = $due_date;
         $transaction->save();
-
+        return true;
     }
 
     public function goalValid($goal_amount,$due_date)
     {
-        $calculate = new Calculator;
-        $overall_balance = $calculate->overallCalculationUntil($due_date);
+        $overall_balance = $this->calculate->overallCalculationUntil($due_date);
         $dif = $overall_balance - $goal_amount;
 
         if($dif<0){
@@ -104,7 +114,6 @@ class AddSavingController extends Controller
 
     public function frequentlyValid($amount,$start_date,$end_date,$repeat_id)
     {
-        $calculate = new Calculator;
         $start_date = new DateTime($start_date);
         $end_date = new DateTime($end_date);
 
@@ -112,59 +121,55 @@ class AddSavingController extends Controller
         $saving_number = 1;
 
         while($recurrent_save_date <= $end_date){
-            //if weekly
             if($repeat_id == 3){
 
-                $week_overall_before_savings = $calculate->weekOverallCalculation($recurrent_save_date->format('Y-m-d'));
-                $amount_saved = $saving_number*$amount;
-                $week_overall_after_savings = $week_overall_before_savings - $amount_saved;
+                $week_overall_before_savings = $this->calculate
+                                                ->weekOverallCalculation(
+                                                    $recurrent_save_date
+                                                        ->format('Y-m-d')
+                                                );
+                $amount_saved = $saving_number * $amount;
+                $week_overall_after_savings = $week_overall_before_savings 
+                                                - $amount_saved;
                 
-                // echo "week_overall_before_savings: ". $week_overall_before_savings . "<br>";
-                // echo "week_overall_after_savings: ". $week_overall_after_savings . "<br>";
-                // echo "amount_saved: ". $amount_saved . "<br>";
-
                 if($amount > ($week_overall_after_savings+$amount)){
-                    // echo "You can't afford it on week: ".$saving_number." <br>";
                     return false;
                 }else{
                     $saving_number++;
                 }
-                $recurrent_save_date = $recurrent_save_date->add(new DateInterval('P1W'));
+                $recurrent_save_date = $recurrent_save_date
+                                            ->add(new DateInterval('P1W'));
 
-            //if monthly
             }else if($repeat_id == 4){
 
-                $month_overall_before_savings = $calculate->monthOverallCalculation($recurrent_save_date->format('Y-m-d'));
+                $month_overall_before_savings = $this->calculate
+                                                    ->monthOverallCalculation(
+                                                        $recurrent_save_date
+                                                            ->format('Y-m-d')
+                                                    );
                 $amount_saved = $saving_number*$amount;
-                $month_overall_after_savings = $month_overall_before_savings - $amount_saved;
-
-                // echo "month_overall_before_savings: ". $month_overall_before_savings . "<br>";
-                // echo "month_overall_after_savings: ". $month_overall_after_savings . "<br>";
-                // echo "amount_saved: ". $amount_saved . "<br>";
-
+                $month_overall_after_savings = $month_overall_before_savings 
+                                                - $amount_saved;
                 if($amount > ($month_overall_after_savings+$amount)){
-                    // echo "You can't afford it on month: ".++$saving_number." <br>";
                     return false;
                 }else{
                     $saving_number++;
                 }
-                $recurrent_save_date = $recurrent_save_date->add(new DateInterval('P1M'));
+                $recurrent_save_date = $recurrent_save_date
+                                            ->add(new DateInterval('P1M'));
             } 
         }
-        // echo "You can afford this saving <br>";
         return true;
     }
 
-    
     public function confirm(Request $request)
     {
-        $user = Auth::user();
         if(isset($request->confirm)){
             if(Session::get('saving_valid')){
 
                 $session_data = Session::get('saving_valid');
                 $transaction = new Transaction;
-                $transaction->profile_id = $user->profile->id;
+                $transaction->profile_id = $this->user->profile->id;
                 $transaction->amount = $session_data['amount'];
                 $transaction->type = "saving";
                 $transaction->title = $session_data['title'];
@@ -177,15 +182,13 @@ class AddSavingController extends Controller
                 $transaction->save();
 
                 Session::forget('saving_valid');
-
             }
         }else if(isset($request->cancel)){
-            return view('saving_add')->with('user',$user);
+            return view('saving_add')->with('user',$this->user);
         }else{
             return "Some Error Happened";
         }
-        
-
+    
         return redirect('/dashboard/savings/monthly');
     }
 

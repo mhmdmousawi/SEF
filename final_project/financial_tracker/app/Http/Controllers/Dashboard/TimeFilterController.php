@@ -10,8 +10,6 @@ class TimeFilterController extends Controller
 {
     public function change(Request $request)
     {
-
-        //validate all inputs 
         $validatedData = $request->validate([
             'type_filter' => 'required|in:weekly,monthly,yearly',
             'date_filter' => 'required|date',
@@ -36,9 +34,8 @@ class TimeFilterController extends Controller
             return redirect('/dashboard/expenses');
         }else if($dashboard_type == "saving"){
             return redirect('/dashboard/savings');
-        }else{
-            return "404 page not found";
         }
+        return "404 page not found";
     }
     private function setTimeFilter($type_filter,$date)
     {
@@ -50,5 +47,6 @@ class TimeFilterController extends Controller
             'date_filter' => $date_filter
         ];
         Session::put('time_filter', $time_filter);
+        return true;
     }
 }

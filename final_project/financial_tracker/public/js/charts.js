@@ -119,8 +119,6 @@ var CHART = {
     }
 }
 
-
-
 window.addEventListener('load',function(){
     chart = Object.create(CHART);
     chart.addEvents();

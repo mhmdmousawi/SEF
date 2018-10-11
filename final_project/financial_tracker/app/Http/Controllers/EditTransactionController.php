@@ -9,16 +9,28 @@ use Illuminate\Support\Facades\Auth;
 use App\Transaction;
 use App\Currency;
 use App\Repeat;
+use App\User;
 
 
 class EditTransactionController extends Controller
 {
+    private $user;
+
+    public function __construct(Auth $id)
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
+
     public function index($transaction_id)
     {
-        $user = Auth::user();
         $transaction = Transaction::where('id',$transaction_id)
-                                    ->where('profile_id',$user->profile->id)
-                                    ->first();
+                                    ->where(
+                                        'profile_id',
+                                        $this->user->profile->id
+                                    )->first();
         $currencies = Currency::all();
         $repeats = Repeat::all();
         
@@ -29,7 +41,7 @@ class EditTransactionController extends Controller
             return "Don't Even try .. :) ";
         }
         
-        return view('transaction.edit')->with('user',$user)
+        return view('transaction.edit')->with('user',$this->user)
                                       ->with('transaction',$transaction)
                                       ->with('currencies',$currencies)
                                       ->with('repeats',$repeats);
@@ -42,7 +54,11 @@ class EditTransactionController extends Controller
         ]);
 
         $transaction_id = $request->id;
-        $transaction = Transaction::find($transaction_id);
+        $transaction = Transaction::where('id',$transaction_id)
+                                    ->where(
+                                        'profile_id',
+                                        $this->user->profile->id
+                                    )->first();
         $transaction->delete();
         return $this->redirection($transaction);
 
@@ -61,8 +77,11 @@ class EditTransactionController extends Controller
 
         $edit_type = $request->edit_type;
         $transaction_id = $request->id;
-        $transaction = Transaction::find($transaction_id);
-
+        $transaction = Transaction::where('id',$transaction_id)
+                                    ->where(
+                                        'profile_id',
+                                        $this->user->profile->id
+                                    )->first();
         if(!$transaction){
             return '404 page';
         }
@@ -75,11 +94,6 @@ class EditTransactionController extends Controller
         $today = new Datetime (date("Y-m-d"));
 
         if($t_end_date <= $today){
-            //send error 
-            // return redirect('/edit/transaction/'.$transaction->id)->with('done','yes');
-            $edit_type = "all";
-        }
-        if($t_start_date == $today){
             $edit_type = "all";
         }
 
@@ -99,7 +113,10 @@ class EditTransactionController extends Controller
             $new_transaction->end_date = $transaction->end_date; //same
             $new_transaction->save();
 
-            $last_end_date = $this->getLastEndDate($transaction,$next_start_date);
+            $last_end_date = $this->getLastEndDate(
+                                $transaction,
+                                $next_start_date
+                            );
             $transaction->end_date = $last_end_date;
             $transaction->save();
 
@@ -124,9 +141,7 @@ class EditTransactionController extends Controller
         }else if ($transaction->type == "expense"){
             return redirect('/dashboard/expenses');
         }
-       
         return "404 page";
-       
     }
 
     public function getLastEndDate($transaction,$next_start_date)
@@ -153,11 +168,14 @@ class EditTransactionController extends Controller
         
         while($next_start_date < $today){
             if($transaction->repeat->type == 'daily'){
-                $next_start_date = $next_start_date->add(new DateInterval('P1D'));
+                $next_start_date = $next_start_date
+                                        ->add(new DateInterval('P1D'));
             }else if($transaction->repeat->type = 'weekly'){
-                $next_start_date = $next_start_date->add(new DateInterval('P1W'));
+                $next_start_date = $next_start_date
+                                        ->add(new DateInterval('P1W'));
             }else if($transaction->repeat->type = 'monthly'){
-                $next_start_date = $next_start_date->add(new DateInterval('P1M'));
+                $next_start_date = $next_start_date
+                                        ->add(new DateInterval('P1M'));
             }
         }
         return $next_start_date->format("Y-m-d");

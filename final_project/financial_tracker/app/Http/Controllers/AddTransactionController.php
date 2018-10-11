@@ -10,13 +10,21 @@ use App\Repeat;
 
 class AddTransactionController extends Controller
 {
+    private $user;
 
-    public function index(){
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->user = Auth::user();
+            return $next($request);
+        });
+    }
 
-        $user = Auth::user();
+    public function index()
+    {
         $currencies = Currency::all();
         $repeats = Repeat::all();
-        return view('transaction.add')->with('user',$user)
+        return view('transaction.add')->with('user',$this->user)
                                       ->with('currencies',$currencies)
                                       ->with('repeats',$repeats);
     }
@@ -35,9 +43,8 @@ class AddTransactionController extends Controller
             'end_date' => 'nullable|date|after:start_date',
         ]);
 
-        $user = Auth::user();
         $transaction = new Transaction;
-        $transaction->profile_id = $user->profile->id;
+        $transaction->profile_id = $this->user->profile->id;
         $transaction->amount = $request->amount;
         $transaction->type = $request->type;
         $transaction->title = $request->title;

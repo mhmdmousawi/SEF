@@ -17,5 +17,4 @@ var LOGO = {
 window.addEventListener('load',function(){
     logo = Object.create(LOGO);
     logo.init(); 
- 
 });
